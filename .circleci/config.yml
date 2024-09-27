@@ -14,13 +14,13 @@ jobs:
       - run:
           name: Build dockerfile
           command: |
-            docker build --no-cache -t satunapas/satunapas-backend:$CIRCLE_SHA1 .
+            docker build --no-cache -t mitraptek/iptv_backend:$CIRCLE_SHA1 .
       - run:
           name: Push Docker Image
           command: |
-            docker push satunapas/satunapas-backend:$CIRCLE_SHA1
-            docker tag satunapas/satunapas-backend:$CIRCLE_SHA1 satunapas/satunapas-backend:development-latest
-            docker push satunapas/satunapas-backend:development-latest
+            docker push mitraptek/iptv_backend:$CIRCLE_SHA1
+            docker tag mitraptek/iptv_backend:$CIRCLE_SHA1 mitraptek/iptv_backend:development-latest
+            docker push mitraptek/iptv_backend:development-latest
       - add_ssh_keys:
           fingerprints:
             - 'SHA256:q8SKv5JwNXWKo2bPR1RgdhyflZtN59wWpABbB3VB1zo'
