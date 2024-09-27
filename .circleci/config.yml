@@ -23,7 +23,7 @@ jobs:
             docker push mitraptek/iptv_backend:development-latest
       - add_ssh_keys:
           fingerprints:
-            - 'SHA256:q8SKv5JwNXWKo2bPR1RgdhyflZtN59wWpABbB3VB1zo'
+            - 'SHA256:Um6KQaHmZjgcT6qChLKXnKedpT9YGZfMVAHUG0Wn+LE'
       - run:
           name: Deploy app to server
           command: |
