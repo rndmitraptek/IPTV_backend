@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  iptv_backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mitraptek/iptv_backend:${BUILD_DATE}.${BUILD_VERSION}
+    container_name: iptv_backend
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASS=Mat1234_
+      - POSTGRES_DB=iptv
+      - POSTGRES_PORT=5432
+      - POSTGRES_HOST=dbiptv
+      - TZ=Asia/Bangkok
+    ports:
+      - '3000:3000'
+    restart: unless-stopped
+    tty: true
+    networks:
+      - dbiptv-network
+
+networks:
+  dbiptv-network:
+    external: true
