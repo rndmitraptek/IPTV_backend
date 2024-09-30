@@ -1,43 +1,57 @@
 import { ApiHideProperty } from '@nestjs/swagger';
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
-@Table({ tableName: 'users' })
-export class users extends Model<users> {
+@Table({ tableName: 'tv_channel' })
+export class tv_channel extends Model<tv_channel> { 
+
     @ApiHideProperty()
     @Column({
         type: DataType.INTEGER,
         autoIncrement: true,
         primaryKey: true,
     })
-    id_user : string;
+    id_channel : number;
 
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+    })
+    id_group : number;
+    
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: false,
+    })
+    urut : number;
+    
     @Column({
         type: DataType.STRING,
         allowNull: false,
     })
-    nama: string;
-
+    title_channel : string;
+    
     @Column({
         type: DataType.STRING,
         allowNull: false,
     })
-    username: string;
-
+    icon_url : string;
+    
     @Column({
         type: DataType.STRING,
         allowNull: false,
     })
-    password: string;
-
-    @Column({
-        type: DataType.BIGINT,
-        allowNull: false,
-    })
-    id_role: number;
-
+    icon_name : string;
+    
     @Column({
         type: DataType.BOOLEAN,
+        allowNull: false,
     })
-    is_active: boolean;
-
+    is_active : boolean;
+    
+    @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+    })
+    is_assign : boolean;
+    
 }

@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt';
 import { users } from 'src/database/iptv/users.entity';
-import { loginDto, usersDtoInsert } from './users.dto';
+import { loginDto, usersDtoInsert, usersDtoUpdate } from './users.dto';
 import { response_login_model } from './users.model';
 
 @Injectable({ scope: Scope.REQUEST })
@@ -38,7 +38,6 @@ export class UsersService {
             return {
                 nama:user.nama,
                 username:user.username,
-                email:user.email,
                 token:this.jwtService.sign({
                     id_user:user.id_user
                 })
@@ -48,10 +47,10 @@ export class UsersService {
         }
     }
     
-    findOne(uuid: string): Promise<users> {
+    findOne(id: number): Promise<users> {
         return this.userModel.findOne({
             where: {
-                uuid:uuid,
+                id_user:id,
             },
         });
     }
@@ -61,15 +60,18 @@ export class UsersService {
         return this.userModel.create(user);
     }
     
-    async update(uuid: string, user: users): Promise<void> {
+    async update(uuid: number, user: usersDtoUpdate): Promise<void> {
+        if(user.password){
+            user.password = await bcrypt.hash(user.password, 10);
+        }
         await this.userModel.update(user, {
             where: {
-                uuid:uuid,
+                id_user:uuid,
             },
         });
     }
     
-    async remove(uuid: string): Promise<void> {
+    async remove(uuid: number): Promise<void> {
         const user = await this.findOne(uuid);
         await user.destroy();
     }

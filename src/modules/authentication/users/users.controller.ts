@@ -2,17 +2,19 @@ import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nes
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { users } from 'src/database/iptv/users.entity';
 import { JwtAuthGuard } from './jwt-auth.gruard';
-import { loginDto, usersDtoInsert } from './users.dto';
+import { loginDto, usersDtoInsert, usersDtoUpdate } from './users.dto';
 import { response_login_model } from './users.model';
 import { UsersService } from './users.service';
 
 
-@Controller('/authentication/users')
-@ApiTags('Authentication/users')
+@Controller('cms/users')
+@ApiTags('cms/users')
 export class UsersController {
     constructor(private readonly usersService:UsersService){}
 
     @Get()
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Menampilkan Semua Data' })
     @ApiResponse({ status: 200, description: 'Return all users.', type: [users] })
     findAll(): Promise<users[]> {
@@ -23,12 +25,14 @@ export class UsersController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Menampilkan User by id user' })
     @ApiResponse({ status: 200, description: 'Return a single user.', type: users })
-    @Get(':uuid')
-    findOne(@Param('uuid') uuid: string): Promise<users> {
-        return this.usersService.findOne(uuid);
+    @Get(':id_user')
+    findOne(@Param('id_user') id_user: number): Promise<users> {
+        return this.usersService.findOne(id_user);
     }
 
     @Post()
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'tambah data users' })
     @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: users })  
     create(@Body() user: usersDtoInsert): Promise<users> {
@@ -36,23 +40,27 @@ export class UsersController {
     }
 
     @Post('login')
-    @ApiOperation({ summary: 'login users' })
-    @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: response_login_model })  
+    @ApiOperation({ summary: 'login users {username:uwik,password:mat1234_}' })
+    @ApiResponse({ status: 201, description: `The user has been successfully created. {"username":"uwik","password":"mat1234_"}`, type: response_login_model })  
     login(@Body() user: loginDto): Promise<response_login_model> {
         return this.usersService.login(user);
     }
 
-    @Put(':uuid')
+    @Put(':id_user')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Update data user' })
     @ApiResponse({ status: 200, description: 'The user has been successfully updated.', type: users })
-    update(@Param('uuid') uuid: string, @Body() user: users) {
-        return this.usersService.update(uuid, user);
+    update(@Param('id_user') id_user: number, @Body() user: usersDtoUpdate) {
+        return this.usersService.update(id_user, user);
     }
 
     @ApiOperation({ summary: 'Delete data user' })
     @ApiResponse({ status: 200, description: 'The user has been successfully deleted.' })
-    @Delete(':uuid')
-    remove(@Param('uuid') id: string) {
+    @Delete(':id_user')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    remove(@Param('id_user') id: number) {
         return this.usersService.remove(id);
     }
 }

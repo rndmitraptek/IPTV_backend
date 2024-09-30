@@ -3,6 +3,19 @@ import { REQUEST } from "@nestjs/core";
 import { SequelizeModuleOptions, SequelizeOptionsFactory } from "@nestjs/sequelize";
 import * as dotenv from 'dotenv';
 import { apk_version } from "./iptv/apk_version.entity";
+import { greeting_card } from "./iptv/greeting_card.entity";
+import { info_fasilities } from "./iptv/info_fasilities.entity";
+import { info_hotel } from "./iptv/info_hotel.entity";
+import { info_room } from "./iptv/info_room.entity";
+import { iptv_feature } from "./iptv/iptv_feature.entity";
+import { nearby_attraction } from "./iptv/nearby_attraction.entity";
+import { promo } from "./iptv/promo.entity";
+import { resto } from "./iptv/resto.entity";
+import { role } from "./iptv/role.entity";
+import { role_menu } from "./iptv/role_menu.entity";
+import { tv_channel } from "./iptv/tv_channel.entity";
+import { tv_group } from "./iptv/tv_group.entity";
+import { users } from "./iptv/users.entity";
 dotenv.config();
 
 @Injectable({ scope: Scope.REQUEST })
@@ -15,7 +28,20 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
     let host = (process.env.APP=='DEVELOPMENT')?process.env.POSTGRES_HOST:req['tenant'];
     if(req['tenant']===undefined){
       models = [
-        apk_version
+        apk_version,
+        role,
+        role_menu,
+        users,
+        tv_group,
+        tv_channel,
+        promo,
+        info_hotel,
+        info_room,
+        info_fasilities,
+        resto,
+        nearby_attraction,
+        greeting_card,
+        iptv_feature
       ];
     }else{
       models = [];
