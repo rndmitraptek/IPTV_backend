@@ -35,6 +35,7 @@ import { RestoService } from './resto/resto.service';
 import { RoleController } from './role/role.controller';
 import { RoleService } from './role/role.service';
 import { RoleMenuController } from './role_menu/role_menu.controller';
+import { role_menuRepository } from './role_menu/role_menu.repository';
 import { RoleMenuService } from './role_menu/role_menu.service';
 import { TvChannelController } from './tv_channel/tv_channel.controller';
 import { tv_channelRepository } from './tv_channel/tv_channel.repository';
@@ -81,7 +82,8 @@ import { TvGroupService } from './tv_group/tv_group.service';
     RestoService,
     NearbyAttractionService,
     GreetingCardService,
-    IptvFeatureService
+    IptvFeatureService,
+    role_menuRepository
   ]
 })
 export class CmsModule {}
