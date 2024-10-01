@@ -15,12 +15,7 @@ export class iptv_featureDtoInsert{
     @IsNotEmpty({
         message:'title_hotel_name tidak boleh kosong'
     })
-    title_hotel_name : string
-
-    @IsNotEmpty({
-        message:'title_hotel_url tidak boleh kosong'
-    })
-    title_hotel_url : string
+    title_hotel : string
 
     @IsNotEmpty({
         message:'logo_hotel_name tidak boleh kosong'
@@ -53,13 +48,8 @@ export class iptv_featureDtoInsert{
     video_channel_0_url : string
 
     @IsNotEmpty({
-        message:'default_home_name tidak boleh kosong'
-    })
-    default_home_name : string
-
-    @IsNotEmpty({
         message:'default_home_url tidak boleh kosong'
     })
-    default_home_url : string
+    default_home : string
 
 }

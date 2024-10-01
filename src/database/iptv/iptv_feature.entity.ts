@@ -28,13 +28,7 @@ export class iptv_feature extends Model<iptv_feature> {
         type: DataType.STRING,
         allowNull: false,
     })
-    title_hotel_name : string;
-    
-    @Column({
-        type: DataType.STRING,
-        allowNull: false,
-    })
-    title_hotel_url : string;
+    title_hotel : string;
     
     @Column({
         type: DataType.STRING,
@@ -76,12 +70,5 @@ export class iptv_feature extends Model<iptv_feature> {
         type: DataType.STRING,
         allowNull: false,
     })
-    default_home_name : string;
-    
-    @Column({
-        type: DataType.STRING,
-        allowNull: false,
-    })
-    default_home_url : string;
-    
+    default_home : string;
 }
