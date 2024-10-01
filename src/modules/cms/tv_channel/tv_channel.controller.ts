@@ -52,5 +52,23 @@ export class TvChannelController {
     remove(@Param('id_channel') id: number) {
         return this.tv_channelService.remove(id);
     }
+
+    @Put('updateStatusActive/:id_channel')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'Update data tv_channel' })
+    @ApiResponse({ status: 200, description: 'The tv_channel has been successfully updated.', type: tv_channel })
+    updateStatusActive(@Param('id_channel') id_channel: number) {
+        return this.tv_channelService.updateStatusActive(id_channel);
+    }
+
+    @Put('updateStatusAssign/:id_channel')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'Update data tv_channel' })
+    @ApiResponse({ status: 200, description: 'The tv_channel has been successfully updated.', type: tv_channel })
+    updateStatusAssign(@Param('id_channel') id_channel: number) {
+        return this.tv_channelService.updateStatusAssign(id_channel);
+    }
             
 }

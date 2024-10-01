@@ -11,6 +11,38 @@ export class TvChannelService {
         private tv_channelModel: typeof tv_channel,
         private tv_channelRepo:tv_channelRepository
     ) {}
+
+    async updateStatusActive(id_channel:number):Promise<tv_channel>{
+        try {
+            let data = await this.tv_channelModel.findOne({
+                where:{
+                    id_channel:id_channel
+                }
+            });
+            data.update({
+                is_active:!data.is_active
+            })
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updateStatusAssign(id_channel:number):Promise<tv_channel>{
+        try {
+            let data = await this.tv_channelModel.findOne({
+                where:{
+                    id_channel:id_channel
+                }
+            });
+            data.update({
+                is_assign:!data.is_assign
+            })
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
     
     findAll(): Promise<tv_channel[]> {
         try {

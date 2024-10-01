@@ -45,12 +45,14 @@ export class tv_channel extends Model<tv_channel> {
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
+        defaultValue:true
     })
     is_active : boolean;
     
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
+        defaultValue:false
     })
     is_assign : boolean;
     

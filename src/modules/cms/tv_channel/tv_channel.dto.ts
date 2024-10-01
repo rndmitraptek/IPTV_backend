@@ -27,14 +27,14 @@ export class tv_channelDtoInsert{
     })
     icon_name : string
 
-    @IsNotEmpty({
-        message:'is_active tidak boleh kosong'
-    })
-    is_active : boolean
+    // @IsNotEmpty({
+    //     message:'is_active tidak boleh kosong'
+    // })
+    // is_active : boolean
 
-    @IsNotEmpty({
-        message:'is_assign tidak boleh kosong'
-    })
-    is_assign : boolean
+    // @IsNotEmpty({
+    //     message:'is_assign tidak boleh kosong'
+    // })
+    // is_assign : boolean
 
 }
