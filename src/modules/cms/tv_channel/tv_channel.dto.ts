@@ -18,6 +18,11 @@ export class tv_channelDtoInsert{
     title_channel : string
 
     @IsNotEmpty({
+        message:'url channel tidak boleh kosong'
+    })
+    url : string
+
+    @IsNotEmpty({
         message:'icon_url tidak boleh kosong'
     })
     icon_url : string
@@ -37,4 +42,24 @@ export class tv_channelDtoInsert{
     // })
     // is_assign : boolean
 
+}
+
+export class tv_channelDtoUpdateUrut{
+
+    @IsNotEmpty({
+        message:'id_channel tidak boleh kosong'
+    })
+    id_channel : number
+
+    @IsNotEmpty({
+        message:'urut tidak boleh kosong'
+    })
+    urut : number
+}
+
+export class tv_channelDtoUpdateUrutRequest{
+    @IsNotEmpty({
+        message:'data tidak boleh kosong'
+    })
+    data : tv_channelDtoUpdateUrut[]
 }

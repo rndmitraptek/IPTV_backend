@@ -13,7 +13,7 @@ export class tv_channelRepository {
         try {
             let query = `select tv.*,tg."group"
                         from tv_channel tv
-                        inner join tv_group tg on tv.id_group=tg.id_group ;`
+                        inner join tv_group tg on tv.id_group=tg.id_group order by tv.urut;`
             return await this.sequelize.query(query, {
                 type: QueryTypes.SELECT
             });
@@ -26,7 +26,7 @@ export class tv_channelRepository {
         try {
             let query = `select tv.*,tg."group"
                         from tv_channel tv
-                        inner join tv_group tg on tv.id_group=tg.id_group where tg.id_group=${id_group};`
+                        inner join tv_group tg on tv.id_group=tg.id_group where tg.id_group=${id_group} order by tv.urut;`
             return await this.sequelize.query(query, {
                 type: QueryTypes.SELECT
             });

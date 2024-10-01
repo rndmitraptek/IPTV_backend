@@ -1,7 +1,8 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Sequelize } from 'sequelize-typescript';
 import { tv_channel } from 'src/database/iptv/tv_channel.entity';
-import { tv_channelDtoInsert } from './tv_channel.dto';
+import { tv_channelDtoInsert, tv_channelDtoUpdateUrut } from './tv_channel.dto';
 import { tv_channelRepository } from './tv_channel.repository';
 
 @Injectable({ scope: Scope.REQUEST })
@@ -9,8 +10,30 @@ export class TvChannelService {
     constructor(
         @InjectModel(tv_channel)
         private tv_channelModel: typeof tv_channel,
-        private tv_channelRepo:tv_channelRepository
+        private tv_channelRepo:tv_channelRepository,
+        private readonly sequelize:Sequelize,
     ) {}
+
+    async updateUrutan(param:tv_channelDtoUpdateUrut[]):Promise<tv_channelDtoUpdateUrut[]>{
+        let transaction = await this.sequelize.transaction();
+        try {
+            for(const detail of param){
+                await this.tv_channelModel.update({
+                    urut:detail.urut
+                },{
+                    where:{
+                        id_channel:detail.id_channel
+                    },
+                    transaction:transaction
+                });
+            }
+            transaction.commit();
+            return param;
+        } catch (error) {
+            transaction.rollback();
+            throw error;
+        }
+    }
 
     async updateStatusActive(id_channel:number):Promise<tv_channel>{
         try {

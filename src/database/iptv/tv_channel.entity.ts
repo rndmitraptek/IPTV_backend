@@ -29,6 +29,12 @@ export class tv_channel extends Model<tv_channel> {
         allowNull: false,
     })
     title_channel : string;
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+    })
+    url : string;
     
     @Column({
         type: DataType.STRING,
