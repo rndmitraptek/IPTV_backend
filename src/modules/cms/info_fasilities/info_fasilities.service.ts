@@ -1,7 +1,7 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { info_fasilities } from 'src/database/iptv/info_fasilities.entity';
-import { info_fasilitiesDtoInsert } from './info_fasilities.dao';
+import { info_fasilitiesDtoInsert } from './info_fasilities.dto';
 
 @Injectable({ scope: Scope.REQUEST })
 export class InfoFasilitiesService {

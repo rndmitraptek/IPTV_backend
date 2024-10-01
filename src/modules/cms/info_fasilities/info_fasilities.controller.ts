@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nes
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { info_fasilities } from 'src/database/iptv/info_fasilities.entity';
 import { JwtAuthGuard } from 'src/modules/authentication/users/jwt-auth.gruard';
-import { info_fasilitiesDtoInsert } from './info_fasilities.dao';
+import { info_fasilitiesDtoInsert } from './info_fasilities.dto';
 import { InfoFasilitiesService } from './info_fasilities.service';
 
 @Controller('cms/guest/infoFasilities')

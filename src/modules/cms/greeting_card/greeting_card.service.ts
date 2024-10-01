@@ -9,6 +9,22 @@ export class GreetingCardService {
         @InjectModel(greeting_card)
         private greeting_cardModel: typeof greeting_card,
     ) {}
+
+    async updateStatusActive(id_greeting_card:number):Promise<greeting_card>{
+        try {
+            let data = await this.greeting_cardModel.findOne({
+                where:{
+                    id_greeting_card:id_greeting_card
+                }
+            });
+            data.update({
+                is_active:!data.is_active
+            })
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
     
     findAll(): Promise<greeting_card[]> {
         try {

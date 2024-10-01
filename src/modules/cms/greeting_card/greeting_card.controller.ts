@@ -49,9 +49,20 @@ export class GreetingCardController {
 
     @ApiOperation({ summary: 'Delete data DtoInsert' })
     @ApiResponse({ status: 200, description: 'The DtoInsert has been successfully deleted.' })
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
     @Delete(':id_greeting_card')
     remove(@Param('id_greeting_card') id: number) {
         return this.greeting_cardService.remove(id);
+    }
+
+    @Put('updateStatusActive/:id_channel')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'Update data tv_channel' })
+    @ApiResponse({ status: 200, description: 'The tv_channel has been successfully updated.', type: greeting_card })
+    updateStatusActive(@Param('id_channel') id_channel: number) {
+        return this.greeting_cardService.updateStatusActive(id_channel);
     }
             
 }

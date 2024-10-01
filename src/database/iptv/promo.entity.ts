@@ -57,6 +57,7 @@ export class promo extends Model<promo> {
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
+        defaultValue:true
     })
     is_active : boolean;
     

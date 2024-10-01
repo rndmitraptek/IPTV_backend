@@ -45,6 +45,7 @@ export class greeting_card extends Model<greeting_card> {
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
+        defaultValue:true
     })
     is_active : boolean;
     

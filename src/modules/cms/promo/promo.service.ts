@@ -9,6 +9,22 @@ export class PromoService {
         @InjectModel(promo)
         private promoModel: typeof promo,
     ) {}
+
+    async updateStatusActive(id_promo:number):Promise<promo>{
+        try {
+            let data = await this.promoModel.findOne({
+                where:{
+                    id_promo:id_promo
+                }
+            });
+            data.update({
+                is_active:!data.is_active
+            })
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
     
     findAll(): Promise<promo[]> {
         try {

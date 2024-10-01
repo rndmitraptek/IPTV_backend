@@ -27,9 +27,4 @@ export class greeting_cardDtoInsert{
     })
     end_date : string
 
-    @IsNotEmpty({
-        message:'is_active tidak boleh kosong'
-    })
-    is_active : boolean
-
 }

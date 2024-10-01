@@ -53,5 +53,14 @@ export class PromoController {
     remove(@Param('id_promo') id: string) {
         return this.promoService.remove(id);
     }
+
+    @Put('updateStatusActive/:id_channel')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'Update data tv_channel' })
+    @ApiResponse({ status: 200, description: 'The tv_channel has been successfully updated.', type: promo })
+    updateStatusActive(@Param('id_channel') id_channel: number) {
+        return this.promoService.updateStatusActive(id_channel);
+    }
 }
 
