@@ -17,7 +17,7 @@ export class MinioClientService {
 
     public async generatePresignedUrl (bucketName, objectName) {
         try {
-            const url = await this.client.presignedPutObject(bucketName, objectName, 9999999999999);
+            const url = await this.client.presignedPutObject(bucketName, objectName, 60*60);
             console.log('Presigned URL:', url);
             return url;
         } catch (err) {
@@ -28,9 +28,10 @@ export class MinioClientService {
 
     public async generatePresignedUrlGet (bucketName, objectName) {
         try {
-            const url = await this.client.presignedGetObject(bucketName, objectName, 9999999999999);
+            const url = await this.client.presignedGetObject(bucketName, objectName, 60*60);
             console.log('Presigned URL:', url);
-            return url;
+            let new_url = url.split('?')[0];
+            return new_url;
         } catch (err) {
             console.log('Error generating presigned URL:', err);
             throw err;
