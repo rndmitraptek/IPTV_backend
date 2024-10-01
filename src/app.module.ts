@@ -8,6 +8,7 @@ import { LoggingMiddleware } from './middlewares/logging.middlewares';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { CmsModule } from './modules/cms/cms.module';
 import { MakeModule } from './modules/make/make.module';
+import { TvModule } from './modules/tv/tv.module';
 @Module({
   imports: [
     SequelizeModule.forRootAsync({
@@ -19,7 +20,7 @@ import { MakeModule } from './modules/make/make.module';
     }),
     CmsModule, 
     MakeModule, 
-    AuthenticationModule],
+    AuthenticationModule, TvModule],
   controllers: [AppController],
   providers: [AppService,SequelizeConfigService],
 })
