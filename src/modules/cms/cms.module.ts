@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { apk_version } from 'src/database/iptv/apk_version.entity';
+import { entertainment } from 'src/database/iptv/entertainment.entity';
 import { greeting_card } from 'src/database/iptv/greeting_card.entity';
 import { info_fasilities } from 'src/database/iptv/info_fasilities.entity';
 import { info_hotel } from 'src/database/iptv/info_hotel.entity';
@@ -42,6 +43,10 @@ import { tv_channelRepository } from './tv_channel/tv_channel.repository';
 import { TvChannelService } from './tv_channel/tv_channel.service';
 import { TvGroupController } from './tv_group/tv_group.controller';
 import { TvGroupService } from './tv_group/tv_group.service';
+import { EntertainmentController } from './entertainment/entertainment.controller';
+import { EntertainmentService } from './entertainment/entertainment.service';
+import { MenuController } from './menu/menu.controller';
+import { MenuService } from './menu/menu.service';
 
 @Module({
   imports:[
@@ -58,7 +63,8 @@ import { TvGroupService } from './tv_group/tv_group.service';
       resto,
       nearby_attraction,
       greeting_card,
-      iptv_feature
+      iptv_feature,
+      entertainment
     ])
   ],
   controllers: [
@@ -66,7 +72,7 @@ import { TvGroupService } from './tv_group/tv_group.service';
     RoleController, 
     RoleMenuController, 
     TvGroupController, 
-    TvChannelController, PromoController, InfoHotelController, InfoRoomController, InfoFasilitiesController, RestoController, NearbyAttractionController, GreetingCardController, IptvFeatureController],
+    TvChannelController, PromoController, InfoHotelController, InfoRoomController, InfoFasilitiesController, RestoController, NearbyAttractionController, GreetingCardController, IptvFeatureController, EntertainmentController, MenuController],
   providers: [
     ApkVersionService,
     MinioClientService, 
@@ -83,7 +89,9 @@ import { TvGroupService } from './tv_group/tv_group.service';
     NearbyAttractionService,
     GreetingCardService,
     IptvFeatureService,
-    role_menuRepository
+    role_menuRepository,
+    EntertainmentService,
+    MenuService
   ]
 })
 export class CmsModule {}

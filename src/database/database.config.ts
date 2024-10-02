@@ -3,6 +3,7 @@ import { REQUEST } from "@nestjs/core";
 import { SequelizeModuleOptions, SequelizeOptionsFactory } from "@nestjs/sequelize";
 import * as dotenv from 'dotenv';
 import { apk_version } from "./iptv/apk_version.entity";
+import { entertainment } from "./iptv/entertainment.entity";
 import { greeting_card } from "./iptv/greeting_card.entity";
 import { info_fasilities } from "./iptv/info_fasilities.entity";
 import { info_hotel } from "./iptv/info_hotel.entity";
@@ -41,7 +42,8 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
         resto,
         nearby_attraction,
         greeting_card,
-        iptv_feature
+        iptv_feature,
+        entertainment
       ];
     }else{
       models = [];
