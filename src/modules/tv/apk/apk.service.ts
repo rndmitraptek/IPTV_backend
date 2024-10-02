@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { entertainment } from 'src/database/iptv/entertainment.entity';
 import { greeting_card } from 'src/database/iptv/greeting_card.entity';
 import { info_fasilities } from 'src/database/iptv/info_fasilities.entity';
 import { info_hotel } from 'src/database/iptv/info_hotel.entity';
@@ -29,6 +30,8 @@ export class ApkService {
         private info_roomModel: typeof info_room,
         @InjectModel(info_fasilities)
         private info_fasilitiesModel: typeof info_fasilities,
+        @InjectModel(entertainment)
+        private entertainmentModel: typeof entertainment,
         private tv_channelRepo:tv_channelRepository,
     ) {}
 
@@ -37,8 +40,13 @@ export class ApkService {
             nama : 'Jhon Doe',
             iptv : await this.iptv_featureModel.findOne(),
             nearbyattraction : await this.nearby_attractionModel.findAll(),
-            promo : await this.promoModel.findAll(),
+            promo : await this.promoModel.findAll({
+                order:[
+                    ['urut','DESC']
+                ]
+            }),
             resto : await this.restoModel.findAll(),
+            entertainmentModel : await this.entertainmentModel.findAll(),
             greetingcard : await this.greeting_cardModel.findAll(),
             guesthotel : {
                 hotel: await this.info_hotelModel.findOne({

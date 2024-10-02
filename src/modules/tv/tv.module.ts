@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { apk_version } from 'src/database/iptv/apk_version.entity';
+import { entertainment } from 'src/database/iptv/entertainment.entity';
 import { greeting_card } from 'src/database/iptv/greeting_card.entity';
 import { info_fasilities } from 'src/database/iptv/info_fasilities.entity';
 import { info_hotel } from 'src/database/iptv/info_hotel.entity';
@@ -32,7 +33,8 @@ import { ApkService } from './apk/apk.service';
       resto,
       nearby_attraction,
       greeting_card,
-      iptv_feature
+      iptv_feature,
+      entertainment
     ])
   ],
   controllers: [ ApkController],
