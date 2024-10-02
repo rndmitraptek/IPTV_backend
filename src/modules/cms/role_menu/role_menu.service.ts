@@ -28,9 +28,11 @@ export class RoleMenuService {
         let response:any[] = [];
         for(const detail of menu){
             let is_assign:boolean = false;
+            let id_role_menu = null;
             let menu = await this.role_menuModel.findOne({where:{id_menu:detail.id_menu,id_role:id_role}})
             if(menu){
                 is_assign =true;
+                id_role_menu = menu.id_role_menu;
             }
             response.push({
                 id_menu: detail.id_menu,
@@ -42,7 +44,8 @@ export class RoleMenuService {
                 is_parent: detail.is_parent,
                 id_parent: detail.id_parent,
                 is_active: detail.is_active,
-                is_assign :is_assign
+                is_assign :is_assign,
+                id_role_menu : id_role_menu
               });
         }
         return response;
