@@ -8,11 +8,12 @@ export class MinioClientService {
     constructor() { }
 
     private readonly client = new minio.Client({
-        endPoint: '206.189.38.25',
-        port: 9090,
-        useSSL: false,
+        endPoint: 'minio.unioniptv.id',
+        port: 443,
+        useSSL: true,
         accessKey: 'mino_ip_tv_dev',
         secretKey: 'Mat1234_',
+        region: 'us-east-1',
     });
 
     public async generatePresignedUrl (bucketName, objectName) {
