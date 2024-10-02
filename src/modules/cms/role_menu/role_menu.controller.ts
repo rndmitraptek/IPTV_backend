@@ -25,7 +25,7 @@ export class RoleMenuController {
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Menampilkan role_menu by id_role_menu role_menu' })
-    @ApiResponse({ status: 200, description: 'Return a single role_menu.', type: role_menu })
+    @ApiResponse({ status: 200, description: 'Return a single role_menu.', type: null })
     @Get('GetByIdRole/:id_role')
     GetByIdRole(@Param('id_role') id_role: number): Promise<role_menu[]> {
         return this.role_menuService.GetByIdRole(id_role);

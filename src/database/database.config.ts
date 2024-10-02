@@ -9,6 +9,7 @@ import { info_fasilities } from "./iptv/info_fasilities.entity";
 import { info_hotel } from "./iptv/info_hotel.entity";
 import { info_room } from "./iptv/info_room.entity";
 import { iptv_feature } from "./iptv/iptv_feature.entity";
+import { menu } from "./iptv/menu.entity";
 import { nearby_attraction } from "./iptv/nearby_attraction.entity";
 import { promo } from "./iptv/promo.entity";
 import { resto } from "./iptv/resto.entity";
@@ -43,7 +44,8 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
         nearby_attraction,
         greeting_card,
         iptv_feature,
-        entertainment
+        entertainment,
+        menu
       ];
     }else{
       models = [];

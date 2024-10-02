@@ -7,6 +7,7 @@ import { info_fasilities } from 'src/database/iptv/info_fasilities.entity';
 import { info_hotel } from 'src/database/iptv/info_hotel.entity';
 import { info_room } from 'src/database/iptv/info_room.entity';
 import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
+import { menu } from 'src/database/iptv/menu.entity';
 import { nearby_attraction } from 'src/database/iptv/nearby_attraction.entity';
 import { promo } from 'src/database/iptv/promo.entity';
 import { resto } from 'src/database/iptv/resto.entity';
@@ -17,6 +18,8 @@ import { tv_group } from 'src/database/iptv/tv_group.entity';
 import { MinioClientService } from 'src/utility/minio-client.utils';
 import { ApkVersionController } from './apk_version/apk_version.controller';
 import { ApkVersionService } from './apk_version/apk_version.service';
+import { EntertainmentController } from './entertainment/entertainment.controller';
+import { EntertainmentService } from './entertainment/entertainment.service';
 import { GreetingCardController } from './greeting_card/greeting_card.controller';
 import { GreetingCardService } from './greeting_card/greeting_card.service';
 import { InfoFasilitiesController } from './info_fasilities/info_fasilities.controller';
@@ -27,6 +30,8 @@ import { InfoRoomController } from './info_room/info_room.controller';
 import { InfoRoomService } from './info_room/info_room.service';
 import { IptvFeatureController } from './iptv_feature/iptv_feature.controller';
 import { IptvFeatureService } from './iptv_feature/iptv_feature.service';
+import { MenuController } from './menu/menu.controller';
+import { MenuService } from './menu/menu.service';
 import { NearbyAttractionController } from './nearby_attraction/nearby_attraction.controller';
 import { NearbyAttractionService } from './nearby_attraction/nearby_attraction.service';
 import { PromoController } from './promo/promo.controller';
@@ -43,10 +48,6 @@ import { tv_channelRepository } from './tv_channel/tv_channel.repository';
 import { TvChannelService } from './tv_channel/tv_channel.service';
 import { TvGroupController } from './tv_group/tv_group.controller';
 import { TvGroupService } from './tv_group/tv_group.service';
-import { EntertainmentController } from './entertainment/entertainment.controller';
-import { EntertainmentService } from './entertainment/entertainment.service';
-import { MenuController } from './menu/menu.controller';
-import { MenuService } from './menu/menu.service';
 
 @Module({
   imports:[
@@ -64,7 +65,8 @@ import { MenuService } from './menu/menu.service';
       nearby_attraction,
       greeting_card,
       iptv_feature,
-      entertainment
+      entertainment,
+      menu
     ])
   ],
   controllers: [

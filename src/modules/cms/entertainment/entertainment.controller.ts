@@ -53,5 +53,14 @@ export class EntertainmentController {
     remove(@Param('id_app') id: number) {
         return this.entertainmentService.remove(id);
     }
+
+    @Put('updateStatusActive/:id_app')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'Update data tv_channel' })
+    @ApiResponse({ status: 200, description: 'The tv_channel has been successfully updated.', type: entertainment })
+    updateStatusActive(@Param('id_app') id_app: number) {
+        return this.entertainmentService.updateStatusActive(id_app);
+    }
             
 }
