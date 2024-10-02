@@ -2,6 +2,8 @@ import { Injectable, Scope } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt';
+import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
+import { role } from 'src/database/iptv/role.entity';
 import { users } from 'src/database/iptv/users.entity';
 import { loginDto, usersDtoInsert, usersDtoUpdate } from './users.dto';
 import { response_login_model } from './users.model';
@@ -12,6 +14,10 @@ export class UsersService {
         private jwtService: JwtService,
         @InjectModel(users)
         private userModel: typeof users,
+        @InjectModel(role)
+        private roleModel: typeof role,
+        @InjectModel(iptv_feature)
+        private iptv_featureModel: typeof iptv_feature,
     ) {}
     
     findAll(): Promise<users[]> {
@@ -35,9 +41,21 @@ export class UsersService {
             if (!await bcrypt.compare(param.password, user.password)) {
                 throw ('password salah');
             }
+
+            let role_user = await this.roleModel.findOne({
+                where:{
+                    id_role:user.id_role
+                }
+            })
+
+            let hote = await this.iptv_featureModel.findOne();    
+
             return {
                 nama:user.nama,
                 username:user.username,
+                role:role_user.role,
+                nama_hotel:hote.title_hotel,
+                is_admin:user.is_admin,
                 token:this.jwtService.sign({
                     id_user:user.id_user
                 })

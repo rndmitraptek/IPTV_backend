@@ -40,4 +40,10 @@ export class users extends Model<users> {
     })
     is_active: boolean;
 
+    @Column({
+        type: DataType.BOOLEAN,
+        defaultValue:false
+    })
+    is_admin: boolean;
+
 }

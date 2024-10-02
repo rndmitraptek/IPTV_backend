@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
+import { role } from 'src/database/iptv/role.entity';
 import { users } from 'src/database/iptv/users.entity';
 import { UsersController } from './users/users.controller';
 import { UsersService } from './users/users.service';
@@ -8,7 +10,9 @@ import { UsersService } from './users/users.service';
 @Module({
     imports:[
         SequelizeModule.forFeature([
-            users
+            users,
+            role,
+            iptv_feature
         ]),
         JwtModule.register({
           secret: process.env.JWT_SECRET,
