@@ -7,9 +7,6 @@ export class tv_channelDtoInsert{
     })
     id_group : number
 
-    @IsNotEmpty({
-        message:'urut tidak boleh kosong'
-    })
     urut : number
 
     @IsNotEmpty({

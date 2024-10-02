@@ -80,6 +80,16 @@ export class TvChannelService {
     }
     
     async create(_tv_channel: tv_channelDtoInsert): Promise<tv_channel> {
+        let urut = 1;
+        let last_urut = await this.tv_channelModel.findOne({
+            order:[
+                ['urut','DESC']
+            ]
+        });
+        if(last_urut){
+            urut = last_urut.urut+1;
+        }
+        _tv_channel.urut = urut;
         return this.tv_channelModel.create(_tv_channel);
     }
     

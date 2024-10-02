@@ -43,6 +43,16 @@ export class PromoService {
     }
     
     async create(_promo: promoDtoInsert): Promise<promo> {
+        let urut = 1;
+        let last_urut = await this.promoModel.findOne({
+            order:[
+                ['urut','DESC']
+            ]
+        });
+        if(last_urut){
+            urut = last_urut.urut+1;
+        }
+        _promo.urut = urut;
         return this.promoModel.create(_promo);
     }
     

@@ -2,10 +2,6 @@ import { IsNotEmpty } from 'class-validator';
 
 export class promoDtoInsert{
 
-
-    @IsNotEmpty({
-        message:'urut tidak boleh kosong'
-    })
     urut : number
 
     @IsNotEmpty({
