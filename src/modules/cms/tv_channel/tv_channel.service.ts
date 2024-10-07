@@ -102,7 +102,11 @@ export class TvChannelService {
     }
     
     async remove(id_channel: number): Promise<void> {
-        const tv_channel = await this.findOne(id_channel);
+        const tv_channel = await this.tv_channelModel.findOne({
+            where:{
+                id_channel:id_channel
+            }
+        });
         await tv_channel.destroy();
     }
 }

@@ -73,7 +73,11 @@ export class RoleMenuService {
     }
     
     async remove(id: number): Promise<void> {
-        const role_menu = await this.findOne(id);
+        const role_menu = await this.role_menuModel.findOne({
+            where:{
+                id_role:id
+            }
+        });
         await role_menu.destroy();
     }
 }

@@ -39,7 +39,11 @@ export class TvGroupService {
     }
     
     async remove(id_group: number): Promise<void> {
-        const tv_group = await this.findOne(id_group);
+        const tv_group = await this.tv_groupModel.findOne({
+            where:{
+                id_group:id_group
+            }
+        });
         await tv_group.destroy();
     }
 }
