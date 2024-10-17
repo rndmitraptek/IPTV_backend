@@ -26,9 +26,9 @@ export class PromoService {
         }
     }
     
-    findAll(): Promise<promo[]> {
+    findAll(req:any): Promise<promo[]> {
         try {
-            return this.promoModel.findAll();            
+            return this.promoModel.findAll({where:{id_hotel:req.user.id_hotel}});            
         } catch (error) {
             throw error;
         }

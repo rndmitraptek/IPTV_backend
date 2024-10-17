@@ -10,9 +10,9 @@ export class IptvFeatureService {
         private iptv_featureModel: typeof iptv_feature,
     ) {}
     
-    findAll(): Promise<iptv_feature> {
+    findAll(req:any): Promise<iptv_feature> {
         try {
-            return this.iptv_featureModel.findOne();            
+            return this.iptv_featureModel.findOne({where:{id:req.user.id_hotel}});            
         } catch (error) {
             throw error;
         }

@@ -10,9 +10,9 @@ export class RestoService {
         private restoModel: typeof resto,
     ) {}
     
-    findAll(): Promise<resto[]> {
+    findAll(req:any): Promise<resto[]> {
         try {
-            return this.restoModel.findAll();            
+            return this.restoModel.findAll({where:{id_hotel:req.user.id_hotel}});            
         } catch (error) {
             throw error;
         }

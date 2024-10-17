@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { info_hotel } from 'src/database/iptv/info_hotel.entity';
 import { JwtAuthGuard } from 'src/modules/authentication/users/jwt-auth.gruard';
 import { info_hotelDtoInsert } from './info_hotel.dto';
 import { InfoHotelService } from './info_hotel.service';
+import { Request } from 'express';
 
 @Controller('cms/guest/infoHotel')
 @ApiTags('cms-guest/infoHotel')
@@ -16,8 +17,8 @@ export class InfoHotelController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Menampilkan Semua Data' })
     @ApiResponse({ status: 200, description: 'Return all info_hotel.', type: [info_hotel] })
-    findAll(): Promise<info_hotel> {
-        return this.info_hotelService.findAll();
+    findAll(@Req() req:Request): Promise<info_hotel> {
+        return this.info_hotelService.findAll(req);
     }
 
     @UseGuards(JwtAuthGuard)

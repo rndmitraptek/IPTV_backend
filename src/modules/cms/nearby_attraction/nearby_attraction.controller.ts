@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { nearby_attraction } from 'src/database/iptv/nearby_attraction.entity';
 import { JwtAuthGuard } from 'src/modules/authentication/users/jwt-auth.gruard';
 import { nearby_attractionDtoInsert } from './nearby_attraction.dto';
 import { NearbyAttractionService } from './nearby_attraction.service';
+import { Request } from 'express';
 
 @Controller('cms/nearbyAttraction')
 @ApiTags('cms-nearbyAttraction')
@@ -16,8 +17,8 @@ export class NearbyAttractionController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Menampilkan Semua Data' })
     @ApiResponse({ status: 200, description: 'Return all nearby_attraction.', type: [nearby_attraction] })
-    findAll(): Promise<nearby_attraction[]> {
-        return this.nearby_attractionService.findAll();
+    findAll(@Req() req:Request): Promise<nearby_attraction[]> {
+        return this.nearby_attractionService.findAll(req);
     }
 
     @UseGuards(JwtAuthGuard)

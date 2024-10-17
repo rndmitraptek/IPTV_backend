@@ -10,9 +10,9 @@ export class InfoRoomService {
         private info_roomModel: typeof info_room,
     ) {}
     
-    findAll(): Promise<info_room[]> {
+    findAll(req:any): Promise<info_room[]> {
         try {
-            return this.info_roomModel.findAll();            
+            return this.info_roomModel.findAll({where:{id_hotel:req.user.id_hotel}});            
         } catch (error) {
             throw error;
         }

@@ -10,9 +10,9 @@ export class InfoFasilitiesService {
         private info_fasilitiesModel: typeof info_fasilities,
     ) {}
     
-    findAll(): Promise<info_fasilities[]> {
+    findAll(req:any): Promise<info_fasilities[]> {
         try {
-            return this.info_fasilitiesModel.findAll();            
+            return this.info_fasilitiesModel.findAll({where:{id_hotel:req.user.id_hotel}});            
         } catch (error) {
             throw error;
         }

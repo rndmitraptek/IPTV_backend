@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { promo } from 'src/database/iptv/promo.entity';
 import { JwtAuthGuard } from 'src/modules/authentication/users/jwt-auth.gruard';
 import { promoDtoInsert } from './promo.dto';
 import { PromoService } from './promo.service';
+import { Request } from 'express';
 
 @Controller('cms/promo')
 @ApiTags('cms-promo')
@@ -16,8 +17,8 @@ export class PromoController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Menampilkan Semua Data' })
     @ApiResponse({ status: 200, description: 'Return all promo.', type: [promo] })
-    findAll(): Promise<promo[]> {
-        return this.promoService.findAll();
+    findAll(@Req() req:Request): Promise<promo[]> {
+        return this.promoService.findAll(req);
     }
 
     @UseGuards(JwtAuthGuard)

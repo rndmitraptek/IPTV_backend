@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
 import { JwtAuthGuard } from 'src/modules/authentication/users/jwt-auth.gruard';
 import { iptv_featureDtoInsert } from './iptv_feature.dto';
 import { IptvFeatureService } from './iptv_feature.service';
+import { Request } from 'express';
 
 @Controller('iptv-feature')
 @ApiTags('cms-iptvFeature')
@@ -16,8 +17,8 @@ export class IptvFeatureController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Menampilkan Semua Data' })
     @ApiResponse({ status: 200, description: 'Return all iptv_feature.', type: [iptv_feature] })
-    findAll(): Promise<iptv_feature> {
-        return this.iptv_featureService.findAll();
+    findAll(@Req() req:Request): Promise<iptv_feature> {
+        return this.iptv_featureService.findAll(req);
     }
 
     @UseGuards(JwtAuthGuard)

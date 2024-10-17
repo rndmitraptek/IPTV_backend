@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { resto } from 'src/database/iptv/resto.entity';
 import { JwtAuthGuard } from 'src/modules/authentication/users/jwt-auth.gruard';
 import { restoDtoInsert } from './resto.dto';
 import { RestoService } from './resto.service';
+import { Request } from 'express';
 
 @Controller('cms/resto')
 @ApiTags('cms-resto')
@@ -16,8 +17,8 @@ export class RestoController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Menampilkan Semua Data' })
     @ApiResponse({ status: 200, description: 'Return all resto.', type: [resto] })
-    findAll(): Promise<resto[]> {
-        return this.restoService.findAll();
+    findAll(@Req() req:Request): Promise<resto[]> {
+        return this.restoService.findAll(req);
     }
 
     @UseGuards(JwtAuthGuard)

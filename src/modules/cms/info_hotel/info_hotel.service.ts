@@ -10,11 +10,12 @@ export class InfoHotelService {
         private info_hotelModel: typeof info_hotel,
     ) {}
     
-    findAll(): Promise<info_hotel> {
+    findAll(req:any): Promise<info_hotel> {
         try {
             return this.info_hotelModel.findOne({
                 where:{
-                    id:1
+                    id:1,
+                    id_hotel:req.user.id_hotel
                 }
             });            
         } catch (error) {

@@ -10,9 +10,9 @@ export class NearbyAttractionService {
         private nearby_attractionModel: typeof nearby_attraction,
     ) {}
     
-    findAll(): Promise<nearby_attraction[]> {
+    findAll(req:any): Promise<nearby_attraction[]> {
         try {
-            return this.nearby_attractionModel.findAll();            
+            return this.nearby_attractionModel.findAll({where:{id_hotel:req.user.id_hotel}});            
         } catch (error) {
             throw error;
         }

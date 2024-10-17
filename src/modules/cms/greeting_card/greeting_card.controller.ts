@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { greeting_card } from 'src/database/iptv/greeting_card.entity';
 import { JwtAuthGuard } from 'src/modules/authentication/users/jwt-auth.gruard';
 import { greeting_cardDtoInsert } from './greeting_card.dto';
 import { GreetingCardService } from './greeting_card.service';
+import { Request } from 'express';
 
 @Controller('cms/greetingCard')
 @ApiTags('cms-greetingCard')
@@ -16,8 +17,8 @@ export class GreetingCardController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Menampilkan Semua Data' })
     @ApiResponse({ status: 200, description: 'Return all greeting_card.', type: [greeting_card] })
-    findAll(): Promise<greeting_card[]> {
-        return this.greeting_cardService.findAll();
+    findAll(@Req() req:Request): Promise<greeting_card[]> {
+        return this.greeting_cardService.findAll(req);
     }
 
     @UseGuards(JwtAuthGuard)

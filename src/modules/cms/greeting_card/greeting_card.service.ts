@@ -26,9 +26,9 @@ export class GreetingCardService {
         }
     }
     
-    findAll(): Promise<greeting_card[]> {
+    findAll(req:any): Promise<greeting_card[]> {
         try {
-            return this.greeting_cardModel.findAll();            
+            return this.greeting_cardModel.findAll({where:{id_hotel:req.user.id_hotel}});            
         } catch (error) {
             throw error;
         }
