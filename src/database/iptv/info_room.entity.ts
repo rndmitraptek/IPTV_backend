@@ -1,5 +1,6 @@
 import { ApiHideProperty } from '@nestjs/swagger';
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { iptv_feature } from './iptv_feature.entity';
 
 @Table({ tableName: 'info_room' })
 export class info_room extends Model<info_room> { 
@@ -60,4 +61,16 @@ export class info_room extends Model<info_room> {
     })
     harga_total : number;
     
+
+    @Column({
+        type: DataType.BIGINT,
+        allowNull: false
+    })
+    @ForeignKey(() => iptv_feature)
+    id_hotel:number;
+    @BelongsTo(() => iptv_feature, {
+        foreignKey: 'id_hotel',
+        as: 'hotel',
+    })
+    hotel: iptv_feature;
 }

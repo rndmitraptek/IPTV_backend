@@ -6,7 +6,7 @@ import { greeting_cardDtoInsert } from './greeting_card.dto';
 import { GreetingCardService } from './greeting_card.service';
 
 @Controller('cms/greetingCard')
-@ApiTags('cms/greetingCard')
+@ApiTags('cms-greetingCard')
 export class GreetingCardController {
     
     constructor(private readonly greeting_cardService:GreetingCardService){}

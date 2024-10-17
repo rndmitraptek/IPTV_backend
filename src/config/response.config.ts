@@ -29,6 +29,7 @@ dotenv.config();
           message:['success']
         })),
         catchError(error => {
+          console.log(error);
           if (error instanceof HttpException) {
             const statusCode = error.getStatus();
             const message = error.getResponse();

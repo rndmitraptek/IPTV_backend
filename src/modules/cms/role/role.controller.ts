@@ -1,12 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { role } from 'src/database/iptv/role.entity';
 import { JwtAuthGuard } from 'src/modules/authentication/users/jwt-auth.gruard';
 import { roleDtoInsert } from './role.dto';
 import { RoleService } from './role.service';
+import { Request } from 'express';
 
 @Controller('cms/role')
-@ApiTags('cms/role')
+@ApiTags('cms-role')
 export class RoleController {
     
     constructor(private readonly roleService:RoleService){}
@@ -16,8 +17,8 @@ export class RoleController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Menampilkan Semua Data' })
     @ApiResponse({ status: 200, description: 'Return all role.', type: [role] })
-    findAll(): Promise<role[]> {
-        return this.roleService.findAll();
+    findAll(@Req() req:Request): Promise<role[]> {
+        return this.roleService.findAll(req);
     }
 
     @UseGuards(JwtAuthGuard)

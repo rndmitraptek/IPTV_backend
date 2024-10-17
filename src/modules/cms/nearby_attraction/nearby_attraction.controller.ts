@@ -6,7 +6,7 @@ import { nearby_attractionDtoInsert } from './nearby_attraction.dto';
 import { NearbyAttractionService } from './nearby_attraction.service';
 
 @Controller('cms/nearbyAttraction')
-@ApiTags('cms/nearbyAttraction')
+@ApiTags('cms-nearbyAttraction')
 export class NearbyAttractionController {
     
     constructor(private readonly nearby_attractionService:NearbyAttractionService){}

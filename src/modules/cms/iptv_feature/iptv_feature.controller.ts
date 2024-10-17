@@ -6,7 +6,7 @@ import { iptv_featureDtoInsert } from './iptv_feature.dto';
 import { IptvFeatureService } from './iptv_feature.service';
 
 @Controller('iptv-feature')
-@ApiTags('cms/iptvFeature')
+@ApiTags('cms-iptvFeature')
 export class IptvFeatureController {
     
     constructor(private readonly iptv_featureService:IptvFeatureService){}

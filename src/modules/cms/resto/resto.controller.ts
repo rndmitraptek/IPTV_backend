@@ -6,7 +6,7 @@ import { restoDtoInsert } from './resto.dto';
 import { RestoService } from './resto.service';
 
 @Controller('cms/resto')
-@ApiTags('cms/resto')
+@ApiTags('cms-resto')
 export class RestoController {
     
     constructor(private readonly restoService:RestoService){}

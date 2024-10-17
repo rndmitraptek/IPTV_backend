@@ -6,7 +6,7 @@ import { tv_groupDtoInsert, tv_groupDtoUpdate } from './tv_group.dto';
 import { TvGroupService } from './tv_group.service';
 
 @Controller('cms/tvGroup')
-@ApiTags('cms/tvGroup')
+@ApiTags('cms-tvGroup')
 export class TvGroupController {
     
     constructor(private readonly tv_groupService:TvGroupService){}

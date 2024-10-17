@@ -6,7 +6,7 @@ import { info_fasilitiesDtoInsert } from './info_fasilities.dto';
 import { InfoFasilitiesService } from './info_fasilities.service';
 
 @Controller('cms/guest/infoFasilities')
-@ApiTags('cms/guest/infoFasilities')
+@ApiTags('cms-guest/infoFasilities')
 export class InfoFasilitiesController {
     
     constructor(private readonly info_fasilitiesService:InfoFasilitiesService){}

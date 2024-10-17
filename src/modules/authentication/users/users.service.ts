@@ -57,7 +57,12 @@ export class UsersService {
                 nama_hotel:hote.title_hotel,
                 is_admin:user.is_admin,
                 token:this.jwtService.sign({
-                    id_user:user.id_user
+                    id_user:user.id_user,
+                    nama :user.nama,
+                    username :user.username,
+                    id_role :user.id_role,
+                    is_admin :user.is_admin,
+                    id_hotel :user.id_hotel
                 })
             };
         } catch (error) {

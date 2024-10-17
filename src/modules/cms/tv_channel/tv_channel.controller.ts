@@ -6,7 +6,7 @@ import { tv_channelDtoInsert, tv_channelDtoUpdateUrut, tv_channelDtoUpdateUrutRe
 import { TvChannelService } from './tv_channel.service';
 
 @Controller('cms/tvChannel')
-@ApiTags('cms/tvChannel')
+@ApiTags('cms-tvChannel')
 export class TvChannelController {
     constructor(private readonly tv_channelService:TvChannelService){}
 

@@ -6,7 +6,7 @@ import { info_roomDtoInsert } from './info_room.dto';
 import { InfoRoomService } from './info_room.service';
 
 @Controller('cms/guest/infoRoom')
-@ApiTags('cms/guest/infoRoom')
+@ApiTags('cms-guest/infoRoom')
 export class InfoRoomController {
     
     constructor(private readonly info_roomService:InfoRoomService){}

@@ -6,7 +6,7 @@ import { promoDtoInsert } from './promo.dto';
 import { PromoService } from './promo.service';
 
 @Controller('cms/promo')
-@ApiTags('cms/promo')
+@ApiTags('cms-promo')
 export class PromoController {
     
     constructor(private readonly promoService:PromoService){}

@@ -1,7 +1,7 @@
 import { ApiHideProperty } from '@nestjs/swagger';
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
-@Table({ tableName: 'iptv_feature' })
+@Table({ tableName: 'hotel' })
 export class iptv_feature extends Model<iptv_feature> { 
     
     @ApiHideProperty()

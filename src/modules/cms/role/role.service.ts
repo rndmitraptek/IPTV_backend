@@ -10,9 +10,9 @@ export class RoleService {
         private roleModel: typeof role,
     ) {}
     
-    findAll(): Promise<role[]> {
+    findAll(req:any): Promise<role[]> {
         try {
-            return this.roleModel.findAll();            
+            return this.roleModel.findAll({where:{id_hotel:req.user.id_hotel}});            
         } catch (error) {
             throw error;
         }

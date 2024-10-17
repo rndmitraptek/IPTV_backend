@@ -6,7 +6,7 @@ import { role_menuDtoInsert } from './role_menu.dto';
 import { RoleMenuService } from './role_menu.service';
 
 @Controller('cms/role-menu')
-@ApiTags('cms/role-menu')
+@ApiTags('cms-role-menu')
 export class RoleMenuController {
     
     constructor(

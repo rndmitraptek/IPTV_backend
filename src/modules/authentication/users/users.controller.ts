@@ -1,14 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { users } from 'src/database/iptv/users.entity';
 import { JwtAuthGuard } from './jwt-auth.gruard';
 import { loginDto, usersDtoInsert, usersDtoUpdate } from './users.dto';
 import { response_login_model } from './users.model';
 import { UsersService } from './users.service';
+import { Request } from 'express';
 
 
 @Controller('cms/users')
-@ApiTags('cms/users')
+@ApiTags('cms-users')
 export class UsersController {
     constructor(private readonly usersService:UsersService){}
 
@@ -17,7 +18,7 @@ export class UsersController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Menampilkan Semua Data' })
     @ApiResponse({ status: 200, description: 'Return all users.', type: [users] })
-    findAll(): Promise<users[]> {
+    findAll(@Req() req:Request): Promise<users[]> {
         return this.usersService.findAll();
     }
 

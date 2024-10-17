@@ -6,7 +6,7 @@ import { entertainmentDtoInsert } from './entertainment.dto';
 import { EntertainmentService } from './entertainment.service';
 
 @Controller('cms/entertainment')
-@ApiTags('cms/entertainment')
+@ApiTags('cms-entertainment')
 export class EntertainmentController {
     
     constructor(private readonly entertainmentService:EntertainmentService){}
