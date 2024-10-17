@@ -19,7 +19,7 @@ export class UsersController {
     @ApiOperation({ summary: 'Menampilkan Semua Data' })
     @ApiResponse({ status: 200, description: 'Return all users.', type: [users] })
     findAll(@Req() req:Request): Promise<users[]> {
-        return this.usersService.findAll();
+        return this.usersService.findAll(req);
     }
 
     @UseGuards(JwtAuthGuard)

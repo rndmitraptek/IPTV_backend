@@ -20,9 +20,9 @@ export class UsersService {
         private iptv_featureModel: typeof iptv_feature,
     ) {}
     
-    findAll(): Promise<users[]> {
+    findAll(req:any): Promise<users[]> {
         try {
-            return this.userModel.findAll();            
+            return this.userModel.findAll({where:{id_hotel:req.user.id_hotel}});            
         } catch (error) {
             throw error;
         }
