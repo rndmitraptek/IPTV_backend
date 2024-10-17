@@ -7,6 +7,7 @@ import { role } from 'src/database/iptv/role.entity';
 import { users } from 'src/database/iptv/users.entity';
 import { loginDto, usersDtoInsert, usersDtoUpdate } from './users.dto';
 import { response_login_model } from './users.model';
+import { Sequelize } from 'sequelize-typescript';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UsersService {
@@ -18,11 +19,38 @@ export class UsersService {
         private roleModel: typeof role,
         @InjectModel(iptv_feature)
         private iptv_featureModel: typeof iptv_feature,
+        private sequelize:Sequelize
     ) {}
     
     findAll(req:any): Promise<users[]> {
         try {
-            return this.userModel.findAll({where:{id_hotel:req.user.id_hotel}});            
+            return this.userModel.findAll({
+                attributes:[
+                    'id_user',
+                    'nama',
+                    'username',
+                    'password',
+                    'id_role',
+                    'is_active',
+                    'is_admin',
+                    'id_hotel',
+                    [this.sequelize.col('role.role'),'nama_role'],
+                    [this.sequelize.col('hotel.title_hotel'),'nama_hotel'],
+                ],
+                include:[
+                    {
+                        attributes:[],
+                        model:role,
+                        as:'role'
+                    },
+                    {
+                        attributes:[],
+                        model:iptv_feature,
+                        as:'hotel'
+                    }
+                ],
+                where:{id_hotel:req.user.id_hotel}
+            });            
         } catch (error) {
             throw error;
         }

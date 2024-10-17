@@ -1,6 +1,7 @@
 import { ApiHideProperty } from '@nestjs/swagger';
 import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
 import { iptv_feature } from './iptv_feature.entity';
+import { role } from './role.entity';
 
 @Table({ tableName: 'users' })
 export class users extends Model<users> {
@@ -34,7 +35,13 @@ export class users extends Model<users> {
         type: DataType.BIGINT,
         allowNull: false,
     })
+    @ForeignKey(() => role)
     id_role: number;
+    @BelongsTo(() => role, {
+        foreignKey: 'id_role',
+        as: 'role',
+    })
+    role: role;
 
     @Column({
         type: DataType.BOOLEAN,
