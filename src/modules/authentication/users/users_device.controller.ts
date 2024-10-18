@@ -26,7 +26,8 @@ export class UserDeviceController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'cek token' })
     @ApiResponse({ status: 201, description: 'success'})  
-    tokenCheck() {
+    tokenCheck(@Req() req:Request) {
+        // console.log(req);
         return 'success';
     }
 

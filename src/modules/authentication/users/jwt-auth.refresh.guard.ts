@@ -19,7 +19,7 @@ export class JwtRefreshAuthGuard extends AuthGuard('jwt') {
             let errorException = new HttpException(
                 {
                     responseResult: false,
-                    message: 'refresh token invalid',
+                    message: ['refresh token invalid'],
                     data: '',
                 } as responseModel,
                 HttpStatus.UNAUTHORIZED

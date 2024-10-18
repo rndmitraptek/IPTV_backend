@@ -19,7 +19,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
             let errorException = new HttpException(
                 {
                     responseResult: false,
-                    message: 'anda belum login',
+                    message: ['anda belum login'],
                     data: '',
                 } as responseModel,
                 HttpStatus.OK
