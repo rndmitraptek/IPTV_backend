@@ -18,6 +18,8 @@ import { role_menu } from "./iptv/role_menu.entity";
 import { tv_channel } from "./iptv/tv_channel.entity";
 import { tv_group } from "./iptv/tv_group.entity";
 import { users } from "./iptv/users.entity";
+import { users_deviceEntity } from "./iptv/users_device.entity";
+import { sessionDeviceEntity } from "./iptv/session_device.entity";
 dotenv.config();
 
 @Injectable({ scope: Scope.REQUEST })
@@ -45,7 +47,9 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
         greeting_card,
         iptv_feature,
         entertainment,
-        menu
+        menu,
+        users_deviceEntity,
+        sessionDeviceEntity
       ];
     }else{
       models = [];

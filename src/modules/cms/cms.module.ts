@@ -48,6 +48,8 @@ import { tv_channelRepository } from './tv_channel/tv_channel.repository';
 import { TvChannelService } from './tv_channel/tv_channel.service';
 import { TvGroupController } from './tv_group/tv_group.controller';
 import { TvGroupService } from './tv_group/tv_group.service';
+import { users_deviceEntity } from 'src/database/iptv/users_device.entity';
+import { sessionDeviceEntity } from 'src/database/iptv/session_device.entity';
 
 @Module({
   imports:[
@@ -66,7 +68,9 @@ import { TvGroupService } from './tv_group/tv_group.service';
       greeting_card,
       iptv_feature,
       entertainment,
-      menu
+      menu,
+      users_deviceEntity,
+      sessionDeviceEntity
     ])
   ],
   controllers: [

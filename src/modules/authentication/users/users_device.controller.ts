@@ -1,0 +1,22 @@
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { users } from 'src/database/iptv/users.entity';
+import { JwtAuthGuard } from './jwt-auth.gruard';
+import { loginDeviceDto, loginDto, usersDtoInsert, usersDtoUpdate } from './users.dto';
+import { Request } from 'express';
+import { UserDeviceService } from './users_device.service';
+
+
+@Controller('device/user-device')
+@ApiTags('device-users')
+export class UserDeviceController {
+    constructor(private readonly usersService:UserDeviceService){}
+
+
+    @Post('login')
+    @ApiOperation({ summary: 'login users device {username:room1,password:mat1234_}' })
+    @ApiResponse({ status: 201, description: `success` })  
+    login(@Body() user: loginDeviceDto, @Req() req: Request): Promise<any> {
+        return this.usersService.login(user, req);
+    }
+}

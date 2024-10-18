@@ -61,3 +61,22 @@ export class loginDto{
     password:string;
 
 }
+
+export class loginDeviceDto{
+    
+    @IsNotEmpty({
+        message:"username tidak boleh kosong"
+    })
+    username: string;
+
+    @IsNotEmpty({
+        message:"password tidak boleh kosong"
+    })
+    password:string;
+
+    @IsNotEmpty({
+        message:"device_info tidak boleh kosong"
+    })
+    device_info:any;
+
+}
