@@ -19,4 +19,13 @@ export class UserDeviceController {
     login(@Body() user: loginDeviceDto, @Req() req: Request): Promise<any> {
         return this.usersService.login(user, req);
     }
+
+    @Get('token-check')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'cek token' })
+    @ApiResponse({ status: 201, description: 'success'})  
+    tokenCheck() {
+        return 'success';
+    }
 }
