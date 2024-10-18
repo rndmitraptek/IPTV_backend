@@ -5,6 +5,7 @@ import { JwtAuthGuard } from './jwt-auth.gruard';
 import { loginDeviceDto, loginDto, usersDtoInsert, usersDtoUpdate } from './users.dto';
 import { Request } from 'express';
 import { UserDeviceService } from './users_device.service';
+import { JwtRefreshAuthGuard } from './jwt-auth.refresh.guard';
 
 
 @Controller('device/user-device')
@@ -27,5 +28,15 @@ export class UserDeviceController {
     @ApiResponse({ status: 201, description: 'success'})  
     tokenCheck() {
         return 'success';
+    }
+
+
+    @Post('refresh')
+    @UseGuards(JwtRefreshAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'refresh token' })
+    @ApiResponse({ status: 201, description: 'success'})  
+    refresh(@Req() req:Request) {
+        return this.usersService.refresh(req);
     }
 }

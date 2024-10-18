@@ -26,7 +26,6 @@ export class UserDeviceService {
 
     async login(param:loginDeviceDto,req:any): Promise<any>{
         try {
-            console.log(typeof param.device_info);
             const ip =
                 req.headers['cs-connection-ip'] ||
                 req.headers['x-real-ip'] ||
@@ -36,6 +35,7 @@ export class UserDeviceService {
             let user = await this._users_deviceEntity.findOne({
                 where: {
                     username:param.username,
+                    is_active:true
                 },
             });
             if(!user){
@@ -105,6 +105,66 @@ export class UserDeviceService {
                     {
                         id_user:user.id_user_device,
                         id_session_device:create_sess.id_session_device
+                    }
+                )
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
+
+    async refresh(req:any):Promise<any>{
+        try {
+            let sess_check =await this._sessionDeviceEntity.findOne({where:{id_session_device:req.user.id_session_device}});
+            if(sess_check==null){
+                throw ('refresh token invalid');
+            }
+
+            const ip =
+                req.headers['cs-connection-ip'] ||
+                req.headers['x-real-ip'] ||
+                req.headers['x-forwarded-for'] ||
+                req.socket.remoteAddress || '';
+
+            let user = await this._users_deviceEntity.findOne({
+                where: {
+                    id_user_device:req.user.id_user,
+                    is_active:true
+                },
+            });
+            if(!user){
+                throw ('refresh token invalid');
+            }
+
+            let countRefresh =sess_check.refresh_count ==null ? 1 : typeof sess_check.refresh_count=='string' ? parseInt(sess_check.refresh_count) + 1: sess_check.refresh_count+1;
+            let update_sess =await this._sessionDeviceEntity.update(
+                {
+                    last_refresh_at:new Date(),
+                    refresh_count:countRefresh
+                },
+                {
+                    where:{
+                        id_session_device :sess_check.id_session_device
+                    }
+                }
+            );
+            if(!update_sess){
+                throw ('refresh token invalid');
+            }
+
+
+
+            return {
+                accesstoken:this.jwtService.sign(
+                    {
+                        id_user:user.id_user_device,
+                        username :user.username,
+                        id_hotel :user.id_hotel
+                    },
+                    {
+                        expiresIn:'1m'
                     }
                 )
             };
