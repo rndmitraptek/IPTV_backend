@@ -3,12 +3,13 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt';
 import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
-import { loginDeviceDto, loginDto, usersDtoInsert, usersDtoUpdate } from './users.dto';
+import { createUserRoom, loginDeviceDto, loginDto, updateUserRoom, usersDtoInsert, usersDtoUpdate } from './users.dto';
 import { response_login_model } from './users.model';
 import { Sequelize } from 'sequelize-typescript';
 import { users_deviceEntity } from 'src/database/iptv/users_device.entity';
 import { sessionDeviceEntity } from 'src/database/iptv/session_device.entity';
 import { v4 as uuidv4 } from 'uuid';
+import { Op } from 'sequelize';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UserDeviceService {
@@ -168,6 +169,186 @@ export class UserDeviceService {
                     }
                 )
             };
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
+
+    async getUserRoom(req:any):Promise<any>{
+        try {
+            if(req.user.id_hotel ==undefined){
+                throw ('Akun anda tidak memiliki id hotel');
+            }
+            let data =await this._users_deviceEntity.findAll({
+                attributes:[
+                    'id_user_device',
+                    'username',
+                    'room_id',
+                    'is_active',
+                    'id_hotel',
+                    [this.sequelize.col('hotel.title_hotel'),'nama_hotel'],
+                    'created_at',
+                    'created_by'
+                ],
+                include:[
+                    {
+                        attributes:[],
+                        model:iptv_feature,
+                        as:'hotel'
+                    }
+                ],
+                where:{
+                    id_hotel:req.user.id_hotel,
+                    is_active:true
+                }
+            });
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
+    async insertUserRoom(
+        param:createUserRoom,
+        req:any
+    ):Promise<any>{
+        try {
+            if(req.user.id_hotel ==undefined){
+                throw ('Akun anda tidak memiliki id hotel');
+            }
+            let cekDuplicateUser =await this._users_deviceEntity.findOne({where:{username:param.username}});
+            if(cekDuplicateUser!=null){
+                throw ('Username sudah digunakan');
+            }
+
+            param.password = await bcrypt.hash(param.password, 10);
+            let insert =await this._users_deviceEntity.create(
+                {
+                    username:param.username,
+                    room_id:param.room_id,
+                    password:param.password,
+                    id_hotel:req.user.id_hotel,
+                    is_active:true,
+                    created_by:req.user.username
+                },
+                {
+                    fields:[
+                        'username',
+                        'room_id',
+                        'password',
+                        'id_hotel',
+                        'is_active',
+                        'created_by'
+                    ]
+                }
+            );
+            if(!insert){
+                throw('Tambah akun room device gagal');
+            }
+
+            return insert;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
+    async updateUserRoom(
+        param:updateUserRoom,
+        req:any
+    ):Promise<any>{
+        try {
+            let cekDuplicateUser =await this._users_deviceEntity.findOne({where:{username:param.username,id_user_device:{ [Op.ne]: param.id_user_device }}});
+            if(cekDuplicateUser!=null){
+                throw ('Username sudah digunakan');
+            }
+
+            if(param.password !=undefined){
+                param.password = await bcrypt.hash(param.password, 10);
+                let update =await this._users_deviceEntity.update(
+                    {
+                        username:param.username,
+                        room_id:param.room_id,
+                        password:param.password,
+                        updated_by:req.user.username
+                    },
+                    {
+                        where:{id_user_device:param.id_user_device}
+                    }
+                );
+                if(!update){
+                    throw('Update akun room device gagal');
+                }
+            } else {
+                let update =await this._users_deviceEntity.update(
+                    {
+                        username:param.username,
+                        room_id:param.room_id,
+                        updated_by:req.user.username
+                    },
+                    {
+                        where:{id_user_device:param.id_user_device}
+                    }
+                );
+                if(!update){
+                    throw('Update akun room device gagal');
+                }
+            }
+
+            return 'success';
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
+    async deactived(
+        id_user_device:number,
+        req:any
+    ):Promise<any>{
+        try {
+            let update =await this._users_deviceEntity.update(
+                {
+                    is_active:false,
+                    updated_by:req.user.username
+                },
+                {
+                    where:{id_user_device:id_user_device}
+                }
+            );
+            if(!update){
+                throw('Deactived akun room device gagal');
+            }
+
+            return 'success';
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
+    async actived(
+        id_user_device:number,
+        req:any
+    ):Promise<any>{
+        try {
+            let update =await this._users_deviceEntity.update(
+                {
+                    is_active:true,
+                    updated_by:req.user.username
+                },
+                {
+                    where:{id_user_device:id_user_device}
+                }
+            );
+            if(!update){
+                throw('Actived akun room device gagal');
+            }
+
+            return 'success';
         } catch (error) {
             throw error;
         }

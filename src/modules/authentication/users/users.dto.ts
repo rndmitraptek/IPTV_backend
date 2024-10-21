@@ -1,3 +1,4 @@
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
 export class usersDtoInsert{
@@ -79,4 +80,38 @@ export class loginDeviceDto{
     })
     device_info:any;
 
+}
+
+
+export class createUserRoom{
+    @IsNotEmpty({
+        message:"username tidak boleh kosong"
+    })
+    username:string;
+    @IsNotEmpty({
+        message:"password tidak boleh kosong"
+    })
+    password:string;
+    @IsNotEmpty({
+        message:"room ID tidak boleh kosong"
+    })
+    room_id:string;
+}
+
+
+export class updateUserRoom{
+    @IsNotEmpty({
+        message:"id tidak boleh kosong"
+    })
+    id_user_device:number;
+    @IsNotEmpty({
+        message:"username tidak boleh kosong"
+    })
+    username:string;
+    @ApiPropertyOptional()
+    password:string;
+    @IsNotEmpty({
+        message:"room ID tidak boleh kosong"
+    })
+    room_id:string;
 }

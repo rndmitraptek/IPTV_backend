@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from 
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { users } from 'src/database/iptv/users.entity';
 import { JwtAuthGuard } from './jwt-auth.gruard';
-import { loginDeviceDto, loginDto, usersDtoInsert, usersDtoUpdate } from './users.dto';
+import { createUserRoom, loginDeviceDto, loginDto, updateUserRoom, usersDtoInsert, usersDtoUpdate } from './users.dto';
 import { Request } from 'express';
 import { UserDeviceService } from './users_device.service';
 import { JwtRefreshAuthGuard } from './jwt-auth.refresh.guard';
@@ -39,5 +39,60 @@ export class UserDeviceController {
     @ApiResponse({ status: 201, description: 'success'})  
     refresh(@Req() req:Request) {
         return this.usersService.refresh(req);
+    }
+
+
+    @Get('getUserRoom')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'get user room device by id hotel from token' })
+    @ApiResponse({ status: 201, description: 'success'})  
+    getUserRoom(@Req() req:Request) {
+        // console.log(req);
+        return this.usersService.getUserRoom(req);
+    }
+
+
+    @Post('insertUserRoom')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'create user room device by id hotel from token' })
+    @ApiResponse({ status: 201, description: 'success'})  
+    insertUserRoom(@Body() body:createUserRoom,@Req() req:Request) {
+        // console.log(req);
+        return this.usersService.insertUserRoom(body,req);
+    }
+
+
+    @Put('updateUserRoom')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'Update user room device (password optional)' })
+    @ApiResponse({ status: 201, description: 'success'})  
+    updateUserRoom(@Body() body:updateUserRoom,@Req() req:Request) {
+        // console.log(req);
+        return this.usersService.updateUserRoom(body,req);
+    }
+
+
+    @Delete('deactived/:id_user_device')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'Deactived user room device ' })
+    @ApiResponse({ status: 201, description: 'success'})  
+    deactived(@Param('id_user_device') id_user_device:number,@Req() req:Request) {
+        // console.log(req);
+        return this.usersService.deactived(id_user_device,req);
+    }
+
+
+    @Put('actived/:id_user_device')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'actived user room device ' })
+    @ApiResponse({ status: 201, description: 'success'})  
+    actived(@Param('id_user_device') id_user_device:number,@Req() req:Request) {
+        // console.log(req);
+        return this.usersService.actived(id_user_device,req);
     }
 }
