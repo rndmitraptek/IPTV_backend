@@ -36,8 +36,8 @@ export class UsersController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'tambah data users' })
     @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: users })  
-    create(@Body() user: usersDtoInsert): Promise<users> {
-        return this.usersService.create(user);
+    create(@Body() user: usersDtoInsert,@Req() req:Request): Promise<users> {
+        return this.usersService.create(user,req);
     }
 
     @Post('login')

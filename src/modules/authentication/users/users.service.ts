@@ -106,8 +106,11 @@ export class UsersService {
         });
     }
     
-    async create(user: usersDtoInsert): Promise<users> {
+    async create(user: usersDtoInsert,req:any): Promise<users> {
         user.password = await bcrypt.hash(user.password, 10);
+        user['is_admin']=false;
+        user['is_active']=true;
+        user['id_hotel']=req.user.id_hotel;
         return this.userModel.create(user);
     }
     
