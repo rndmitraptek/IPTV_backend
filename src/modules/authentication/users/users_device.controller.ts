@@ -67,7 +67,7 @@ export class UserDeviceController {
     @Post('insertUserRoom')
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth('access-token')
-    @ApiOperation({ summary: 'create user room device by id hotel from token' })
+    @ApiOperation({ summary: 'create user room device (only is_admin)' })
     @ApiResponse({ status: 201, description: 'success'})  
     insertUserRoom(@Body() body:createUserRoom,@Req() req:Request) {
         // console.log(req);
