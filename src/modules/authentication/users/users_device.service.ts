@@ -313,7 +313,7 @@ export class UserDeviceService {
                 }
             }
 
-            if(param.password !=undefined){
+            if(param.password !=undefined && param.password!='' && param.password!=null){
 
                 param.password = await bcrypt.hash(param.password, 10);
                 let update =await this._users_deviceEntity.update(
