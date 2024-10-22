@@ -305,6 +305,14 @@ export class UserDeviceService {
             }
 
             if(param.password !=undefined){
+                let cek_sess =await this._sessionDeviceEntity.findOne({where:{id_user_device:param.id_user_device}});
+                if(cek_sess!=null){
+                    let del_sess=await this._sessionDeviceEntity.destroy({where:{id_user_device:param.id_user_device}});
+                    if(!del_sess){
+                        throw ('session remove failed');
+                    }
+                }
+
                 param.password = await bcrypt.hash(param.password, 10);
                 let update =await this._users_deviceEntity.update(
                     {
