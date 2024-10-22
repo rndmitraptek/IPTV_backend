@@ -21,6 +21,16 @@ export class RestoController {
         return this.restoService.findAll(req);
     }
 
+
+    @Get('getByGroup/:id_group')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'Menampilkan Semua Data by id_group' })
+    @ApiResponse({ status: 200, description: 'Return all resto.', type: [resto] })
+    getByGroup(@Param('id_group') id_group:number,@Req() req:Request): Promise<resto[]> {
+        return this.restoService.getByGroup(id_group,req);
+    }
+
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Menampilkan resto by id resto' })
@@ -35,8 +45,8 @@ export class RestoController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'tambah data resto' })
     @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: resto })  
-    create(@Body() resto: restoDtoInsert): Promise<resto> {
-        return this.restoService.create(resto);
+    create(@Body() resto: restoDtoInsert,@Req() req:Request): Promise<resto> {
+        return this.restoService.create(resto,req);
     }
 
     @Put(':id_resto')

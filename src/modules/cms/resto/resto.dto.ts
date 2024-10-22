@@ -27,4 +27,9 @@ export class restoDtoInsert{
     })
     harga : number
 
+    @IsNotEmpty({
+        message:'group tidak boleh kosong'
+    })
+    id_group : number
+
 }

@@ -50,9 +50,12 @@ import { TvGroupController } from './tv_group/tv_group.controller';
 import { TvGroupService } from './tv_group/tv_group.service';
 import { users_deviceEntity } from 'src/database/iptv/users_device.entity';
 import { sessionDeviceEntity } from 'src/database/iptv/session_device.entity';
+import { RestoGroupController } from './resto-group/resto-group.controller';
+import { RestoGroupService } from './resto-group/resto-group.service';
+import { restoGroupEntity } from 'src/database/iptv/resto_group.entity';
 
 @Module({
-  imports:[
+  imports: [
     SequelizeModule.forFeature([
       apk_version,
       role,
@@ -70,34 +73,48 @@ import { sessionDeviceEntity } from 'src/database/iptv/session_device.entity';
       entertainment,
       menu,
       users_deviceEntity,
-      sessionDeviceEntity
-    ])
+      sessionDeviceEntity,
+      restoGroupEntity,
+    ]),
   ],
   controllers: [
-    ApkVersionController, 
-    RoleController, 
-    RoleMenuController, 
-    TvGroupController, 
-    TvChannelController, PromoController, InfoHotelController, InfoRoomController, InfoFasilitiesController, RestoController, NearbyAttractionController, GreetingCardController, IptvFeatureController, EntertainmentController, MenuController],
+    ApkVersionController,
+    RoleController,
+    RoleMenuController,
+    TvGroupController,
+    TvChannelController,
+    PromoController,
+    InfoHotelController,
+    InfoRoomController,
+    InfoFasilitiesController,
+    RestoGroupController,
+    RestoController,
+    NearbyAttractionController,
+    GreetingCardController,
+    IptvFeatureController,
+    EntertainmentController,
+    MenuController,
+  ],
   providers: [
     ApkVersionService,
-    MinioClientService, 
-    RoleService, 
-    RoleMenuService, 
-    TvGroupService, 
+    MinioClientService,
+    RoleService,
+    RoleMenuService,
+    TvGroupService,
     TvChannelService,
     tv_channelRepository,
     PromoService,
     InfoHotelService,
     InfoRoomService,
     InfoFasilitiesService,
+    RestoGroupService,
     RestoService,
     NearbyAttractionService,
     GreetingCardService,
     IptvFeatureService,
     role_menuRepository,
     EntertainmentService,
-    MenuService
-  ]
+    MenuService,
+  ],
 })
 export class CmsModule {}
