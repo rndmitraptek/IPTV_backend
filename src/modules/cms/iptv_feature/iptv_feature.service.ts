@@ -26,7 +26,17 @@ export class IptvFeatureService {
         });
     }
     
-    async create(_iptv_feature: iptv_featureDtoInsert): Promise<iptv_feature> {
+    async create(_iptv_feature: iptv_featureDtoInsert, req:any): Promise<iptv_feature> {
+        if(req.user.is_admin ==undefined){
+            throw ('Akun anda tidak diperbolehkan menambah data ini');
+        }
+        if(req.user.is_admin==false){
+            throw ('Akun anda tidak diperbolehkan menambah data ini');
+        }
+        _iptv_feature['is_active']=true;
+        _iptv_feature['created_by']=req.user.username;
+        _iptv_feature['updated_by']=req.user.username;
+
         return this.iptv_featureModel.create(_iptv_feature);
     }
     

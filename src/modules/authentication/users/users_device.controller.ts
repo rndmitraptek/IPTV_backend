@@ -53,6 +53,17 @@ export class UserDeviceController {
     }
 
 
+    @Get('getById/:id_user_device')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'get user room device by id' })
+    @ApiResponse({ status: 201, description: 'success'})  
+    getById(@Param('id_user_device') id_user_device:number,@Req() req:Request) {
+        // console.log(req);
+        return this.usersService.getById(id_user_device,req);
+    }
+
+
     @Post('insertUserRoom')
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth('access-token')

@@ -96,6 +96,10 @@ export class createUserRoom{
         message:"room ID tidak boleh kosong"
     })
     room_id:string;
+    @IsNotEmpty({
+        message:"id hotel tidak boleh kosong"
+    })
+    id_hotel:number;
 }
 
 

@@ -35,8 +35,8 @@ export class IptvFeatureController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'tambah data iptv_feature' })
     @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: iptv_feature })  
-    create(@Body() iptv_feature: iptv_featureDtoInsert): Promise<iptv_feature> {
-        return this.iptv_featureService.create(iptv_feature);
+    create(@Body() iptv_feature: iptv_featureDtoInsert, @Req() req:Request): Promise<iptv_feature> {
+        return this.iptv_featureService.create(iptv_feature, req);
     }
 
     @Put(':id')

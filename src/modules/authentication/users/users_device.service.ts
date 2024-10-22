@@ -211,13 +211,51 @@ export class UserDeviceService {
     }
 
 
+
+    async getById(id_user_device:number,req:any):Promise<any>{
+        try {
+            if(req.user.id_hotel ==undefined){
+                throw ('Akun anda tidak memiliki id hotel');
+            }
+            let data =await this._users_deviceEntity.findOne({
+                attributes:[
+                    'id_user_device',
+                    'username',
+                    'room_id',
+                    'is_active',
+                    'id_hotel',
+                    [this.sequelize.col('hotel.title_hotel'),'nama_hotel'],
+                    'created_at',
+                    'created_by'
+                ],
+                include:[
+                    {
+                        attributes:[],
+                        model:iptv_feature,
+                        as:'hotel'
+                    }
+                ],
+                where:{
+                    id_user_device:id_user_device
+                }
+            });
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
     async insertUserRoom(
         param:createUserRoom,
         req:any
     ):Promise<any>{
         try {
-            if(req.user.id_hotel ==undefined){
-                throw ('Akun anda tidak memiliki id hotel');
+            if(req.user.is_admin ==undefined){
+                throw ('Akun anda tidak diperbolehkan menambah data');
+            }
+            if(req.user.is_admin ==false){
+                throw ('Akun anda tidak diperbolehkan menambah data');
             }
             let cekDuplicateUser =await this._users_deviceEntity.findOne({where:{username:param.username}});
             if(cekDuplicateUser!=null){
@@ -230,7 +268,7 @@ export class UserDeviceService {
                     username:param.username,
                     room_id:param.room_id,
                     password:param.password,
-                    id_hotel:req.user.id_hotel,
+                    id_hotel:param.id_hotel,
                     is_active:true,
                     created_by:req.user.username
                 },
