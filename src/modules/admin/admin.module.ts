@@ -25,6 +25,8 @@ import { BatasAdminController } from './batas-admin';
 import { UserCmsController } from './user-cms/user-cms.controller';
 import { UserCmsService } from './user-cms/user-cms.service';
 import { users } from 'src/database/iptv/users.entity';
+import { UserDeviceController } from './user-device/user-device.controller';
+import { UserDeviceService } from './user-device/user-device.service';
 
 @Module({
   imports:[
@@ -52,13 +54,15 @@ import { users } from 'src/database/iptv/users.entity';
   controllers: [
     BatasAdminController,
     HotelController,
-    UserCmsController
+    UserCmsController,
+    UserDeviceController
   ],
   providers: [
     ApkVersionService,
     MinioClientService, 
     HotelService,
-    UserCmsService
+    UserCmsService,
+    UserDeviceService
   ]
 })
 export class AdminModule {}
