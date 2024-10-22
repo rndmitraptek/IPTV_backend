@@ -30,22 +30,22 @@ export class IptvFeatureController {
         return this.iptv_featureService.findOne(id);
     }
 
-    @Post()
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth('access-token')
-    @ApiOperation({ summary: 'tambah data iptv_feature' })
-    @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: iptv_feature })  
-    create(@Body() iptv_feature: iptv_featureDtoInsert, @Req() req:Request): Promise<iptv_feature> {
-        return this.iptv_featureService.create(iptv_feature, req);
-    }
+    // @Post()
+    // @UseGuards(JwtAuthGuard)
+    // @ApiBearerAuth('access-token')
+    // @ApiOperation({ summary: 'tambah data iptv_feature' })
+    // @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: iptv_feature })  
+    // create(@Body() iptv_feature: iptv_featureDtoInsert, @Req() req:Request): Promise<iptv_feature> {
+    //     return this.iptv_featureService.create(iptv_feature, req);
+    // }
 
     @Put(':id')
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Update data iptv_feature' })
     @ApiResponse({ status: 200, description: 'The iptv_feature has been successfully updated.', type: iptv_feature })
-    update(@Param('id') id: number, @Body() iptv_feature: iptv_featureDtoInsert) {
-        return this.iptv_featureService.update(id, iptv_feature);
+    update(@Param('id') id: number, @Body() iptv_feature: iptv_featureDtoInsert,@Req() req:Request) {
+        return this.iptv_featureService.update(id, iptv_feature,req);
     }
 
 }

@@ -1,18 +1,18 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
-import { iptv_featureDtoInsert } from './iptv_feature.dto';
+import { hotelDtoInsert } from './hotel.dto';
 
 @Injectable({ scope: Scope.REQUEST })
-export class IptvFeatureService {
+export class HotelService {
     constructor(
         @InjectModel(iptv_feature)
         private iptv_featureModel: typeof iptv_feature,
     ) {}
     
-    findAll(req:any): Promise<iptv_feature> {
+    findAll(req:any): Promise<iptv_feature[]> {
         try {
-            return this.iptv_featureModel.findOne({where:{id:req.user.id_hotel}});            
+            return this.iptv_featureModel.findAll({order:[['id','desc']]});            
         } catch (error) {
             throw error;
         }
@@ -26,7 +26,7 @@ export class IptvFeatureService {
         });
     }
     
-    async create(_iptv_feature: iptv_featureDtoInsert, req:any): Promise<iptv_feature> {
+    async create(_iptv_feature: hotelDtoInsert, req:any): Promise<iptv_feature> {
         if(req.user.is_admin ==undefined){
             throw ('Akun anda tidak diperbolehkan menambah data ini');
         }
@@ -40,7 +40,7 @@ export class IptvFeatureService {
         return this.iptv_featureModel.create(_iptv_feature);
     }
     
-    async update(id: number, _iptv_feature: iptv_featureDtoInsert,req:any): Promise<void> {
+    async update(id: number, _iptv_feature: hotelDtoInsert,req:any): Promise<void> {
         _iptv_feature['updated_by']=req.user.username;
         await this.iptv_featureModel.update(_iptv_feature, {
             where: {
@@ -54,4 +54,3 @@ export class IptvFeatureService {
         await iptv_feature.destroy();
     }
 }
-            

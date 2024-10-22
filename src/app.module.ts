@@ -9,6 +9,7 @@ import { AuthenticationModule } from './modules/authentication/authentication.mo
 import { CmsModule } from './modules/cms/cms.module';
 import { MakeModule } from './modules/make/make.module';
 import { TvModule } from './modules/tv/tv.module';
+import { AdminModule } from './modules/admin/admin.module';
 @Module({
   imports: [
     SequelizeModule.forRootAsync({
@@ -20,7 +21,10 @@ import { TvModule } from './modules/tv/tv.module';
     }),
     CmsModule, 
     MakeModule, 
-    AuthenticationModule, TvModule],
+    AuthenticationModule, 
+    TvModule,
+    AdminModule
+  ],
   controllers: [AppController],
   providers: [AppService,SequelizeConfigService],
 })

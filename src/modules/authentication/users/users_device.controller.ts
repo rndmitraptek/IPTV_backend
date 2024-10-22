@@ -64,15 +64,15 @@ export class UserDeviceController {
     }
 
 
-    @Post('insertUserRoom')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth('access-token')
-    @ApiOperation({ summary: 'create user room device (only is_admin)' })
-    @ApiResponse({ status: 201, description: 'success'})  
-    insertUserRoom(@Body() body:createUserRoom,@Req() req:Request) {
-        // console.log(req);
-        return this.usersService.insertUserRoom(body,req);
-    }
+    // @Post('insertUserRoom')
+    // @UseGuards(JwtAuthGuard)
+    // @ApiBearerAuth('access-token')
+    // @ApiOperation({ summary: 'create user room device (only is_admin)' })
+    // @ApiResponse({ status: 201, description: 'success'})  
+    // insertUserRoom(@Body() body:createUserRoom,@Req() req:Request) {
+    //     // console.log(req);
+    //     return this.usersService.insertUserRoom(body,req);
+    // }
 
 
     @Put('updateUserRoom')
@@ -86,24 +86,24 @@ export class UserDeviceController {
     }
 
 
-    @Delete('deactived/:id_user_device')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth('access-token')
-    @ApiOperation({ summary: 'Deactived user room device ' })
-    @ApiResponse({ status: 201, description: 'success'})  
-    deactived(@Param('id_user_device') id_user_device:number,@Req() req:Request) {
-        // console.log(req);
-        return this.usersService.deactived(id_user_device,req);
-    }
+    // @Delete('deactived/:id_user_device')
+    // @UseGuards(JwtAuthGuard)
+    // @ApiBearerAuth('access-token')
+    // @ApiOperation({ summary: 'Deactived user room device ' })
+    // @ApiResponse({ status: 201, description: 'success'})  
+    // deactived(@Param('id_user_device') id_user_device:number,@Req() req:Request) {
+    //     // console.log(req);
+    //     return this.usersService.deactived(id_user_device,req);
+    // }
 
 
-    @Put('actived/:id_user_device')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth('access-token')
-    @ApiOperation({ summary: 'actived user room device ' })
-    @ApiResponse({ status: 201, description: 'success'})  
-    actived(@Param('id_user_device') id_user_device:number,@Req() req:Request) {
-        // console.log(req);
-        return this.usersService.actived(id_user_device,req);
-    }
+    // @Put('actived/:id_user_device')
+    // @UseGuards(JwtAuthGuard)
+    // @ApiBearerAuth('access-token')
+    // @ApiOperation({ summary: 'actived user room device ' })
+    // @ApiResponse({ status: 201, description: 'success'})  
+    // actived(@Param('id_user_device') id_user_device:number,@Req() req:Request) {
+    //     // console.log(req);
+    //     return this.usersService.actived(id_user_device,req);
+    // }
 }
