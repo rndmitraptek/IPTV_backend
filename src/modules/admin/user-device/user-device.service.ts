@@ -62,6 +62,7 @@ export class UserDeviceService {
                     'id_user_device',
                     'username',
                     'room_id',
+                    'device_info',
                     'is_active',
                     'id_hotel',
                     [this.sequelize.col('hotel.title_hotel'),'nama_hotel'],
@@ -151,7 +152,7 @@ export class UserDeviceService {
                     throw ('session remove failed');
                 }
             }
-            
+
             if(param.password !=undefined){
 
                 param.password = await bcrypt.hash(param.password, 10);
