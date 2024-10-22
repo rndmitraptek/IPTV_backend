@@ -22,12 +22,16 @@ import { ApkVersionService } from '../cms/apk_version/apk_version.service';
 import { HotelController } from './hotel/hotel.controller';
 import { HotelService } from './hotel/hotel.service';
 import { BatasAdminController } from './batas-admin';
+import { UserCmsController } from './user-cms/user-cms.controller';
+import { UserCmsService } from './user-cms/user-cms.service';
+import { users } from 'src/database/iptv/users.entity';
 
 @Module({
   imports:[
     SequelizeModule.forFeature([
       apk_version,
       role,
+      users,
       role_menu,
       tv_group,
       tv_channel,
@@ -47,12 +51,14 @@ import { BatasAdminController } from './batas-admin';
   ],
   controllers: [
     BatasAdminController,
-    HotelController
+    HotelController,
+    UserCmsController
   ],
   providers: [
     ApkVersionService,
     MinioClientService, 
-    HotelService
+    HotelService,
+    UserCmsService
   ]
 })
 export class AdminModule {}
