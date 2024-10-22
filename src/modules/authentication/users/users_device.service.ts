@@ -222,6 +222,7 @@ export class UserDeviceService {
                     'id_user_device',
                     'username',
                     'room_id',
+                    'device_info',
                     'is_active',
                     'id_hotel',
                     [this.sequelize.col('hotel.title_hotel'),'nama_hotel'],
@@ -303,7 +304,7 @@ export class UserDeviceService {
             if(cekDuplicateUser!=null){
                 throw ('Username sudah digunakan');
             }
-            
+
             let cek_sess =await this._sessionDeviceEntity.findOne({where:{id_user_device:param.id_user_device}});
             if(cek_sess!=null){
                 let del_sess=await this._sessionDeviceEntity.destroy({where:{id_user_device:param.id_user_device}});
