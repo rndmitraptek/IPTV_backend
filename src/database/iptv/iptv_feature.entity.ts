@@ -14,13 +14,13 @@ export class iptv_feature extends Model<iptv_feature> {
     
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
     })
     video_splash_name : string;
     
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
     })
     video_splash_url : string;
     
@@ -32,43 +32,43 @@ export class iptv_feature extends Model<iptv_feature> {
     
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
     })
     logo_hotel_name : string;
     
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
     })
     logo_hotel_url : string;
     
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
     })
     background_image_name : string;
     
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
     })
     background_image_url : string;
     
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
     })
     video_channel_0_name : string;
     
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
     })
     video_channel_0_url : string;
     
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
     })
     default_home : string;
     @Column({
