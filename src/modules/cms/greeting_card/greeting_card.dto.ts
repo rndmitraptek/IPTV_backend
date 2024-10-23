@@ -27,4 +27,9 @@ export class greeting_cardDtoInsert{
     })
     end_date : string
 
+    @IsNotEmpty({
+        message:'user room tidak boleh kosong'
+    })
+    id_user_device : number
+
 }

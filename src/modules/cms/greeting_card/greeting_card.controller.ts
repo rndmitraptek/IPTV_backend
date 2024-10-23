@@ -35,8 +35,8 @@ export class GreetingCardController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'tambah data greeting_card' })
     @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: greeting_card })  
-    create(@Body() greeting_card: greeting_cardDtoInsert): Promise<greeting_card> {
-        return this.greeting_cardService.create(greeting_card);
+    create(@Body() greeting_card: greeting_cardDtoInsert,@Req() req:Request): Promise<greeting_card> {
+        return this.greeting_cardService.create(greeting_card,req);
     }
 
     @Put(':id_greeting_card')
