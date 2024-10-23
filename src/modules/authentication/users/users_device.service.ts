@@ -34,6 +34,18 @@ export class UserDeviceService {
                 req.socket.remoteAddress || '';
 
             let user = await this._users_deviceEntity.findOne({
+                attributes:[
+                    'id_user_device',
+                    'id_hotel',
+                    'username',
+                    'room_id',
+                    'is_active',
+                    'created_at',
+                    'updated_at',
+                    'created_by',
+                    'updated_by',
+                    'device_info',
+                ],
                 where: {
                     username:param.username,
                     is_active:true
@@ -131,6 +143,18 @@ export class UserDeviceService {
                 req.socket.remoteAddress || '';
 
             let user = await this._users_deviceEntity.findOne({
+                attributes:[
+                    'id_user_device',
+                    'id_hotel',
+                    'username',
+                    'room_id',
+                    'is_active',
+                    'created_at',
+                    'updated_at',
+                    'created_by',
+                    'updated_by',
+                    'device_info',
+                ],
                 where: {
                     id_user_device:req.user.id_user,
                     is_active:true
