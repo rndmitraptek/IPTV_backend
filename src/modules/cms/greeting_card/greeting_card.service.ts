@@ -98,12 +98,21 @@ export class GreetingCardService {
         });
     }
     
-    async create(_greeting_card: greeting_cardDtoInsert,req:any): Promise<greeting_card> {
+    async create(_greeting_card: greeting_cardDtoInsert,req:any): Promise<any> {
         if(req.user.id_hotel==undefined){
             throw ('Akun anda tidak memiliki hotel');
         }
         _greeting_card['id_hotel']=req.user.id_hotel;
-        return this.greeting_cardModel.create(_greeting_card);
+
+        if(_greeting_card.detail_room.length==0){
+            throw ('detail room tidak boleh kosong');
+        }
+
+        for(let i=0; i<_greeting_card.detail_room.length; i++){
+            _greeting_card['id_user_device']=_greeting_card.detail_room[i].id_user_device;
+            await this.greeting_cardModel.create(_greeting_card);
+        }
+        return 'success';
     }
     
     async update(id_greeting_card: number, _greeting_card: greeting_cardDtoInsert): Promise<void> {
