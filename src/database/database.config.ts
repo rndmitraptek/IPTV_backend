@@ -73,7 +73,12 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
           min: 0,
           acquire: 30000,
           idle: 10000
-        }
+        },
+        timezone: '+07:00',  // Mengatur timezone Asia/Jakarta (UTC+7)
+        dialectOptions: {
+          useUTC: false, // Menonaktifkan UTC
+          timezone: 'Asia/Jakarta', // Menggunakan timezone Asia/Jakarta
+        },
       }
     return config;
   }
