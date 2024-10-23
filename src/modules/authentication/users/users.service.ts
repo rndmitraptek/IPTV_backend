@@ -8,6 +8,8 @@ import { users } from 'src/database/iptv/users.entity';
 import { loginDto, usersDtoInsert, usersDtoUpdate } from './users.dto';
 import { response_login_model } from './users.model';
 import { Sequelize } from 'sequelize-typescript';
+import { role_menu } from 'src/database/iptv/role_menu.entity';
+import { menu } from 'src/database/iptv/menu.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UsersService {
@@ -17,6 +19,10 @@ export class UsersService {
         private userModel: typeof users,
         @InjectModel(role)
         private roleModel: typeof role,
+        @InjectModel(role_menu)
+        private _role_menu: typeof role_menu,
+        @InjectModel(menu)
+        private _menu: typeof menu,
         @InjectModel(iptv_feature)
         private iptv_featureModel: typeof iptv_feature,
         private sequelize:Sequelize
@@ -59,8 +65,15 @@ export class UsersService {
     async login(param:loginDto): Promise<response_login_model>{
         try {
             let user = await this.userModel.findOne({
+                include:[
+                    {
+                        model:iptv_feature,
+                        as:'hotel'
+                    }
+                ],
                 where: {
                     username:param.username,
+                    is_active:true
                 },
             });
             if(!user){
@@ -76,13 +89,11 @@ export class UsersService {
                 }
             })
 
-            let hote = await this.iptv_featureModel.findOne();    
-
             return {
                 nama:user.nama,
                 username:user.username,
                 role:role_user.role,
-                nama_hotel:hote.title_hotel,
+                nama_hotel:user.hotel.title_hotel,
                 is_admin:user.is_admin,
                 token:this.jwtService.sign({
                     id_user:user.id_user,
@@ -132,6 +143,119 @@ export class UsersService {
 
 
     async getProfile(req:any):Promise<any>{
+        if(req.user.id_role ==undefined){
+            throw('Akun anda tidak memiliki role');
+        }
         
+        let profile =await this.userModel.findOne({where:{id_user:req.user.id_user}});
+
+        let getRoleMenu=[];
+        if(req.user.is_admin==true){
+            getRoleMenu=await this._role_menu.findAll({
+                attributes:[
+                    'id_role_menu',
+                    'id_role',
+                    'id_menu',
+                    [this.sequelize.col('menu.urut'),'urut'],
+                    [this.sequelize.col('menu.caption'),'caption'],
+                    [this.sequelize.col('menu.icon'),'icon'],
+                    [this.sequelize.col('menu.toggle_child'),'toggle_child'],
+                    [this.sequelize.col('menu.url'),'url'],
+                    [this.sequelize.col('menu.is_parent'),'is_parent'],
+                    [this.sequelize.col('menu.id_parent'),'id_parent'],
+                    [this.sequelize.col('menu.is_active'),'is_active'],
+                    [this.sequelize.col('menu.is_admin'),'is_admin'],
+                    [this.sequelize.col('menu.is_client'),'is_client'],
+                ],
+                include:[
+                    {
+                        attributes:[
+                            'id_menu',
+                            'urut',
+                            'caption',
+                            'icon',
+                            'toggle_child',
+                            'url',
+                            'is_parent',
+                            'id_parent',
+                            'is_active',
+                            'is_admin',
+                            'is_client'
+                        ],
+                        model:menu,
+                        as:'menu',
+                        where:{is_active:true,is_admin:true}
+                    }
+                ],
+                where:{id_role:req.user.id_role},
+                order:[this.sequelize.col('menu.urut')]
+            });
+        } else {
+            getRoleMenu=await this._role_menu.findAll({
+                attributes:[
+                    'id_role_menu',
+                    'id_role',
+                    'id_menu',
+                    [this.sequelize.col('menu.urut'),'urut'],
+                    [this.sequelize.col('menu.caption'),'caption'],
+                    [this.sequelize.col('menu.icon'),'icon'],
+                    [this.sequelize.col('menu.toggle_child'),'toggle_child'],
+                    [this.sequelize.col('menu.url'),'url'],
+                    [this.sequelize.col('menu.is_parent'),'is_parent'],
+                    [this.sequelize.col('menu.id_parent'),'id_parent'],
+                    [this.sequelize.col('menu.is_active'),'is_active'],
+                    [this.sequelize.col('menu.is_admin'),'is_admin'],
+                    [this.sequelize.col('menu.is_client'),'is_client'],
+                ],
+                include:[
+                    {
+                        attributes:[
+                            'id_menu',
+                            'urut',
+                            'caption',
+                            'icon',
+                            'toggle_child',
+                            'url',
+                            'is_parent',
+                            'id_parent',
+                            'is_active',
+                            'is_admin',
+                            'is_client'
+                        ],
+                        model:menu,
+                        as:'menu',
+                        where:{is_active:true,is_client:true}
+                    }
+                ],
+                where:{id_role:req.user.id_role},
+                order:[this.sequelize.col('menu.urut')]
+            });
+        }
+        
+
+        let result=[];
+        let id_parent=0;
+        let indexParent=0;
+        
+        for(let i=0; i<getRoleMenu.length; i++){
+            if(getRoleMenu[i].menu.id_parent==null){
+                result[indexParent]=getRoleMenu[i];
+                result[indexParent].setDataValue('sidebarChild',[]);
+                delete result[indexParent].dataValues.menu;
+                id_parent=getRoleMenu[i].menu.id_menu;
+                console.log(id_parent);
+                indexParent+=1;
+            } else {
+                if(id_parent==getRoleMenu[i].menu.id_parent){
+                    delete getRoleMenu[i].dataValues.menu;
+                    result[indexParent-1].dataValues.sidebarChild.push(getRoleMenu[i]);
+                }
+            }
+        }
+
+        return {
+            ...profile.dataValues,
+            menu:result
+        };
     }
 }

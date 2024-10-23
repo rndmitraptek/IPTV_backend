@@ -64,4 +64,6 @@ export class UsersController {
     remove(@Param('id_user') id: number) {
         return this.usersService.remove(id);
     }
+
+
 }

@@ -59,5 +59,11 @@ export class menu extends Model<menu> {
         allowNull: false,
     })
     is_active : boolean;
+
+    @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+    })
+    is_admin : boolean;
     
 }

@@ -1,5 +1,6 @@
 import { ApiHideProperty } from '@nestjs/swagger';
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { menu } from './menu.entity';
 
 @Table({ tableName: 'role_menu' })
 export class role_menu extends Model<role_menu> { 
@@ -22,6 +23,12 @@ export class role_menu extends Model<role_menu> {
         type: DataType.INTEGER,
         allowNull: false,
     })
+    @ForeignKey(() => menu)
     id_menu : number;
+    @BelongsTo(() => menu, {
+        foreignKey: 'id_menu',
+        as: 'menu',
+    })
+    menu: menu;
     
 }

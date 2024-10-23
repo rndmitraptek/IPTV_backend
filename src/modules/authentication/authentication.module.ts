@@ -10,16 +10,19 @@ import { UserDeviceController } from './users/users_device.controller';
 import { UserDeviceService } from './users/users_device.service';
 import { users_deviceEntity } from 'src/database/iptv/users_device.entity';
 import { sessionDeviceEntity } from 'src/database/iptv/session_device.entity';
+import { role_menu } from 'src/database/iptv/role_menu.entity';
+import { menu } from 'src/database/iptv/menu.entity';
+import { UsersProfileController } from './users/users-profile.controller';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([users, role, iptv_feature,users_deviceEntity,sessionDeviceEntity]),
+    SequelizeModule.forFeature([users, role, iptv_feature,users_deviceEntity,sessionDeviceEntity,role_menu,menu]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: {},
     }),
   ],
-  controllers: [UsersController, UserDeviceController],
+  controllers: [UsersController,UsersProfileController, UserDeviceController],
   providers: [UsersService, UserDeviceService],
 })
 export class AuthenticationModule {}
