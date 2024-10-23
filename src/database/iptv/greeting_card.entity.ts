@@ -1,6 +1,7 @@
 import { ApiHideProperty } from '@nestjs/swagger';
 import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
 import { iptv_feature } from './iptv_feature.entity';
+import { users_deviceEntity } from './users_device.entity';
 
 @Table({ tableName: 'greeting_card' })
 export class greeting_card extends Model<greeting_card> { 
@@ -63,4 +64,17 @@ export class greeting_card extends Model<greeting_card> {
         as: 'hotel',
     })
     hotel: iptv_feature;
+
+
+    @Column({
+        type: DataType.BIGINT,
+        allowNull: false
+    })
+    @ForeignKey(() => users_deviceEntity)
+    id_user_device:number;
+    @BelongsTo(() => users_deviceEntity, {
+        foreignKey: 'id_user_device',
+        as: 'user_device',
+    })
+    user_device: users_deviceEntity;
 }

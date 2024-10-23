@@ -10,10 +10,13 @@ import { nearby_attraction } from 'src/database/iptv/nearby_attraction.entity';
 import { promo } from 'src/database/iptv/promo.entity';
 import { resto } from 'src/database/iptv/resto.entity';
 import { tv_channelRepository } from './api.repository';
+import { Sequelize } from 'sequelize-typescript';
+import { restoGroupEntity } from 'src/database/iptv/resto_group.entity';
 
 @Injectable()
 export class ApkService {
     constructor(
+        private sequelize:Sequelize,
         @InjectModel(iptv_feature)
         private iptv_featureModel: typeof iptv_feature,
         @InjectModel(nearby_attraction)
@@ -35,27 +38,58 @@ export class ApkService {
         private tv_channelRepo:tv_channelRepository,
     ) {}
 
-    async getData(nomor_room:string):Promise<any>{
+    async getData(req:any):Promise<any>{
+        if(req.user.id_hotel==undefined){
+            throw('Akun anda tidak memiliki hotel');
+        }
         let data = {
-            nama : 'Jhon Doe',
-            iptv : await this.iptv_featureModel.findOne(),
-            nearbyattraction : await this.nearby_attractionModel.findAll(),
+            nama : 'Guest',
+            iptv : await this.iptv_featureModel.findOne({where:{id:req.user.id_hotel}}),
+            nearbyattraction : await this.nearby_attractionModel.findAll({where:{id_hotel:req.user.id_hotel}}),
             promo : await this.promoModel.findAll({
+                where:{id_hotel:req.user.id_hotel, is_active:true},
                 order:[
                     ['urut','DESC']
                 ]
             }),
-            resto : await this.restoModel.findAll(),
-            entertainmentModel : await this.entertainmentModel.findAll(),
-            greetingcard : await this.greeting_cardModel.findAll(),
+            resto : await this.restoModel.findAll({
+                attributes:[
+                    'id_resto',
+                    'image_name',
+                    'image_url',
+                    'title',
+                    'description',
+                    'harga',
+                    'id_hotel',
+                    [this.sequelize.col('hotel.title_hotel'),'nama_hotel'],
+                    'id_group',
+                    [this.sequelize.col('group.nama_group'),'nama_group'],
+                ],
+                include:[
+                    {
+                        attributes:[],
+                        model:iptv_feature,
+                        as:'hotel'
+                    },
+                    {
+                        attributes:[],
+                        model:restoGroupEntity,
+                        as:'group'
+                    }
+                ],
+                where:{id_hotel:req.user.id_hotel},
+            }),
+            entertainmentModel : await this.entertainmentModel.findAll({where:{is_active:true}}),
+            greetingcard : await this.greeting_cardModel.findAll({where:{id_user_device:req.user.id_user,is_active:true}}),
             guesthotel : {
                 hotel: await this.info_hotelModel.findOne({
                     where:{
-                        id:1
-                    }
+                        id_hotel:req.user.id_hotel
+                    },
+                    order:[['id','desc']]
                 }),
-                room : await this.info_roomModel.findAll(),
-                fasilities : await this.info_fasilitiesModel.findAll()
+                room : await this.info_roomModel.findAll({where:{id_hotel:req.user.id_hotel}}),
+                fasilities : await this.info_fasilitiesModel.findAll({where:{id_hotel:req.user.id_hotel}})
             },
             channel : await this.tv_channelRepo.GetAll()
         };
