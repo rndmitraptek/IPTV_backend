@@ -66,4 +66,10 @@ export class menu extends Model<menu> {
     })
     is_admin : boolean;
     
+    @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+    })
+    is_client : boolean;
+    
 }

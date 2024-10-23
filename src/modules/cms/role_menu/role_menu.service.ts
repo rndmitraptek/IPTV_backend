@@ -23,8 +23,18 @@ export class RoleMenuService {
         }
     }
 
-    async GetByIdRole(id_role: number): Promise<any[]> {
-        let menu = await this.menuModel.findAll();
+    async GetByIdRole(id_role: number,req:any): Promise<any[]> {
+        let menu=[];
+        if(req.user.is_admin==true){
+            menu = await this.menuModel.findAll({
+                where:{is_admin:true}
+            });
+        } else {
+            menu = await this.menuModel.findAll({
+                where:{is_client:true}
+            });
+        }
+        
         let response:any[] = [];
         for(const detail of menu){
             let is_assign:boolean = false;
