@@ -46,7 +46,7 @@ export class menu extends Model<menu> {
         type: DataType.BOOLEAN,
         allowNull: false,
     })
-    is_parent : string;
+    is_parent : boolean;
     
     @Column({
         type: DataType.INTEGER,
@@ -65,7 +65,7 @@ export class menu extends Model<menu> {
         allowNull: false,
     })
     is_admin : boolean;
-    
+
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,

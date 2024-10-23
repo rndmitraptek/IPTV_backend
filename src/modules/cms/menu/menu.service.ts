@@ -2,6 +2,7 @@ import { Injectable, Scope } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { menu } from 'src/database/iptv/menu.entity';
+import { insertMenu, updateMenu } from './menu.dto';
 
 @Injectable({ scope: Scope.REQUEST })
 export class MenuService {
@@ -139,5 +140,29 @@ export class MenuService {
         //         ]
         //     },
         // ]
+    }
+
+
+    async getById(id_menu:number):Promise<any>{
+        return await this._menu.findOne({where:{id_menu:id_menu}});
+    }
+
+    async insert(param:insertMenu, req:any):Promise<any>{
+        if(req.user.is_admin==false){
+            throw('Akun anda tidak diperbolehkan menambah data ini');
+        }
+        param['is_active']=true;
+        return await this._menu.create(param);
+    }
+
+
+    async update(id_menu:number,param:updateMenu, req:any):Promise<any>{
+        if(req.user.is_admin==false){
+            throw('Akun anda tidak diperbolehkan update data ini');
+        }
+
+        return await this._menu.update(param,{
+            where:{id_menu:id_menu}
+        });
     }
 }
