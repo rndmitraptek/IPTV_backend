@@ -159,6 +159,7 @@ export class UserDeviceService {
 
 
             return {
+                ...user.dataValues,
                 accesstoken:this.jwtService.sign(
                     {
                         id_user:user.id_user_device,
