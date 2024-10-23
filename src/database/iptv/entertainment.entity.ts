@@ -36,5 +36,17 @@ export class entertainment extends Model<entertainment> {
         defaultValue:true
     })
     is_active : boolean;
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+    })
+    group_name : string;
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+    })
+    jenis_device : string;
     
 }

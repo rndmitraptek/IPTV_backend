@@ -68,6 +68,12 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
           timestamps:false,
         },
         minifyAliases:true,
+        pool:{
+          max: 15,
+          min: 0,
+          acquire: 30000,
+          idle: 10000
+        }
       }
     return config;
   }

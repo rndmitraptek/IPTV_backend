@@ -129,4 +129,9 @@ export class UsersService {
         const user = await this.findOne(uuid);
         await user.destroy();
     }
+
+
+    async getProfile(req:any):Promise<any>{
+        
+    }
 }

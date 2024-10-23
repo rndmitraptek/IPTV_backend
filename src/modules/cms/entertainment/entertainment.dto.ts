@@ -16,5 +16,13 @@ export class entertainmentDtoInsert{
         message:'package_name_app tidak boleh kosong'
     })
     package_name_app : string
+    @IsNotEmpty({
+        message:'group_name tidak boleh kosong'
+    })
+    group_name : string
+    @IsNotEmpty({
+        message:'jenis_device tidak boleh kosong'
+    })
+    jenis_device : string
 
 }
