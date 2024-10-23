@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { role_menu } from 'src/database/iptv/role_menu.entity';
 import { JwtAuthGuard } from 'src/modules/authentication/users/jwt-auth.gruard';
 import { role_menuDtoInsert } from './role_menu.dto';
 import { RoleMenuService } from './role_menu.service';
+import { Request } from 'express';
 
 @Controller('cms/role-menu')
 @ApiTags('cms-role-menu')
@@ -27,8 +28,8 @@ export class RoleMenuController {
     @ApiOperation({ summary: 'Menampilkan role_menu by id_role_menu role_menu' })
     @ApiResponse({ status: 200, description: 'Return a single role_menu.', type: null })
     @Get('GetByIdRole/:id_role')
-    GetByIdRole(@Param('id_role') id_role: number): Promise<role_menu[]> {
-        return this.role_menuService.GetByIdRole(id_role);
+    GetByIdRole(@Param('id_role') id_role: number, @Req() req:Request): Promise<role_menu[]> {
+        return this.role_menuService.GetByIdRole(id_role,req);
     }
 
     @UseGuards(JwtAuthGuard)
