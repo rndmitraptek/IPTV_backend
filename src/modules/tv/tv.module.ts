@@ -18,6 +18,7 @@ import { tv_channelRepository } from './apk/api.repository';
 import { ApkController } from './apk/apk.controller';
 import { ApkService } from './apk/apk.service';
 import { backgroundEntity } from 'src/database/iptv/background.entity';
+import { announcementEntity } from 'src/database/iptv/announcement.entity';
 
 @Module({
   imports:[
@@ -36,7 +37,8 @@ import { backgroundEntity } from 'src/database/iptv/background.entity';
       greeting_card,
       iptv_feature,
       entertainment,
-      backgroundEntity
+      backgroundEntity,
+      announcementEntity
     ])
   ],
   controllers: [ ApkController],

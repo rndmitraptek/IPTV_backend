@@ -14,6 +14,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { restoGroupEntity } from 'src/database/iptv/resto_group.entity';
 import { fn, Op } from 'sequelize';
 import { backgroundEntity } from 'src/database/iptv/background.entity';
+import { announcementEntity } from 'src/database/iptv/announcement.entity';
 
 @Injectable()
 export class ApkService {
@@ -31,6 +32,8 @@ export class ApkService {
         private greeting_cardModel: typeof greeting_card,
         @InjectModel(backgroundEntity)
         private _backgroundEntity: typeof backgroundEntity,
+        @InjectModel(announcementEntity)
+        private _announcementEntity: typeof announcementEntity,
         @InjectModel(info_hotel)
         private info_hotelModel: typeof info_hotel,
         @InjectModel(info_room)
@@ -46,7 +49,29 @@ export class ApkService {
         if(req.user.id_hotel==undefined){
             throw('Akun anda tidak memiliki hotel');
         }
-        console.log()
+        
+        let getAnnouncements =await this._announcementEntity.findAll({
+            where:{
+                id_user_device:req.user.id_user,
+                is_active:true,
+                start_date: {
+                    [Op.lte]: fn('NOW') // start_date >= NOW()
+                },
+                end_date: {
+                    [Op.gte]: fn('NOW') // end_date <= NOW()
+                }
+            },
+            order:[['id_announcement','desc']]
+        });
+        let announcement='';
+        for(let i=0; i<getAnnouncements.length; i++){
+            announcement += getAnnouncements[i].description;
+            if(i < (getAnnouncements.length-1)){
+                announcement +=', ';
+            }
+        }
+
+
         let data = {
             nama : 'Guest',
             iptv : await this.iptv_featureModel.findOne({where:{id:req.user.id_hotel}}),
@@ -101,6 +126,7 @@ export class ApkService {
             background : await this._backgroundEntity.findOne({
                 where:{
                     id_user_device:req.user.id_user,
+                    is_active:true,
                     start_date: {
                         [Op.lte]: fn('NOW') // start_date >= NOW()
                     },
@@ -110,6 +136,7 @@ export class ApkService {
                 },
                 order:[['id_background','desc']]
             }),
+            announcement : announcement,
             guesthotel : {
                 hotel: await this.info_hotelModel.findOne({
                     where:{

@@ -56,6 +56,9 @@ import { restoGroupEntity } from 'src/database/iptv/resto_group.entity';
 import { backgroundEntity } from 'src/database/iptv/background.entity';
 import { BackgroundController } from './background/background.controller';
 import { BackgroundService } from './background/background.service';
+import { AnnouncementService } from './announcement/announcement.service';
+import { AnnouncementController } from './announcement/announcement.controller';
+import { announcementEntity } from 'src/database/iptv/announcement.entity';
 
 @Module({
   imports: [
@@ -78,7 +81,8 @@ import { BackgroundService } from './background/background.service';
       users_deviceEntity,
       sessionDeviceEntity,
       restoGroupEntity,
-      backgroundEntity
+      backgroundEntity,
+      announcementEntity
     ]),
   ],
   controllers: [
@@ -98,7 +102,8 @@ import { BackgroundService } from './background/background.service';
     IptvFeatureController,
     EntertainmentController,
     MenuController,
-    BackgroundController
+    BackgroundController,
+    AnnouncementController
   ],
   providers: [
     ApkVersionService,
@@ -120,7 +125,8 @@ import { BackgroundService } from './background/background.service';
     role_menuRepository,
     EntertainmentService,
     MenuService,
-    BackgroundService
+    BackgroundService,
+    AnnouncementService
   ],
 })
 export class CmsModule {}
