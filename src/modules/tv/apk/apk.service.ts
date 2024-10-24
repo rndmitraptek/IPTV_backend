@@ -13,6 +13,7 @@ import { tv_channelRepository } from './api.repository';
 import { Sequelize } from 'sequelize-typescript';
 import { restoGroupEntity } from 'src/database/iptv/resto_group.entity';
 import { fn, Op } from 'sequelize';
+import { backgroundEntity } from 'src/database/iptv/background.entity';
 
 @Injectable()
 export class ApkService {
@@ -28,6 +29,8 @@ export class ApkService {
         private restoModel: typeof resto,
         @InjectModel(greeting_card)
         private greeting_cardModel: typeof greeting_card,
+        @InjectModel(backgroundEntity)
+        private _backgroundEntity: typeof backgroundEntity,
         @InjectModel(info_hotel)
         private info_hotelModel: typeof info_hotel,
         @InjectModel(info_room)
@@ -94,6 +97,18 @@ export class ApkService {
                     }
                 },
                 order:[['id_greeting_card','desc']]
+            }),
+            background : await this._backgroundEntity.findOne({
+                where:{
+                    id_user_device:req.user.id_user,
+                    start_date: {
+                        [Op.lte]: fn('NOW') // start_date >= NOW()
+                    },
+                    end_date: {
+                        [Op.gte]: fn('NOW') // end_date <= NOW()
+                    }
+                },
+                order:[['id_background','desc']]
             }),
             guesthotel : {
                 hotel: await this.info_hotelModel.findOne({

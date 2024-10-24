@@ -17,6 +17,7 @@ import { tv_group } from 'src/database/iptv/tv_group.entity';
 import { tv_channelRepository } from './apk/api.repository';
 import { ApkController } from './apk/apk.controller';
 import { ApkService } from './apk/apk.service';
+import { backgroundEntity } from 'src/database/iptv/background.entity';
 
 @Module({
   imports:[
@@ -34,7 +35,8 @@ import { ApkService } from './apk/apk.service';
       nearby_attraction,
       greeting_card,
       iptv_feature,
-      entertainment
+      entertainment,
+      backgroundEntity
     ])
   ],
   controllers: [ ApkController],

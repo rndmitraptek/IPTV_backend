@@ -17,5 +17,6 @@ export const BuckectName = {
     ROLE : 'role',
     DOKUMEN_LAYANAN : 'dokumen-layanan',
     BULETIN_DINDING : 'buletin-dinding',
-    BULETIN_KONTEN : 'buletin-konten'
+    BULETIN_KONTEN : 'buletin-konten',
+    BACKGROUND : 'background',
   };

@@ -21,6 +21,7 @@ import { users } from "./iptv/users.entity";
 import { users_deviceEntity } from "./iptv/users_device.entity";
 import { sessionDeviceEntity } from "./iptv/session_device.entity";
 import { restoGroupEntity } from "./iptv/resto_group.entity";
+import { backgroundEntity } from "./iptv/background.entity";
 dotenv.config();
 
 @Injectable({ scope: Scope.REQUEST })
@@ -51,7 +52,8 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
         menu,
         users_deviceEntity,
         sessionDeviceEntity,
-        restoGroupEntity
+        restoGroupEntity,
+        backgroundEntity
       ];
     }else{
       models = [];
