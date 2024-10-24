@@ -29,6 +29,11 @@ export class backgroundEntity extends Model<backgroundEntity> {
     type: DataType.STRING,
     allowNull: false,
   })
+  background_name: string;
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
   background_url: string;
 
   @Column({

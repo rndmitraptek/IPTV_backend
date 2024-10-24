@@ -3,6 +3,8 @@ import { IsNotEmpty } from "class-validator";
 
 export class insertBackground{
     @IsNotEmpty()
+    background_name:string;
+    @IsNotEmpty()
     background_url:string;
     @IsNotEmpty()
     start_date:Date;

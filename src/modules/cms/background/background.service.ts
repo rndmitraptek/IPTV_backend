@@ -24,6 +24,7 @@ export class BackgroundService {
                 attributes:[
                     'id_background',
                     'background_url',
+                    'background_name',
                     'start_date',
                     'end_date',
                     'is_active',
@@ -64,6 +65,7 @@ export class BackgroundService {
             attributes:[
                 'id_background',
                 'background_url',
+                'background_name',
                 'start_date',
                 'end_date',
                 'is_active',
