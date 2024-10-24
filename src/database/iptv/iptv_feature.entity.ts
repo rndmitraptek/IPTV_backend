@@ -113,4 +113,15 @@ export class iptv_feature extends Model<iptv_feature> {
         allowNull: false,
     })
     updated_by : string;
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+    })
+    api_method : string;
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+    })
+    api_guest : string;
 }

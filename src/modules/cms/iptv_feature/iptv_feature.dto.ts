@@ -67,4 +67,7 @@ export class iptv_featureDtoInsert{
     // })
     actived_at : Date
 
+    api_method:string
+    api_guest:string
+
 }
