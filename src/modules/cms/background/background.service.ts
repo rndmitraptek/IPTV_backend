@@ -26,6 +26,7 @@ export class BackgroundService {
                     'background_url',
                     'start_date',
                     'end_date',
+                    'is_active',
                     'id_hotel',
                     [this.sequelize.col('hotel.title_hotel'),'nama_hotel'],
                     'id_user_device',
@@ -48,7 +49,7 @@ export class BackgroundService {
                         as:'user_device'
                     }
                 ],
-                where:{id_hotel:req.user.id_hotel},
+                where:{id_hotel:req.user.id_hotel,is_active:true},
                 order:[['id_background','desc']]
             });          
             
@@ -65,6 +66,7 @@ export class BackgroundService {
                 'background_url',
                 'start_date',
                 'end_date',
+                'is_active',
                 'id_hotel',
                 [this.sequelize.col('hotel.title_hotel'),'nama_hotel'],
                 'id_user_device',
@@ -89,12 +91,13 @@ export class BackgroundService {
             ],
             where: {
                 id_background:id,
+                is_active:true
             },
         });
 
     }
     
-    async create(_backgroundEntity: insertBackground,req:any): Promise<backgroundEntity> {
+    async create(_backgroundEntity: insertBackground,req:any): Promise<any> {
         if(req.user.id_hotel ==undefined){
             throw ('Akun anda tidak memiliki hotel');
         }
@@ -102,8 +105,17 @@ export class BackgroundService {
         _backgroundEntity['created_by']=req.user.username;
         _backgroundEntity['updated_by']=req.user.username;
         _backgroundEntity['id_hotel']=req.user.id_hotel;
+        _backgroundEntity['is_active']=true;
 
-        return this._backgroundEntity.create(_backgroundEntity);
+        if(_backgroundEntity.detail_room.length==0){
+            throw ('detail room tidak boleh kosong');
+        }
+
+        for(let i=0; i<_backgroundEntity.detail_room.length; i++){
+            _backgroundEntity['id_user_device']=_backgroundEntity.detail_room[i].id_user_device;
+            await this._backgroundEntity.create(_backgroundEntity);
+        }
+        return 'success';
     }
     
     async update(id: number, _backgroundEntity: insertBackground,req:any): Promise<void> {
@@ -115,6 +127,20 @@ export class BackgroundService {
         });
     }
     
-    
+    async updateStatusActive(id_background:number):Promise<backgroundEntity>{
+        try {
+            let data = await this._backgroundEntity.findOne({
+                where:{
+                    id_background:id_background
+                }
+            });
+            data.update({
+                is_active:!data.is_active
+            })
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
             

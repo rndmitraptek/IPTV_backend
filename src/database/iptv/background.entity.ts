@@ -43,6 +43,13 @@ export class backgroundEntity extends Model<backgroundEntity> {
   })
   end_date: Date;
 
+
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+  })
+  is_active: boolean;
+
   @Column({
     type: DataType.BIGINT,
     allowNull: false,

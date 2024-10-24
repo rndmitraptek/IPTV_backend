@@ -8,7 +8,16 @@ export class insertBackground{
     start_date:Date;
     @IsNotEmpty()
     end_date:Date;
-    @IsNotEmpty()
-    id_user_device:number;
+    @IsNotEmpty({
+        message:'detail room tidak boleh kosong'
+    })
+    detail_room : detailRoom[]
 
+}
+
+export class detailRoom{
+    @IsNotEmpty({
+        message:'user room tidak boleh kosong'
+    })
+    id_user_device : number
 }

@@ -49,5 +49,14 @@ export class BackgroundController {
         return this._backgroundService.update(id_background, body,req);
     }
 
+
+    @Put('updateStatus/:id_background')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'Update status data' })
+    @ApiResponse({ status: 200})
+    updateStatusActive(@Param('id_background') id_background: number) {
+        return this._backgroundService.updateStatusActive(id_background);
+    }
             
 }
