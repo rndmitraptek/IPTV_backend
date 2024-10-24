@@ -52,19 +52,19 @@ export class iptv_featureDtoInsert{
     })
     default_home : string
 
-    @IsNotEmpty({
-        message:'address tidak boleh kosong'
-    })
+    // @IsNotEmpty({
+    //     message:'address tidak boleh kosong'
+    // })
     address : string
 
-    @IsNotEmpty({
-        message:'expired_date tidak boleh kosong'
-    })
+    // @IsNotEmpty({
+    //     message:'expired_date tidak boleh kosong'
+    // })
     expired_date : Date
     
-    @IsNotEmpty({
-        message:'actived_at tidak boleh kosong'
-    })
+    // @IsNotEmpty({
+    //     message:'actived_at tidak boleh kosong'
+    // })
     actived_at : Date
 
 }
