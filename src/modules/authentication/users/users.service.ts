@@ -186,7 +186,8 @@ export class UsersService {
                         ],
                         model:menu,
                         as:'menu',
-                        where:{is_active:true,is_admin:true}
+                        where:{is_active:true,is_admin:true},
+                        required:true
                     }
                 ],
                 where:{id_role:req.user.id_role},
@@ -226,7 +227,8 @@ export class UsersService {
                         ],
                         model:menu,
                         as:'menu',
-                        where:{is_active:true,is_client:true}
+                        where:{is_active:true,is_client:true},
+                        required:true
                     }
                 ],
                 where:{id_role:req.user.id_role},
