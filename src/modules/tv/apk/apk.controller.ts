@@ -20,4 +20,13 @@ export class ApkController {
     getData(@Req() req:Request): Promise<tv_channel> {
         return this.apkService.getData(req);
     }
+
+    @Get('getGuest')
+    // @UseGuards(JwtAuthGuard)
+    // @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'tes guest' })
+    @ApiResponse({ status: 200 })
+    getGuest(@Req() req:Request) {
+        return 'John Cena';
+    }
 }
