@@ -22,6 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
             id_role :payload.id_role,
             is_admin :payload.is_admin,
             id_hotel :payload.id_hotel,
+            room_id :payload.room_id,
             id_session_device:payload.id_session_device
         };
     }

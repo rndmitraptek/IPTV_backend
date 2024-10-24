@@ -247,7 +247,7 @@ export class UsersService {
                 result[indexParent].setDataValue('sidebarChild',[]);
                 delete result[indexParent].dataValues.menu;
                 id_parent=getRoleMenu[i].menu.id_menu;
-                console.log(id_parent);
+                // console.log(id_parent);
                 indexParent+=1;
             } else {
                 if(id_parent==getRoleMenu[i].menu.id_parent){

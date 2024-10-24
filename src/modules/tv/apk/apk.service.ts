@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { entertainment } from 'src/database/iptv/entertainment.entity';
 import { greeting_card } from 'src/database/iptv/greeting_card.entity';
@@ -15,6 +15,7 @@ import { restoGroupEntity } from 'src/database/iptv/resto_group.entity';
 import { fn, Op } from 'sequelize';
 import { backgroundEntity } from 'src/database/iptv/background.entity';
 import { announcementEntity } from 'src/database/iptv/announcement.entity';
+import axios, { AxiosRequestConfig, Method } from 'axios';
 
 @Injectable()
 export class ApkService {
@@ -49,7 +50,7 @@ export class ApkService {
         if(req.user.id_hotel==undefined){
             throw('Akun anda tidak memiliki hotel');
         }
-        
+        // console.log(req.user);
         let getAnnouncements =await this._announcementEntity.findAll({
             where:{
                 id_user_device:req.user.id_user,
@@ -71,10 +72,51 @@ export class ApkService {
             }
         }
 
+        let nama ='Guest';
+
+        let getHotel =await this.iptv_featureModel.findOne({where:{id:req.user.id_hotel}});
+        if(getHotel!=null){
+            if(getHotel.api_guest!=null){
+                const url=getHotel.api_method.toUpperCase()!='GET'?getHotel.api_guest:getHotel.api_guest+`/:${req.user.room_id}`;
+                const data=getHotel.api_method.toUpperCase()!='GET'?{}:{room_id:req.user.room_id};
+
+                const method: Method = getHotel.api_method==null?'GET' as Method:getHotel.api_method.toUpperCase() as Method;
+                const config: AxiosRequestConfig = {
+                    method, // Metode yang diambil dari database
+                    url,
+                    headers: {
+                        'Authorization': getHotel.api_secret, // Tambahkan token ke Authorization header
+                    },
+                    data  // Body data untuk POST/PUT
+                  };
+                await axios(config)
+                    .then(response => {
+                        // Logic tambahan jika request berhasil
+                        console.log('Request Berhasil:', response.data);
+                        nama =response.data;
+                    })
+                    .catch(error => {
+                        // Logic tambahan jika request gagal
+                        console.error('Request Gagal:', error.message);
+                
+                        // Menangani error lebih detail, misalnya berdasarkan status code
+                        if (error.response && error.response.status === 401) {
+                            throw new HttpException('Unauthorized request', HttpStatus.UNAUTHORIZED);
+                        } else if (error.response && error.response.status === 404) {
+                            throw new HttpException('Resource not found', HttpStatus.NOT_FOUND);
+                        } else {
+                            throw new HttpException(
+                                `HTTP Request failed: ${error.message}`,
+                                HttpStatus.INTERNAL_SERVER_ERROR,
+                            );
+                        }
+                    });
+            }
+        }
 
         let data = {
-            nama : 'Guest',
-            iptv : await this.iptv_featureModel.findOne({where:{id:req.user.id_hotel}}),
+            nama : nama,
+            iptv : getHotel,
             nearbyattraction : await this.nearby_attractionModel.findAll({where:{id_hotel:req.user.id_hotel}}),
             promo : await this.promoModel.findAll({
                 where:{id_hotel:req.user.id_hotel, is_active:true},

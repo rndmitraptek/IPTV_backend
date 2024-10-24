@@ -109,6 +109,7 @@ export class UserDeviceService {
                 accesstoken:this.jwtService.sign(
                     {
                         id_user:user.id_user_device,
+                        room_id:user.room_id,
                         username :user.username,
                         id_hotel :user.id_hotel
                     },
