@@ -12,9 +12,9 @@ export class greeting_cardDtoInsert{
     })
     video_url : string
 
-    @IsNotEmpty({
-        message:'no_room tidak boleh kosong'
-    })
+    // @IsNotEmpty({
+    //     message:'no_room tidak boleh kosong'
+    // })
     no_room : string
 
     @IsNotEmpty({
