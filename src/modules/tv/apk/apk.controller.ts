@@ -21,7 +21,7 @@ export class ApkController {
         return this.apkService.getData(req);
     }
 
-    @Get('getGuest')
+    @Get('getGuest/:no_room')
     // @UseGuards(JwtAuthGuard)
     // @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'tes guest' })
