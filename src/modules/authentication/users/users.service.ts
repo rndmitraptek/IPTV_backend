@@ -67,6 +67,7 @@ export class UsersService {
             let user = await this.userModel.findOne({
                 include:[
                     {
+                        attributes:['title_hotel'],
                         model:iptv_feature,
                         as:'hotel'
                     }
@@ -88,12 +89,13 @@ export class UsersService {
                     id_role:user.id_role
                 }
             })
+            console.log(user);
 
             return {
                 nama:user.nama,
                 username:user.username,
                 role:role_user.role,
-                nama_hotel:user.hotel.title_hotel,
+                nama_hotel:user.hotel==null?null:user.hotel.title_hotel,
                 is_admin:user.is_admin,
                 token:this.jwtService.sign({
                     id_user:user.id_user,
