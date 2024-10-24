@@ -38,6 +38,7 @@ export class UserDeviceService {
                     'id_user_device',
                     'id_hotel',
                     'username',
+                    'password',
                     'room_id',
                     'is_active',
                     'created_at',
