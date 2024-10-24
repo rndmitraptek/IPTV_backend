@@ -69,5 +69,6 @@ export class iptv_featureDtoInsert{
 
     api_method:string
     api_guest:string
+    api_secret:string
 
 }

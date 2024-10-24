@@ -124,4 +124,9 @@ export class iptv_feature extends Model<iptv_feature> {
         allowNull: false,
     })
     api_guest : string;
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+    })
+    api_secret : string;
 }
