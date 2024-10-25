@@ -59,6 +59,12 @@ import { BackgroundService } from './background/background.service';
 import { AnnouncementService } from './announcement/announcement.service';
 import { AnnouncementController } from './announcement/announcement.controller';
 import { announcementEntity } from 'src/database/iptv/announcement.entity';
+import { orderRestoDetailEntity } from 'src/database/iptv/order_resto_detail.entity';
+import { orderRestoEntity } from 'src/database/iptv/order_resto.entity';
+import { OrderRestoController } from './order_resto/order_resto.controller';
+import { OrderRestoService } from './order_resto/order_resto.service';
+import { generateNumber } from 'src/utility/nomor_counter.helper';
+import { nomor_counter } from 'src/database/iptv/nomor_counter.entity';
 
 @Module({
   imports: [
@@ -82,7 +88,10 @@ import { announcementEntity } from 'src/database/iptv/announcement.entity';
       sessionDeviceEntity,
       restoGroupEntity,
       backgroundEntity,
-      announcementEntity
+      announcementEntity,
+      orderRestoEntity,
+      orderRestoDetailEntity,
+      nomor_counter
     ]),
   ],
   controllers: [
@@ -103,11 +112,13 @@ import { announcementEntity } from 'src/database/iptv/announcement.entity';
     EntertainmentController,
     MenuController,
     BackgroundController,
-    AnnouncementController
+    AnnouncementController,
+    OrderRestoController
   ],
   providers: [
     ApkVersionService,
     MinioClientService,
+    generateNumber,
     RoleService,
     RoleMenuService,
     TvGroupService,
@@ -126,7 +137,8 @@ import { announcementEntity } from 'src/database/iptv/announcement.entity';
     EntertainmentService,
     MenuService,
     BackgroundService,
-    AnnouncementService
+    AnnouncementService,
+    OrderRestoService
   ],
 })
 export class CmsModule {}

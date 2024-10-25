@@ -23,6 +23,9 @@ import { sessionDeviceEntity } from "./iptv/session_device.entity";
 import { restoGroupEntity } from "./iptv/resto_group.entity";
 import { backgroundEntity } from "./iptv/background.entity";
 import { announcementEntity } from "./iptv/announcement.entity";
+import { orderRestoEntity } from "./iptv/order_resto.entity";
+import { orderRestoDetailEntity } from "./iptv/order_resto_detail.entity";
+import { nomor_counter } from "./iptv/nomor_counter.entity";
 dotenv.config();
 
 @Injectable({ scope: Scope.REQUEST })
@@ -55,7 +58,10 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
         sessionDeviceEntity,
         restoGroupEntity,
         backgroundEntity,
-        announcementEntity
+        announcementEntity,
+        orderRestoEntity,
+        orderRestoDetailEntity,
+        nomor_counter
       ];
     }else{
       models = [];

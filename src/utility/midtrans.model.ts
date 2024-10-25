@@ -6,6 +6,7 @@ export interface response_midtrans{
 }
 
   export interface request_midtrans {
+    hotelId:string;
     transaction_details: TransactionDetails
     item_details?: ItemDetail[]
     customer_details?: CustomerDetails

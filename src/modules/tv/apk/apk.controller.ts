@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Req, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { tv_channel } from 'src/database/iptv/tv_channel.entity';
 import { ApkService } from './apk.service';
@@ -24,6 +24,7 @@ export class ApkController {
     @Get('getGuest/:no_room')
     // @UseGuards(JwtAuthGuard)
     // @ApiBearerAuth('access-token')
+    @UseInterceptors()
     @ApiOperation({ summary: 'tes guest' })
     @ApiResponse({ status: 200 })
     getGuest(@Req() req:Request) {

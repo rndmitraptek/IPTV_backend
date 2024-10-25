@@ -89,6 +89,7 @@ export class ApkService {
                     },
                     data  // Body data untuk POST/PUT
                   };
+                // console.log(config);
                 await axios(config)
                     .then(response => {
                         // Logic tambahan jika request berhasil

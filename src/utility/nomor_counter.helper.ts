@@ -13,7 +13,7 @@ export class generateNumber {
         private readonly sequelize: Sequelize,
     ) { }
 
-    async getNumbering(deskripsi: string, transaction: Transaction): Promise<[string, number]> {
+    async getNumbering(deskripsi: string, transaction: Transaction, hotelId?:number): Promise<[string, number]> {
         let getbyDesc = await this._nomor_counter.findOne({
             where: {
                 deskripsi: deskripsi
@@ -35,6 +35,7 @@ export class generateNumber {
         let now_bulan = formatInTimeZone(d, timeZone, 'MM');
         // let now_tgl = formatInTimeZone(d, timeZone, 'dd');
         let now_tgl = '';
+        let sethotelId =hotelId ?`-${hotelId}`:'';
         if (gettahun == now_tahun && getbulan == now_bulan) {
             let count = getbyDesc.no_counter + 1;
             let counter = "" + count;
@@ -42,7 +43,7 @@ export class generateNumber {
             let ans = pad.substring(0, pad.length - counter.length) + counter;
             let number = '';
 
-            number = getkode + '-' + now_tahun_yy + now_bulan + '-' + ans;
+            number = getkode + sethotelId+ '-' + now_tahun_yy + now_bulan + '-' + ans;
 
             console.log(number);
             return [number, count];
@@ -52,7 +53,7 @@ export class generateNumber {
             let ans = pad.substring(0, pad.length - counter.length) + counter
             let number = '';
 
-            number = getkode + '-'  + '-' + now_tahun_yy + now_bulan + '-' + ans;
+            number = getkode + sethotelId+ '-'  + '-' + now_tahun_yy + now_bulan + '-' + ans;
 
             console.log(number);
             return [number, 1];

@@ -129,4 +129,30 @@ export class iptv_feature extends Model<iptv_feature> {
         allowNull: false,
     })
     api_secret : string;
+
+
+    @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+    })
+    is_midtrans:boolean;
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+    })
+    midtrans_server_key:string;
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+    })
+    midtrans_client_key:string;
+
+    @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+    })
+    is_midtrans_production:boolean;
+
 }
