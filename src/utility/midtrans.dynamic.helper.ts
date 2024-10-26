@@ -3,16 +3,19 @@ import { InjectModel } from '@nestjs/sequelize';
 import midtransClient from 'midtrans-client';
 import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
 import { request_midtrans, response_midtrans } from './midtrans.model';
+import { logFailedCallbackEntity } from 'src/database/iptv/log_failed_callback.entity';
 
 @Injectable()
 export class MidtransService {
     constructor(
         @InjectModel(iptv_feature)
         private _hotel: typeof iptv_feature,
+        @InjectModel(logFailedCallbackEntity)
+        private _logFailedCallbackEntity: typeof logFailedCallbackEntity,
     ){}
 
 
-    async createMidtransClient(hotelId: string) {
+    async createMidtransClient(hotelId: number) {
         // Dapatkan detail konfigurasi berdasarkan hotelId dari database
         const hotelData =await this._hotel.findOne({where:{id:hotelId,is_active:true}});
         if(hotelData==null){
@@ -24,9 +27,9 @@ export class MidtransService {
 
         // Inisialisasi midtransClient dengan detail hotel tersebut
         const snap = new midtransClient.Snap({
-        isProduction: hotelData.is_midtrans_production,
-        serverKey: hotelData.midtrans_server_key,
-        clientKey: hotelData.midtrans_client_key,
+            isProduction: hotelData.is_midtrans_production,
+            serverKey: hotelData.midtrans_server_key,
+            clientKey: hotelData.midtrans_client_key,
         });
 
         return snap;
@@ -51,4 +54,33 @@ export class MidtransService {
         }
     }
 
+
+    async verifySignature(callbackData: any, serverKey:string): Promise<boolean> {
+        const { order_id, status_code, gross_amount, signature_key } = callbackData;
+    
+        // Buat signature yang seharusnya
+        const expectedSignature = require('crypto')
+          .createHash('sha512')
+          .update(order_id + status_code + gross_amount + serverKey)
+          .digest('hex');
+    
+        // Bandingkan dengan signature dari Midtrans
+        return expectedSignature === signature_key;
+    }
+
+
+    async logFailedCallback(callbackData: any,reason:string):Promise<any>{
+        return await this._logFailedCallbackEntity.create(
+            {
+                callback_data:callbackData,
+                reason:reason
+            },
+            {
+                fields:[
+                    'callback_data',
+                    'reason'
+                ]
+            }
+        );
+    }
 }

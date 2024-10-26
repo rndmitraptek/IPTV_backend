@@ -5,9 +5,11 @@ import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
 import { orderRestoEntity } from 'src/database/iptv/order_resto.entity';
 import { orderRestoDetailEntity } from 'src/database/iptv/order_resto_detail.entity';
 import { users_deviceEntity } from 'src/database/iptv/users_device.entity';
-import { canceledOrder, insertOrderResto, paramGetOrderResto } from './order_resto.dto';
+import { canceledOrder, insertOrderResto, jenisPembayaran, paramGetOrderResto, pembayaranOrder } from './order_resto.dto';
 import { generateNumber } from 'src/utility/nomor_counter.helper';
 import { fn } from 'sequelize';
+import { MidtransService } from 'src/utility/midtrans.dynamic.helper';
+import { request_midtrans } from 'src/utility/midtrans.model';
 
 @Injectable({ scope: Scope.REQUEST })
 export class OrderRestoService {
@@ -19,7 +21,10 @@ export class OrderRestoService {
         private _orderRestoEntity: typeof orderRestoEntity,
         @InjectModel(orderRestoDetailEntity)
         private _orderRestoDetailEntity: typeof orderRestoDetailEntity,
-        private _generateNumber:generateNumber
+        @InjectModel(iptv_feature)
+        private _iptv_feature: typeof iptv_feature,
+        private _generateNumber:generateNumber,
+        private _MidtransService:MidtransService,
     ) {
         this.attr=[
             'id_order_resto',
@@ -145,7 +150,6 @@ export class OrderRestoService {
     
             let insertHeader= await this._orderRestoEntity.create(_orderRestoEntity,{transaction:transaction});
             if(!insertHeader){
-                await transaction.rollback();
                 throw('create order failed');
             }
 
@@ -172,7 +176,6 @@ export class OrderRestoService {
                         transaction:transaction
                     });
                 if(!insertDetail){
-                    await transaction.rollback();
                     throw('create order failed on detail');
                 }
             }
@@ -184,7 +187,130 @@ export class OrderRestoService {
             throw error;
         }
     }
+
+
+    async jenisPembayaranByHotel(req:any):Promise<any>{
+        if(req.user.id_hotel ==undefined){
+            throw('Akun anda tidak memiliki hotel');
+        }
+
+        let getHotel =await this._iptv_feature.findOne({where:{id:req.user.id_hotel}});
+        if(getHotel==null){
+            throw('Data tidak ditemukan');
+        }
+        if(getHotel.is_midtrans){
+            return [
+                {
+                    jenis:jenisPembayaran.BAYAR_DIKAMAR
+                },
+                {
+                    jenis:jenisPembayaran.ONLINE
+                }
+            ];
+        } else {
+            return [
+                {
+                    jenis:jenisPembayaran.BAYAR_DIKAMAR
+                }
+            ];
+        }
+    }
+
+
+    async pembayaran(param:pembayaranOrder,req:any):Promise<any>{
+        let transaction = await this.sequelize.transaction();
+        try {
+            let getData =await this._orderRestoEntity.findOne({where:{id_order_resto:param.id_order_resto}});
+            if(getData==null){
+                throw ('Data tidak ditemukan');
+            }
+
+            let updatePembayaran =await this._orderRestoEntity.update(
+                {
+                    jenis_pembayaran:param.jenis_pembayaran,
+                    updated_by:req.user.username
+                },
+                {
+                    where:{
+                        id_order_resto:param.id_order_resto
+                    },
+                    transaction:transaction
+                }
+            );
+            if(!updatePembayaran){
+                throw ('Pembayaran gagal');
+            }
+
+            if(param.jenis_pembayaran==jenisPembayaran.ONLINE){
+                let paramMidtrans:request_midtrans;
+                paramMidtrans.hotelId =getData.id_hotel;
+                paramMidtrans.transaction_details ={
+                    order_id:getData.order_number,
+                    gross_amount:getData.grand_total
+                };
+                paramMidtrans.enabled_payments =['qris'];
+
+                let createTrxMid =await this._MidtransService.createTransactionMidtrans(paramMidtrans);
+
+                await transaction.commit();
+                return createTrxMid;
+            } else {
+                await transaction.commit();
+                return 'success';
+            }
+
+        } catch (error) {
+            await transaction.rollback();
+            throw error;
+        }
+    }
     
+
+    async verifyCallback(callbackData:any):Promise<any>{
+        try {
+            const { order_id, transaction_status } = callbackData;
+            let getData =await this._orderRestoEntity.findOne({where:{order_number:order_id}});
+            if(getData==null){
+                await this._MidtransService.logFailedCallback(callbackData,'Data tidak ditemukan');
+                // return res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Invalid signature' });
+                throw('Data tidak ditemukan');
+            }
+
+            let getHotel =await this._iptv_feature.findOne({where:{id:getData.id_hotel}});
+            if(getHotel==null){
+                await this._MidtransService.logFailedCallback(callbackData,'Hotel tidak ditemukan');
+                throw('Hotel tidak ditemukan');
+            }
+            if(getHotel.midtrans_server_key==null){
+                await this._MidtransService.logFailedCallback(callbackData,'Serverkey tidak ditemukan');
+                throw('Serverkey tidak ditemukan');
+            }
+
+            let isValid =await this._MidtransService.verifySignature(callbackData,getHotel.midtrans_server_key);
+            if (!isValid) {
+                await this._MidtransService.logFailedCallback(callbackData,'Signature tidak valid');
+                throw('Signature tidak valid');
+            }
+
+            if(transaction_status=='settlement'){
+                let updateStatus =await this._orderRestoEntity.update(
+                    {
+                        status_bayar:1
+                    },
+                    {
+                        where:{id_order_resto:getData.id_order_resto}
+                    }
+                );
+                if(!updateStatus){
+                    await this._MidtransService.logFailedCallback(callbackData,'Update status bayar gagal');
+                    throw('Update status bayar gagal');
+                }
+            }
+            return 'Callback received';
+        } catch (error) {
+            throw error;
+        }
+    }
     
     
     async batal(param:canceledOrder,req:any): Promise<void> {

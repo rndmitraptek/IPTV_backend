@@ -93,6 +93,12 @@ export class orderRestoEntity extends Model<orderRestoEntity> {
     grand_total:number;
 
     @Column({
+        type: DataType.STRING,
+        allowNull: true,
+    })
+    jenis_pembayaran:string;
+    
+    @Column({
         type: DataType.INTEGER,
         allowNull: true,
     })

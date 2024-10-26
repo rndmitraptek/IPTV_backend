@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagg
 import { JwtAuthGuard } from 'src/modules/authentication/users/jwt-auth.gruard';
 import { Request } from 'express';
 import { OrderRestoService } from './order_resto.service';
-import { canceledOrder, insertOrderResto, paramGetOrderResto } from './order_resto.dto';
+import { canceledOrder, insertOrderResto, paramGetOrderResto, pembayaranOrder } from './order_resto.dto';
 
 @Controller('order-resto')
 @ApiTags('cms-order-resto')
@@ -11,7 +11,7 @@ export class OrderRestoController {
     
     constructor(private readonly _OrderRestoService:OrderRestoService){}
 
-    @Get()
+    @Get('getByPeriode')
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Menampilkan Semua Data by periode' })
@@ -24,12 +24,12 @@ export class OrderRestoController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Menampilkan OrderRestoEntity by id ' })
     @ApiResponse({ status: 200 })
-    @Get(':id')
+    @Get('getById/:id')
     findOne(@Param('id') id: number): Promise<any> {
         return this._OrderRestoService.findOne(id);
     }
 
-    @Post()
+    @Post('create')
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'tambah data order' })
@@ -40,7 +40,35 @@ export class OrderRestoController {
 
 
 
-    @Delete()
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'Menampilkan jenis pembayaran berdasarkan hotel (jika tdk integrasi midtrans hnya bayar dikamar saja)' })
+    @ApiResponse({ status: 200 })
+    @Get('getJenisPembayaran')
+    getJenisPembayaran(@Req() req:Request): Promise<any> {
+        return this._OrderRestoService.jenisPembayaranByHotel(req);
+    }
+
+    @Put('pembayaran')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'pembayaran order' })
+    @ApiResponse({ status: 201})  
+    pembayaran(@Body() body: pembayaranOrder, @Req() req:Request): Promise<any> {
+        return this._OrderRestoService.pembayaran(body, req);
+    }
+
+
+    @Post('callback')
+    @ApiOperation({ summary: 'callback status data order  for midtrans' })
+    @ApiResponse({ status: 201})  
+    callback(@Req() req: Request): Promise<any> {
+        return this._OrderRestoService.verifyCallback(req.body);
+    }
+
+
+
+    @Delete('batal')
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Cancel data order' })

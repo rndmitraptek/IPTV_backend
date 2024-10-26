@@ -1,4 +1,4 @@
-import { IsNotEmpty } from "class-validator";
+import { IsEnum, IsNotEmpty } from "class-validator";
 
 export class insertOrderResto{
     @IsNotEmpty()
@@ -22,6 +22,19 @@ export class detailOrderResto{
     @IsNotEmpty()
     subtotal:number;
 
+}
+
+export enum jenisPembayaran {
+    BAYAR_DIKAMAR = "BAYAR DIKAMAR",
+    ONLINE = "ONLINE"
+}
+
+export class pembayaranOrder{
+    @IsNotEmpty()
+    id_order_resto:number;
+    @IsNotEmpty()
+    @IsEnum(jenisPembayaran)
+    jenis_pembayaran:string;
 }
 
 export class paramGetOrderResto{

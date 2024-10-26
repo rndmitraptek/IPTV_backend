@@ -65,6 +65,8 @@ import { OrderRestoController } from './order_resto/order_resto.controller';
 import { OrderRestoService } from './order_resto/order_resto.service';
 import { generateNumber } from 'src/utility/nomor_counter.helper';
 import { nomor_counter } from 'src/database/iptv/nomor_counter.entity';
+import { MidtransService } from 'src/utility/midtrans.dynamic.helper';
+import { logFailedCallbackEntity } from 'src/database/iptv/log_failed_callback.entity';
 
 @Module({
   imports: [
@@ -91,7 +93,8 @@ import { nomor_counter } from 'src/database/iptv/nomor_counter.entity';
       announcementEntity,
       orderRestoEntity,
       orderRestoDetailEntity,
-      nomor_counter
+      nomor_counter,
+      logFailedCallbackEntity
     ]),
   ],
   controllers: [
@@ -119,6 +122,7 @@ import { nomor_counter } from 'src/database/iptv/nomor_counter.entity';
     ApkVersionService,
     MinioClientService,
     generateNumber,
+    MidtransService,
     RoleService,
     RoleMenuService,
     TvGroupService,
