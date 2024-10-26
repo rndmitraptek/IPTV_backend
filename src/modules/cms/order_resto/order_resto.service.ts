@@ -242,13 +242,15 @@ export class OrderRestoService {
             }
 
             if(param.jenis_pembayaran==jenisPembayaran.ONLINE){
-                let paramMidtrans:request_midtrans;
-                paramMidtrans.hotelId =getData.id_hotel;
-                paramMidtrans.transaction_details ={
-                    order_id:getData.order_number,
-                    gross_amount:getData.grand_total
+                let paramMidtrans:request_midtrans ={
+                    hotelId :getData.id_hotel,
+                    transaction_details :{
+                        order_id:getData.order_number,
+                        gross_amount:getData.grand_total
+                    },
+                    enabled_payments :['qris']
                 };
-                paramMidtrans.enabled_payments =['qris'];
+                console.log(paramMidtrans);
 
                 let createTrxMid =await this._MidtransService.createTransactionMidtrans(paramMidtrans);
 
@@ -292,19 +294,28 @@ export class OrderRestoService {
                 throw('Signature tidak valid');
             }
 
+            let status_bayar=0;
             if(transaction_status=='settlement'){
-                let updateStatus =await this._orderRestoEntity.update(
-                    {
-                        status_bayar:1
-                    },
-                    {
-                        where:{id_order_resto:getData.id_order_resto}
-                    }
-                );
-                if(!updateStatus){
-                    await this._MidtransService.logFailedCallback(callbackData,'Update status bayar gagal');
-                    throw('Update status bayar gagal');
+                status_bayar=1;
+            }
+            if(transaction_status=='pending'){
+                status_bayar=2;
+            }
+            if(transaction_status=='cancel'){
+                status_bayar=3;
+            }
+
+            let updateStatus =await this._orderRestoEntity.update(
+                {
+                    status_bayar:status_bayar
+                },
+                {
+                    where:{id_order_resto:getData.id_order_resto}
                 }
+            );
+            if(!updateStatus){
+                await this._MidtransService.logFailedCallback(callbackData,'Update status bayar gagal');
+                throw('Update status bayar gagal');
             }
             return 'Callback received';
         } catch (error) {

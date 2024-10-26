@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import midtransClient from 'midtrans-client';
+import * as midtransClient from 'midtrans-client';
 import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
 import { request_midtrans, response_midtrans } from './midtrans.model';
 import { logFailedCallbackEntity } from 'src/database/iptv/log_failed_callback.entity';
@@ -21,12 +21,13 @@ export class MidtransService {
         if(hotelData==null){
             throw('Hotel tidak ditemukan!');
         }
-        if(hotelData.is_midtrans){
+        if(!hotelData.is_midtrans){
             throw('Hotel tidak terintegrasi midtrans!');
         }
 
+        console.log(midtransClient);
         // Inisialisasi midtransClient dengan detail hotel tersebut
-        const snap = new midtransClient.Snap({
+        const snap = new midtransClient.Midtrans.Snap({
             isProduction: hotelData.is_midtrans_production,
             serverKey: hotelData.midtrans_server_key,
             clientKey: hotelData.midtrans_client_key,
