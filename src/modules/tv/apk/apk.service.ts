@@ -19,6 +19,7 @@ import axios, { AxiosRequestConfig, Method } from 'axios';
 import * as bcrypt from 'bcrypt';
 import { announcementUserEntity } from 'src/database/iptv/announcement_user.entity';
 import { backgroundUserEntity } from 'src/database/iptv/background_user.entity';
+import { greeting_cardUserEntity } from 'src/database/iptv/greeting_card_user.entity';
 
 @Injectable()
 export class ApkService {
@@ -34,6 +35,8 @@ export class ApkService {
         private restoModel: typeof resto,
         @InjectModel(greeting_card)
         private greeting_cardModel: typeof greeting_card,
+        @InjectModel(greeting_cardUserEntity)
+        private _greeting_cardUserEntity: typeof greeting_cardUserEntity,
         @InjectModel(backgroundEntity)
         private _backgroundEntity: typeof backgroundEntity,
         @InjectModel(backgroundUserEntity)
@@ -169,18 +172,27 @@ export class ApkService {
                 where:{id_hotel:req.user.id_hotel},
             }),
             entertainmentModel : await this.entertainmentModel.findAll({where:{is_active:true}}),
-            greetingcard : await this.greeting_cardModel.findOne({
-                where:{
-                    id_user_device:req.user.id_user,
-                    is_active:true,
-                    start_date: {
-                        [Op.lte]: fn('NOW') // start_date >= NOW()
-                    },
-                    end_date: {
-                        [Op.gte]: fn('NOW') // end_date <= NOW()
+            greetingcard : await this._greeting_cardUserEntity.findOne({
+                include:[
+                    {
+                        model:this.greeting_cardModel,
+                        as:'greeting_card',
+                        required:true,
+                        where:{
+                            is_active:true,
+                            start_date: {
+                                [Op.lte]: fn('NOW') // start_date >= NOW()
+                            },
+                            end_date: {
+                                [Op.gte]: fn('NOW') // end_date <= NOW()
+                            }
+                        }
                     }
+                ],
+                where:{
+                    id_user_device:req.user.id_user
                 },
-                order:[['id_greeting_card','desc']]
+                order:[['id_greeting_card_user','desc']]
             }),
             background : await this._backgroundUserEntity.findOne({
                 include:[

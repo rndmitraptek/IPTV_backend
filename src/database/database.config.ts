@@ -29,6 +29,7 @@ import { nomor_counter } from "./iptv/nomor_counter.entity";
 import { logCallbackEntity } from "./iptv/log_failed_callback.entity";
 import { announcementUserEntity } from "./iptv/announcement_user.entity";
 import { backgroundUserEntity } from "./iptv/background_user.entity";
+import { greeting_cardUserEntity } from "./iptv/greeting_card_user.entity";
 dotenv.config();
 
 @Injectable({ scope: Scope.REQUEST })
@@ -54,6 +55,7 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
         resto,
         nearby_attraction,
         greeting_card,
+        greeting_cardUserEntity,
         iptv_feature,
         entertainment,
         menu,

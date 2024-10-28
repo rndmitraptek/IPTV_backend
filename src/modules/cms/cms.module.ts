@@ -69,6 +69,7 @@ import { MidtransService } from 'src/utility/midtrans.dynamic.helper';
 import { logCallbackEntity } from 'src/database/iptv/log_failed_callback.entity';
 import { announcementUserEntity } from 'src/database/iptv/announcement_user.entity';
 import { backgroundUserEntity } from 'src/database/iptv/background_user.entity';
+import { greeting_cardUserEntity } from 'src/database/iptv/greeting_card_user.entity';
 
 @Module({
   imports: [
@@ -85,6 +86,7 @@ import { backgroundUserEntity } from 'src/database/iptv/background_user.entity';
       resto,
       nearby_attraction,
       greeting_card,
+      greeting_cardUserEntity,
       iptv_feature,
       entertainment,
       menu,
