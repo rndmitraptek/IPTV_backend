@@ -274,6 +274,7 @@ export class OrderRestoService {
 
     async verifyCallback(callbackData:any):Promise<any>{
         try {
+            console.log('callbackData');
             console.log(callbackData);
             const { order_id, transaction_status } = callbackData;
             let getData =await this._orderRestoEntity.findOne({where:{order_number:order_id}});
