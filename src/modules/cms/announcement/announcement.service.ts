@@ -116,11 +116,15 @@ export class AnnouncementService {
     
     async update(id: number, _announcementEntity: insertAnnouncement,req:any): Promise<void> {
         _announcementEntity['updated_by']=req.user.username;
-        await this._announcementEntity.update(_announcementEntity, {
-            where: {
-                id_announcement:id,
-            },
-        });
+        for(let i=0; i<_announcementEntity.detail_room.length; i++){
+            _announcementEntity['id_user_device']=_announcementEntity.detail_room[i].id_user_device;
+            await this._announcementEntity.update(_announcementEntity, {
+                where: {
+                    id_announcement:id
+                },
+            });
+        }
+        
     }
     
     async updateStatusActive(id_announcement:number):Promise<announcementEntity>{
