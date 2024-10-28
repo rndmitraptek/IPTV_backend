@@ -252,7 +252,7 @@ export class OrderRestoService {
                         order_id:getData.order_number,
                         gross_amount:getData.grand_total
                     },
-                    enabled_payments :['qris']
+                    // enabled_payments :['qris']
                 };
                 console.log(paramMidtrans);
 
@@ -274,6 +274,7 @@ export class OrderRestoService {
 
     async verifyCallback(callbackData:any):Promise<any>{
         try {
+            console.log(callbackData);
             const { order_id, transaction_status } = callbackData;
             let getData =await this._orderRestoEntity.findOne({where:{order_number:order_id}});
             if(getData==null){
