@@ -28,6 +28,7 @@ import { orderRestoDetailEntity } from "./iptv/order_resto_detail.entity";
 import { nomor_counter } from "./iptv/nomor_counter.entity";
 import { logCallbackEntity } from "./iptv/log_failed_callback.entity";
 import { announcementUserEntity } from "./iptv/announcement_user.entity";
+import { backgroundUserEntity } from "./iptv/background_user.entity";
 dotenv.config();
 
 @Injectable({ scope: Scope.REQUEST })
@@ -60,6 +61,7 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
         sessionDeviceEntity,
         restoGroupEntity,
         backgroundEntity,
+        backgroundUserEntity,
         announcementEntity,
         announcementUserEntity,
         orderRestoEntity,

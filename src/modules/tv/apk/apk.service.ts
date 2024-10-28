@@ -18,6 +18,7 @@ import { announcementEntity } from 'src/database/iptv/announcement.entity';
 import axios, { AxiosRequestConfig, Method } from 'axios';
 import * as bcrypt from 'bcrypt';
 import { announcementUserEntity } from 'src/database/iptv/announcement_user.entity';
+import { backgroundUserEntity } from 'src/database/iptv/background_user.entity';
 
 @Injectable()
 export class ApkService {
@@ -35,6 +36,8 @@ export class ApkService {
         private greeting_cardModel: typeof greeting_card,
         @InjectModel(backgroundEntity)
         private _backgroundEntity: typeof backgroundEntity,
+        @InjectModel(backgroundUserEntity)
+        private _backgroundUserEntity: typeof backgroundUserEntity,
         @InjectModel(announcementEntity)
         private _announcementEntity: typeof announcementEntity,
         @InjectModel(announcementUserEntity)
@@ -75,7 +78,7 @@ export class ApkService {
             where:{
                 id_user_device:req.user.id_user
             },
-            order:[['id_announcement','desc']]
+            order:[['id_announcement_user','desc']]
         });
         let announcement='';
         for(let i=0; i<getAnnouncements.length; i++){
@@ -179,18 +182,27 @@ export class ApkService {
                 },
                 order:[['id_greeting_card','desc']]
             }),
-            background : await this._backgroundEntity.findOne({
-                where:{
-                    id_user_device:req.user.id_user,
-                    is_active:true,
-                    start_date: {
-                        [Op.lte]: fn('NOW') // start_date >= NOW()
-                    },
-                    end_date: {
-                        [Op.gte]: fn('NOW') // end_date <= NOW()
+            background : await this._backgroundUserEntity.findOne({
+                include:[
+                    {
+                        model:backgroundEntity,
+                        as:'background',
+                        required:true,
+                        where:{
+                            is_active:true,
+                            start_date: {
+                                [Op.lte]: fn('NOW') // start_date >= NOW()
+                            },
+                            end_date: {
+                                [Op.gte]: fn('NOW') // end_date <= NOW()
+                            }
+                        }
                     }
+                ],
+                where:{
+                    id_user_device:req.user.id_user
                 },
-                order:[['id_background','desc']]
+                order:[['id_background_user','desc']]
             }),
             announcement : announcement,
             guesthotel : {

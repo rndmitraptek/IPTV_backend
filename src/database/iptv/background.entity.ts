@@ -4,11 +4,13 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { users_deviceEntity } from './users_device.entity';
 import { iptv_feature } from './iptv_feature.entity';
+import { backgroundUserEntity } from './background_user.entity';
 
 @Table({
   tableName: 'background',
@@ -24,6 +26,11 @@ export class backgroundEntity extends Model<backgroundEntity> {
     primaryKey: true,
   })
   id_background: number;
+  @HasMany(() => backgroundUserEntity, {
+    foreignKey: 'id_background',
+    as: 'detail',
+  })
+  detail: backgroundUserEntity[];
 
   @Column({
     type: DataType.STRING,
@@ -67,17 +74,17 @@ export class backgroundEntity extends Model<backgroundEntity> {
   })
   hotel: iptv_feature;
 
-  @Column({
-    type: DataType.BIGINT,
-    allowNull: false,
-  })
-  @ForeignKey(() => users_deviceEntity)
-  id_user_device: number;
-  @BelongsTo(() => users_deviceEntity, {
-    foreignKey: 'id_user_device',
-    as: 'user_device',
-  })
-  user_device: users_deviceEntity;
+  // @Column({
+  //   type: DataType.BIGINT,
+  //   allowNull: false,
+  // })
+  // @ForeignKey(() => users_deviceEntity)
+  // id_user_device: number;
+  // @BelongsTo(() => users_deviceEntity, {
+  //   foreignKey: 'id_user_device',
+  //   as: 'user_device',
+  // })
+  // user_device: users_deviceEntity;
 
   @Column({
     type: DataType.DATE,
@@ -100,4 +107,11 @@ export class backgroundEntity extends Model<backgroundEntity> {
     allowNull: false,
   })
   updated_by: string;
+
+
+  toJSON() {
+    // Override untuk menambahkan `status_order_name` dalam output JSON
+    const attributes = super.toJSON() as this;
+    return { ...attributes};
+  }
 }

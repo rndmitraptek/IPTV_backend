@@ -8,6 +8,7 @@ import { BuckectName } from 'src/utility/constant';
 import { MinioClientService } from 'src/utility/minio-client.utils';
 import { insertBackground } from './background.dto';
 import { BufferedFile } from 'src/utility/minio-client.model';
+import { backgroundUserEntity } from 'src/database/iptv/background_user.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class BackgroundService {
@@ -15,12 +16,14 @@ export class BackgroundService {
         private sequelize:Sequelize,
         @InjectModel(backgroundEntity)
         private _backgroundEntity: typeof backgroundEntity,
+        @InjectModel(backgroundUserEntity)
+        private _backgroundUserEntity: typeof backgroundUserEntity,
         private MinioClientService: MinioClientService,
     ) {}
     
-    findAll(req:any): Promise<backgroundEntity[]> {
+    async findAll(req:any): Promise<any> {
         try {
-            return this._backgroundEntity.findAll({
+            let datas=await  this._backgroundEntity.findAll({
                 attributes:[
                     'id_background',
                     'background_url',
@@ -30,8 +33,6 @@ export class BackgroundService {
                     'is_active',
                     'id_hotel',
                     [this.sequelize.col('hotel.title_hotel'),'nama_hotel'],
-                    'id_user_device',
-                    [this.sequelize.col('user_device.room_id'),'room_id'],
                     'created_at',
                     'updated_at',
                     'created_by',
@@ -45,23 +46,35 @@ export class BackgroundService {
                         as:'hotel'
                     },
                     {
-                        attributes:[],
-                        model:users_deviceEntity,
-                        as:'user_device'
+                        attributes:['id_background_user','id_background','id_user_device'],
+                        model:backgroundUserEntity,
+                        as:'detail',
+                        include:[
+                            {
+                                attributes:['room_id'],
+                                model:users_deviceEntity,
+                                as:'user_device'
+                            }
+                        ]
                     }
                 ],
                 where:{id_hotel:req.user.id_hotel,is_active:true},
                 order:[['id_background','desc']]
             });          
             
+            return datas.map(data => ({
+                ...data.get(),
+                id_user_device: data.detail.map(item => item.id_user_device.toString()),
+                room_id: data.detail.map(item => item.user_device.room_id.toString())
+            }));  
         } catch (error) {
             throw error;
         }
     }
 
     
-    findOne(id: number): Promise<backgroundEntity> {
-        return this._backgroundEntity.findOne({
+    async findOne(id: number): Promise<any> {
+        let data=await this._backgroundEntity.findOne({
             attributes:[
                 'id_background',
                 'background_url',
@@ -71,8 +84,6 @@ export class BackgroundService {
                 'is_active',
                 'id_hotel',
                 [this.sequelize.col('hotel.title_hotel'),'nama_hotel'],
-                'id_user_device',
-                [this.sequelize.col('user_device.room_id'),'room_id'],
                 'created_at',
                 'updated_at',
                 'created_by',
@@ -86,9 +97,16 @@ export class BackgroundService {
                     as:'hotel'
                 },
                 {
-                    attributes:[],
-                    model:users_deviceEntity,
-                    as:'user_device'
+                    attributes:['id_background_user','id_background','id_user_device'],
+                    model:backgroundUserEntity,
+                    as:'detail',
+                    include:[
+                        {
+                            attributes:['room_id'],
+                            model:users_deviceEntity,
+                            as:'user_device'
+                        }
+                    ]
                 }
             ],
             where: {
@@ -97,37 +115,106 @@ export class BackgroundService {
             },
         });
 
+        return {
+            ...data.get(),
+            id_user_device: data.detail.map(item => item.id_user_device.toString()),
+            room_id: data.detail.map(item => item.user_device.room_id.toString())
+        };
+
     }
     
-    async create(_backgroundEntity: insertBackground,req:any): Promise<any> {
-        if(req.user.id_hotel ==undefined){
-            throw ('Akun anda tidak memiliki hotel');
-        }
+    async create(_param: insertBackground,req:any): Promise<any> {
+        let transaction = await this.sequelize.transaction();
+        try {
+            if(req.user.id_hotel ==undefined){
+                throw ('Akun anda tidak memiliki hotel');
+            }
+    
+            _param['created_by']=req.user.username;
+            _param['updated_by']=req.user.username;
+            _param['id_hotel']=req.user.id_hotel;
+            _param['is_active']=true;
+    
+            if(_param.detail_room.length==0){
+                throw ('detail room tidak boleh kosong');
+            }
+    
+            let insertHeader= await this._backgroundEntity.create(_param,{transaction:transaction});
+            if(!insertHeader){
+                throw('insert gagal');
+            }
 
-        _backgroundEntity['created_by']=req.user.username;
-        _backgroundEntity['updated_by']=req.user.username;
-        _backgroundEntity['id_hotel']=req.user.id_hotel;
-        _backgroundEntity['is_active']=true;
+            for(let i=0; i<_param.detail_room.length; i++){
+                let insertDetail=await this._backgroundUserEntity.create(
+                    {
+                        id_background:insertHeader.id_background,
+                        id_user_device:_param.detail_room[i].id_user_device
+                    },
+                    {
+                        fields:[
+                            'id_background',
+                            'id_user_device'
+                        ],
+                        transaction:transaction
+                    }
+                );
+                if(!insertDetail){
+                    throw('insert gagal');
+                }
+            }
 
-        if(_backgroundEntity.detail_room.length==0){
-            throw ('detail room tidak boleh kosong');
+            await transaction.commit();
+            return 'success';
+        } catch (error) {
+            await transaction.rollback();
+            throw error;
         }
-
-        for(let i=0; i<_backgroundEntity.detail_room.length; i++){
-            _backgroundEntity['id_user_device']=_backgroundEntity.detail_room[i].id_user_device;
-            await this._backgroundEntity.create(_backgroundEntity);
-        }
-        return 'success';
+        
     }
     
-    async update(id: number, _backgroundEntity: insertBackground,req:any): Promise<void> {
-        _backgroundEntity['updated_by']=req.user.username;
-        await this._backgroundEntity.update(_backgroundEntity, {
-            where: {
-                id_background:id,
-            },
-        });
+
+
+    async update(id: number, _param: insertBackground,req:any): Promise<any> {
+        let transaction = await this.sequelize.transaction();
+        try {
+            _param['updated_by']=req.user.username;
+            await this._backgroundEntity.update(_param, {
+                where: {
+                    id_background:id
+                },
+            });
+
+            let deleteUser =await this._backgroundUserEntity.destroy({where:{id_background:id}});
+            if(!deleteUser){
+                throw('update gagal');
+            }
+            for(let i=0; i<_param.detail_room.length; i++){
+                let insertDetail=await this._backgroundUserEntity.create(
+                    {
+                        id_background:id,
+                        id_user_device:_param.detail_room[i].id_user_device
+                    },
+                    {
+                        fields:[
+                            'id_background',
+                            'id_user_device'
+                        ],
+                        transaction:transaction
+                    }
+                );
+                if(!insertDetail){
+                    throw('update gagal');
+                }
+            }
+            await transaction.commit();
+            return 'success';
+        } catch (error) {
+            await transaction.rollback();
+            throw error;
+        }
+                
     }
+
     
     async updateStatusActive(id_background:number):Promise<backgroundEntity>{
         try {

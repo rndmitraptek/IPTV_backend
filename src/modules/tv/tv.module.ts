@@ -20,6 +20,7 @@ import { ApkService } from './apk/apk.service';
 import { backgroundEntity } from 'src/database/iptv/background.entity';
 import { announcementEntity } from 'src/database/iptv/announcement.entity';
 import { announcementUserEntity } from 'src/database/iptv/announcement_user.entity';
+import { backgroundUserEntity } from 'src/database/iptv/background_user.entity';
 
 @Module({
   imports:[
@@ -39,6 +40,7 @@ import { announcementUserEntity } from 'src/database/iptv/announcement_user.enti
       iptv_feature,
       entertainment,
       backgroundEntity,
+      backgroundUserEntity,
       announcementEntity,
       announcementUserEntity
     ])

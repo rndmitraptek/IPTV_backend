@@ -68,6 +68,7 @@ import { nomor_counter } from 'src/database/iptv/nomor_counter.entity';
 import { MidtransService } from 'src/utility/midtrans.dynamic.helper';
 import { logCallbackEntity } from 'src/database/iptv/log_failed_callback.entity';
 import { announcementUserEntity } from 'src/database/iptv/announcement_user.entity';
+import { backgroundUserEntity } from 'src/database/iptv/background_user.entity';
 
 @Module({
   imports: [
@@ -91,6 +92,7 @@ import { announcementUserEntity } from 'src/database/iptv/announcement_user.enti
       sessionDeviceEntity,
       restoGroupEntity,
       backgroundEntity,
+      backgroundUserEntity,
       announcementEntity,
       announcementUserEntity,
       orderRestoEntity,
