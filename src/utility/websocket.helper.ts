@@ -12,31 +12,30 @@ import {
       origin: '*',
     },
   })
-  export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
+  export class AppGateway {
     @WebSocketServer()
     server: Server;
   
-    handleConnection(client: Socket) {
-        console.log('handle connection WS');
-        console.log(client);
-        const id_hotel = client.handshake.query.id_hotel;
-        client.join(id_hotel); // Tambahkan klien ke room berdasarkan id_hotel
-        console.log(`Client ${client.id} connected to tenant ${id_hotel}`);
-    }
+    // handleConnection(client: Socket) {
+    //     console.log('handle connection WS');
+    //     console.log(client);
+    //     const id_hotel = client.handshake.query.id_hotel;
+    //     client.join(id_hotel); // Tambahkan klien ke room berdasarkan id_hotel
+    //     console.log(`Client ${client.id} connected to tenant ${id_hotel}`);
+    // }
   
-    handleDisconnect(client: Socket) {
-      console.log('Client disconnected:', client.id);
-    }
+    // handleDisconnect(client: Socket) {
+    //   console.log('Client disconnected:', client.id);
+    // }
   
     @SubscribeMessage('message')
-    handleMessage(client: Socket, payload: { id_hotel: string, message: string }): void {
-      const { id_hotel, message } = payload;
+    handleMessage(payload: { id_hotel: string, message: any }): void {
       // Kirim pesan ke semua klien di room id_hotel
-      this.server.to(id_hotel).emit('message', message);
+      this.server.emit('message', payload);
     }
   
-    sendToSpecificClient(clientId: string, message: string) {
-      this.server.to(clientId).emit('message', message); // Kirim pesan ke klien tertentu
-    }
+    // sendToSpecificClient(clientId: string, message: string) {
+    //   this.server.to(clientId).emit('message', message); // Kirim pesan ke klien tertentu
+    // }
   }
   

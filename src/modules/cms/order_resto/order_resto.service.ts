@@ -10,6 +10,7 @@ import { generateNumber } from 'src/utility/nomor_counter.helper';
 import { fn } from 'sequelize';
 import { MidtransService } from 'src/utility/midtrans.dynamic.helper';
 import { request_midtrans } from 'src/utility/midtrans.model';
+import { AppGateway } from 'src/utility/websocket.helper';
 
 @Injectable({ scope: Scope.REQUEST })
 export class OrderRestoService {
@@ -25,6 +26,7 @@ export class OrderRestoService {
         private _iptv_feature: typeof iptv_feature,
         private _generateNumber:generateNumber,
         private _MidtransService:MidtransService,
+        private _AppGateway:AppGateway,
     ) {
         this.attr=[
             'id_order_resto',
@@ -191,6 +193,15 @@ export class OrderRestoService {
             await transaction.rollback();
             throw error;
         }
+    }
+
+    async tesWS(param:insertOrderResto,req:any):Promise<any>{
+        const payload={
+            id_hotel:req.user.id_hotel,
+            message:param
+        }
+        let send =await this._AppGateway.handleMessage(payload);
+        return 'success';
     }
 
 

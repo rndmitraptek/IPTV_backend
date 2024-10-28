@@ -88,4 +88,13 @@ export class OrderRestoController {
         return this._OrderRestoService.updateStatusOrder(body, req);
     }
 
+
+    @Post('tesWS')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'tambah data order' })
+    @ApiResponse({ status: 201})  
+    tesWS(@Body() OrderRestoEntity: insertOrderResto, @Req() req:Request): Promise<any> {
+        return this._OrderRestoService.tesWS(OrderRestoEntity, req);
+    }
 }

@@ -70,6 +70,7 @@ import { logCallbackEntity } from 'src/database/iptv/log_failed_callback.entity'
 import { announcementUserEntity } from 'src/database/iptv/announcement_user.entity';
 import { backgroundUserEntity } from 'src/database/iptv/background_user.entity';
 import { greeting_cardUserEntity } from 'src/database/iptv/greeting_card_user.entity';
+import { AppGateway } from 'src/utility/websocket.helper';
 
 @Module({
   imports: [
@@ -129,6 +130,7 @@ import { greeting_cardUserEntity } from 'src/database/iptv/greeting_card_user.en
     MinioClientService,
     generateNumber,
     MidtransService,
+    AppGateway,
     RoleService,
     RoleMenuService,
     TvGroupService,
