@@ -14,7 +14,7 @@ COPY . .
 
 RUN npm run build
 
-FROM node:22.9.0 as production
+FROM node:18.18.2 as production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
@@ -23,7 +23,9 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
+RUN npm cache clean --force
 RUN rm -rf node_modules package-lock.json
+RUN npm install glob rimraf
 
 RUN npm install --only=production
 
