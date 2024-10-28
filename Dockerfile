@@ -4,11 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm cache clean --force
-RUN rm -rf node_modules package-lock.json
 RUN npm install
-RUN npm install --only=development
-
 
 COPY . .
 
@@ -23,14 +19,9 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm cache clean --force
-RUN rm -rf node_modules package-lock.json
-RUN npm install
-
 RUN npm install --only=production
 
-COPY . .
-
 COPY --from=development /usr/src/app/dist ./dist
+
 EXPOSE 3000
 CMD ["node", "dist/main"]
