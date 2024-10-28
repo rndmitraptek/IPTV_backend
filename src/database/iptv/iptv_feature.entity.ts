@@ -155,4 +155,10 @@ export class iptv_feature extends Model<iptv_feature> {
     })
     is_midtrans_production:boolean;
 
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+    })
+    pin:string;
 }

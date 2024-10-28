@@ -23,4 +23,5 @@ export class hotelDtoInsert{
     })
     actived_at : Date
 
+    pin:string;
 }

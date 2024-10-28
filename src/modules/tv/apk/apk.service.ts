@@ -16,6 +16,7 @@ import { fn, Op } from 'sequelize';
 import { backgroundEntity } from 'src/database/iptv/background.entity';
 import { announcementEntity } from 'src/database/iptv/announcement.entity';
 import axios, { AxiosRequestConfig, Method } from 'axios';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class ApkService {
@@ -193,5 +194,30 @@ export class ApkService {
             channel : await this.tv_channelRepo.GetAll()
         };
         return data;
+    }
+
+
+
+    async cekPin(pin:string, req:any):Promise<any>{
+        try {
+            if(req.user.id_hotel==undefined){
+                throw('Akun anda tidak memiliki hotel');
+            }
+            let hotel = await this.iptv_featureModel.findOne({
+                where: {
+                    id:req.user.id_hotel,
+                    is_active:true
+                },
+            });
+            if(!hotel){
+                throw ('Hotel tidak di temukan');
+            }
+            if (!await bcrypt.compare(pin, hotel.pin)) {
+                throw ('pin salah');
+            }
+            return 'success';
+        } catch (error) {
+            throw error;
+        }
     }
 }

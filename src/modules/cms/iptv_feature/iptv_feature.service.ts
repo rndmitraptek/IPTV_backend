@@ -2,6 +2,7 @@ import { Injectable, Scope } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
 import { iptv_featureDtoInsert } from './iptv_feature.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable({ scope: Scope.REQUEST })
 export class IptvFeatureService {
@@ -42,6 +43,12 @@ export class IptvFeatureService {
     
     async update(id: number, _iptv_feature: iptv_featureDtoInsert,req:any): Promise<void> {
         _iptv_feature['updated_by']=req.user.username;
+        if(_iptv_feature.pin !=undefined){
+            if(_iptv_feature.pin!=null){
+                _iptv_feature.pin = await bcrypt.hash(_iptv_feature.pin, 10);
+            }
+        }
+        
         await this.iptv_featureModel.update(_iptv_feature, {
             where: {
                 id:id,

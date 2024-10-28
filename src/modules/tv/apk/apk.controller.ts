@@ -21,13 +21,23 @@ export class ApkController {
         return this.apkService.getData(req);
     }
 
-    @Get('getGuest/:no_room')
-    // @UseGuards(JwtAuthGuard)
-    // @ApiBearerAuth('access-token')
+    // @Get('getGuest/:no_room')
+    // // @UseGuards(JwtAuthGuard)
+    // // @ApiBearerAuth('access-token')
+    // @UseInterceptors()
+    // @ApiOperation({ summary: 'tes guest' })
+    // @ApiResponse({ status: 200 })
+    // getGuest(@Req() req:Request) {
+    //     return 'John Cena';
+    // }
+
+    @Get('cekPin/:pin')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
     @UseInterceptors()
-    @ApiOperation({ summary: 'tes guest' })
+    @ApiOperation({ summary: 'cek Pin' })
     @ApiResponse({ status: 200 })
-    getGuest(@Req() req:Request) {
-        return 'John Cena';
+    cekPin(@Param('pin') pin:string,@Req() req:Request) {
+        return this.apkService.cekPin(pin,req);
     }
 }
