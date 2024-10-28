@@ -102,4 +102,11 @@ export class announcementEntity extends Model<announcementEntity> {
     allowNull: false,
   })
   updated_by: string;
+
+
+  toJSON() {
+    // Override untuk menambahkan `status_order_name` dalam output JSON
+    const attributes = super.toJSON() as this;
+    return { ...attributes};
+  }
 }

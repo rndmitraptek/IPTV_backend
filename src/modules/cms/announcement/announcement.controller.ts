@@ -24,9 +24,9 @@ export class AnnouncementController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Menampilkan by id' })
     @ApiResponse({ status: 200 })
-    @Get(':id_background')
-    findOne(@Param('id_background') id_background: number): Promise<any> {
-        return this._AnnouncementService.findOne(id_background);
+    @Get(':id_announcement')
+    findOne(@Param('id_announcement') id_announcement: number): Promise<any> {
+        return this._AnnouncementService.findOne(id_announcement);
     }
 
     @Post()
@@ -38,23 +38,23 @@ export class AnnouncementController {
         return this._AnnouncementService.create(body,req);
     }
 
-    @Put(':id_background')
+    @Put(':id_announcement')
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Update data body' })
     @ApiResponse({ status: 200 })
-    update(@Param('id_background') id_background: number, @Body() body: insertAnnouncement, @Req() req:Request) {
-        return this._AnnouncementService.update(id_background, body,req);
+    update(@Param('id_announcement') id_announcement: number, @Body() body: insertAnnouncement, @Req() req:Request) {
+        return this._AnnouncementService.update(id_announcement, body,req);
     }
 
 
-    @Put('updateStatus/:id_background')
+    @Put('updateStatus/:id_announcement')
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Update status data' })
     @ApiResponse({ status: 200})
-    updateStatusActive(@Param('id_background') id_background: number) {
-        return this._AnnouncementService.updateStatusActive(id_background);
+    updateStatusActive(@Param('id_announcement') id_announcement: number) {
+        return this._AnnouncementService.updateStatusActive(id_announcement);
     }
             
 }

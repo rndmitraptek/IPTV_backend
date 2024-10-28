@@ -57,12 +57,8 @@ export class AnnouncementService {
                 order:[['id_announcement','desc']]
             });          
             
-            // for(let i=0; i<datas.length; i++){
-            //     datas[i]['id_user_device']=datas[i].detail.map(item => item.id_user_device.toString());
-            // }
-            // return datas;
             return datas.map(data => ({
-                ...data,
+                ...data.get(),
                 id_user_device: data.detail.map(item => item.id_user_device.toString()),
                 room_id: data.detail.map(item => item.user_device.room_id.toString())
             }));    
@@ -72,8 +68,8 @@ export class AnnouncementService {
     }
 
     
-    findOne(id: number): Promise<announcementEntity> {
-        return this._announcementEntity.findOne({
+    async findOne(id: number): Promise<any> {
+        let data=await this._announcementEntity.findOne({
             attributes:[
                 'id_announcement',
                 'description',
@@ -97,7 +93,14 @@ export class AnnouncementService {
                 {
                     attributes:['id_announcement_user','id_announcement','id_user_device'],
                     model:announcementUserEntity,
-                    as:'detail'
+                    as:'detail',
+                    include:[
+                        {
+                            attributes:['room_id'],
+                            model:users_deviceEntity,
+                            as:'user_device'
+                        }
+                    ]
                 }
             ],
             where: {
@@ -105,6 +108,12 @@ export class AnnouncementService {
                 is_active:true
             },
         });
+
+        return {
+            ...data.get(),
+            id_user_device: data.detail.map(item => item.id_user_device.toString()),
+            room_id: data.detail.map(item => item.user_device.room_id.toString())
+        };
 
     }
     
