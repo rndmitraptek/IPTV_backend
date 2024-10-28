@@ -4,9 +4,9 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install glob rimraf
-
-RUN npm install --only=development
+RUN rm -rf node_modules package-lock.json \
+    && npm install glob rimraf \
+    && npm install --only=development
 
 COPY . .
 
@@ -20,6 +20,8 @@ ENV NODE_ENV=${NODE_ENV}
 WORKDIR /usr/src/app
 
 COPY package*.json ./
+
+RUN rm -rf node_modules package-lock.json
 
 RUN npm install --only=production
 
