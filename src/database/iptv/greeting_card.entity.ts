@@ -32,11 +32,11 @@ export class greeting_card extends Model<greeting_card> {
     })
     video_url : string;
     
-    @Column({
-        type: DataType.STRING,
-        allowNull: false,
-    })
-    no_room : string;
+    // @Column({
+    //     type: DataType.STRING,
+    //     allowNull: false,
+    // })
+    // no_room : string;
     
     @Column({
         type: DataType.STRING,
