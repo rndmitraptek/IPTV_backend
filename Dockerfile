@@ -4,9 +4,11 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN rm -rf node_modules package-lock.json \
-    && npm install glob rimraf \
-    && npm install --only=development
+RUN npm cache clean --force
+RUN rm -rf node_modules package-lock.json
+RUN npm install glob rimraf
+RUN npm install --only=development
+
 
 COPY . .
 
