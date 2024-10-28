@@ -9,7 +9,7 @@ import {
   
   @WebSocketGateway({
     cors: {
-      origin: '*',
+      origin: 'https://union-iptv-cms.vercel.app',
     },
   })
   export class AppGateway {
