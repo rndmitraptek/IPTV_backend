@@ -4,11 +4,13 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { users_deviceEntity } from './users_device.entity';
 import { iptv_feature } from './iptv_feature.entity';
+import { announcementUserEntity } from './announcement_user.entity';
 
 @Table({
   tableName: 'announcement',
@@ -24,6 +26,11 @@ export class announcementEntity extends Model<announcementEntity> {
     primaryKey: true,
   })
   id_announcement: number;
+  @HasMany(() => announcementUserEntity, {
+      foreignKey: 'id_announcement',
+      as: 'detail',
+    })
+    detail: announcementUserEntity[];
 
   @Column({
     type: DataType.STRING,
@@ -62,17 +69,17 @@ export class announcementEntity extends Model<announcementEntity> {
   })
   hotel: iptv_feature;
 
-  @Column({
-    type: DataType.BIGINT,
-    allowNull: false,
-  })
-  @ForeignKey(() => users_deviceEntity)
-  id_user_device: number;
-  @BelongsTo(() => users_deviceEntity, {
-    foreignKey: 'id_user_device',
-    as: 'user_device',
-  })
-  user_device: users_deviceEntity;
+  // @Column({
+  //   type: DataType.BIGINT,
+  //   allowNull: false,
+  // })
+  // @ForeignKey(() => users_deviceEntity)
+  // id_user_device: number;
+  // @BelongsTo(() => users_deviceEntity, {
+  //   foreignKey: 'id_user_device',
+  //   as: 'user_device',
+  // })
+  // user_device: users_deviceEntity;
 
   @Column({
     type: DataType.DATE,

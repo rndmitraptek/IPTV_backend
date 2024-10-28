@@ -17,6 +17,7 @@ import { backgroundEntity } from 'src/database/iptv/background.entity';
 import { announcementEntity } from 'src/database/iptv/announcement.entity';
 import axios, { AxiosRequestConfig, Method } from 'axios';
 import * as bcrypt from 'bcrypt';
+import { announcementUserEntity } from 'src/database/iptv/announcement_user.entity';
 
 @Injectable()
 export class ApkService {
@@ -36,6 +37,8 @@ export class ApkService {
         private _backgroundEntity: typeof backgroundEntity,
         @InjectModel(announcementEntity)
         private _announcementEntity: typeof announcementEntity,
+        @InjectModel(announcementUserEntity)
+        private _announcementUserEntity: typeof announcementUserEntity,
         @InjectModel(info_hotel)
         private info_hotelModel: typeof info_hotel,
         @InjectModel(info_room)
@@ -52,22 +55,31 @@ export class ApkService {
             throw('Akun anda tidak memiliki hotel');
         }
         // console.log(req.user);
-        let getAnnouncements =await this._announcementEntity.findAll({
-            where:{
-                id_user_device:req.user.id_user,
-                is_active:true,
-                start_date: {
-                    [Op.lte]: fn('NOW') // start_date >= NOW()
-                },
-                end_date: {
-                    [Op.gte]: fn('NOW') // end_date <= NOW()
+        let getAnnouncements =await this._announcementUserEntity.findAll({
+            include:[
+                {
+                    model:announcementEntity,
+                    as:'announcement',
+                    required:true,
+                    where:{
+                        is_active:true,
+                        start_date: {
+                            [Op.lte]: fn('NOW') // start_date >= NOW()
+                        },
+                        end_date: {
+                            [Op.gte]: fn('NOW') // end_date <= NOW()
+                        }
+                    }
                 }
+            ],
+            where:{
+                id_user_device:req.user.id_user
             },
             order:[['id_announcement','desc']]
         });
         let announcement='';
         for(let i=0; i<getAnnouncements.length; i++){
-            announcement += getAnnouncements[i].description;
+            announcement += getAnnouncements[i].announcement.description;
             if(i < (getAnnouncements.length-1)){
                 announcement +=', ';
             }
