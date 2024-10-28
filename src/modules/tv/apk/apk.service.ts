@@ -134,6 +134,52 @@ export class ApkService {
             }
         }
 
+        const background =await this._backgroundUserEntity.findOne({
+            include:[
+                {
+                    model:backgroundEntity,
+                    as:'background',
+                    required:true,
+                    where:{
+                        is_active:true,
+                        start_date: {
+                            [Op.lte]: fn('NOW') // start_date >= NOW()
+                        },
+                        end_date: {
+                            [Op.gte]: fn('NOW') // end_date <= NOW()
+                        }
+                    }
+                }
+            ],
+            where:{
+                id_user_device:req.user.id_user
+            },
+            order:[['id_background_user','desc']]
+        });
+
+        const greetingCard =await this._greeting_cardUserEntity.findOne({
+            include:[
+                {
+                    model:this.greeting_cardModel,
+                    as:'greeting_card',
+                    required:true,
+                    where:{
+                        is_active:true,
+                        start_date: {
+                            [Op.lte]: fn('NOW') // start_date >= NOW()
+                        },
+                        end_date: {
+                            [Op.gte]: fn('NOW') // end_date <= NOW()
+                        }
+                    }
+                }
+            ],
+            where:{
+                id_user_device:req.user.id_user
+            },
+            order:[['id_greeting_card_user','desc']]
+        });
+
         let data = {
             nama : nama,
             iptv : getHotel,
@@ -172,50 +218,8 @@ export class ApkService {
                 where:{id_hotel:req.user.id_hotel},
             }),
             entertainmentModel : await this.entertainmentModel.findAll({where:{is_active:true}}),
-            greetingcard : await this._greeting_cardUserEntity.findOne({
-                include:[
-                    {
-                        model:this.greeting_cardModel,
-                        as:'greeting_card',
-                        required:true,
-                        where:{
-                            is_active:true,
-                            start_date: {
-                                [Op.lte]: fn('NOW') // start_date >= NOW()
-                            },
-                            end_date: {
-                                [Op.gte]: fn('NOW') // end_date <= NOW()
-                            }
-                        }
-                    }
-                ],
-                where:{
-                    id_user_device:req.user.id_user
-                },
-                order:[['id_greeting_card_user','desc']]
-            }),
-            background : await this._backgroundUserEntity.findOne({
-                include:[
-                    {
-                        model:backgroundEntity,
-                        as:'background',
-                        required:true,
-                        where:{
-                            is_active:true,
-                            start_date: {
-                                [Op.lte]: fn('NOW') // start_date >= NOW()
-                            },
-                            end_date: {
-                                [Op.gte]: fn('NOW') // end_date <= NOW()
-                            }
-                        }
-                    }
-                ],
-                where:{
-                    id_user_device:req.user.id_user
-                },
-                order:[['id_background_user','desc']]
-            }),
+            greetingcard : greetingCard!=null ? greetingCard.greeting_card:null,
+            background : background!=null ?background.background: null,
             announcement : announcement,
             guesthotel : {
                 hotel: await this.info_hotelModel.findOne({
