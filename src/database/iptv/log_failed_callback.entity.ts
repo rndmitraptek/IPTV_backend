@@ -22,8 +22,14 @@ export class logCallbackEntity extends Model<logCallbackEntity> {
         type: DataType.STRING,
         allowNull: true,
     })
+    transaction_status:string;
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: true,
+    })
     order_id:string;
-    
+
     @Column({
         type: DataType.STRING,
         allowNull: true,

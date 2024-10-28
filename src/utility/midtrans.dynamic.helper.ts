@@ -76,13 +76,15 @@ export class MidtransService {
             {
                 callback_data:callbackData,
                 reason:reason,
-                order_id:order_id
+                order_id:order_id,
+                transaction_status:callbackData.transaction_status
             },
             {
                 fields:[
                     'callback_data',
                     'reason',
-                    'order_id'
+                    'order_id',
+                    'transaction_status'
                 ]
             }
         );
