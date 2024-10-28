@@ -27,6 +27,7 @@ jobs:
       - run:
           name: Deploy app to server
           command: |
+            docker image prune
             ssh -o StrictHostKeyChecking=no iptv-admin@206.189.38.25 "cd aplikasiIPTV/deployer/ && ./backend.sh"
 workflows:
   basic-workflow:

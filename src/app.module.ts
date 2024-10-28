@@ -10,6 +10,7 @@ import { CmsModule } from './modules/cms/cms.module';
 import { MakeModule } from './modules/make/make.module';
 import { TvModule } from './modules/tv/tv.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { AppGateway } from './utility/websocket.helper';
 @Module({
   imports: [
     SequelizeModule.forRootAsync({
@@ -26,7 +27,7 @@ import { AdminModule } from './modules/admin/admin.module';
     AdminModule
   ],
   controllers: [AppController],
-  providers: [AppService,SequelizeConfigService],
+  providers: [AppService,SequelizeConfigService,AppGateway],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

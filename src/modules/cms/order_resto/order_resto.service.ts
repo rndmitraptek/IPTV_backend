@@ -79,6 +79,7 @@ export class OrderRestoService {
             return orders.map(order => ({
                 ...order.get(),
                 status_order_name: order.status_order_name,
+                status_bayar_name: order.status_bayar_name,
             }));       
         } catch (error) {
             throw error;

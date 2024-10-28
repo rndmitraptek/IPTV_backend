@@ -75,3 +75,10 @@ export const masterStatusOrder = [
     { status_code: 3, status_name: 'DITERIMA' },
     { status_code: 4, status_name: 'DIBATAL' },
 ];
+
+export const masterStatusBayar = [
+    { status_code: 0, status_name: 'BELUM BAYAR' },
+    { status_code: 1, status_name: 'LUNAS' },
+    { status_code: 2, status_name: 'PENDING' },
+    { status_code: 3, status_name: 'CANCEL' },
+];

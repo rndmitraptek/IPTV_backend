@@ -3,7 +3,7 @@ import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from '
 import { iptv_feature } from './iptv_feature.entity';
 import { users_deviceEntity } from './users_device.entity';
 import { orderRestoDetailEntity } from './order_resto_detail.entity';
-import { masterStatusOrder } from 'src/modules/cms/order_resto/order_resto.dto';
+import { masterStatusBayar, masterStatusOrder } from 'src/modules/cms/order_resto/order_resto.dto';
 
 @Table({ tableName: 'order_resto', timestamps:true,updatedAt:'updated_at',createdAt:'created_at' })
 export class orderRestoEntity extends Model<orderRestoEntity> { 
@@ -159,9 +159,14 @@ export class orderRestoEntity extends Model<orderRestoEntity> {
         return status ? status.status_name : 'Unknown Status';
     }
 
+    get status_bayar_name(): string {
+        const status = masterStatusBayar.find(s => s.status_code === this.status_bayar);
+        return status ? status.status_name : 'Unknown Status';
+    }
+
     toJSON() {
         // Override untuk menambahkan `status_order_name` dalam output JSON
         const attributes = super.toJSON() as this;
-        return { ...attributes, status_order_name: this.status_order_name };
+        return { ...attributes, status_order_name: this.status_order_name, status_bayar_name:this.status_bayar_name };
     }
 }
