@@ -3,15 +3,15 @@ import { InjectModel } from '@nestjs/sequelize';
 import * as midtransClient from 'midtrans-client';
 import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
 import { request_midtrans, response_midtrans } from './midtrans.model';
-import { logFailedCallbackEntity } from 'src/database/iptv/log_failed_callback.entity';
+import { logCallbackEntity } from 'src/database/iptv/log_failed_callback.entity';
 
 @Injectable()
 export class MidtransService {
     constructor(
         @InjectModel(iptv_feature)
         private _hotel: typeof iptv_feature,
-        @InjectModel(logFailedCallbackEntity)
-        private _logFailedCallbackEntity: typeof logFailedCallbackEntity,
+        @InjectModel(logCallbackEntity)
+        private _logCallbackEntity: typeof logCallbackEntity,
     ){}
 
 
@@ -70,16 +70,18 @@ export class MidtransService {
     }
 
 
-    async logFailedCallback(callbackData: any,reason:string):Promise<any>{
-        return await this._logFailedCallbackEntity.create(
+    async logCallback(callbackData: any,reason:string,order_id?:string):Promise<any>{
+        return await this._logCallbackEntity.create(
             {
                 callback_data:callbackData,
-                reason:reason
+                reason:reason,
+                order_id:order_id
             },
             {
                 fields:[
                     'callback_data',
-                    'reason'
+                    'reason',
+                    'order_id'
                 ]
             }
         );

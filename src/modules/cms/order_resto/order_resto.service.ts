@@ -5,7 +5,7 @@ import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
 import { orderRestoEntity } from 'src/database/iptv/order_resto.entity';
 import { orderRestoDetailEntity } from 'src/database/iptv/order_resto_detail.entity';
 import { users_deviceEntity } from 'src/database/iptv/users_device.entity';
-import { canceledOrder, insertOrderResto, jenisPembayaran, paramGetOrderResto, pembayaranOrder } from './order_resto.dto';
+import { canceledOrder, insertOrderResto, jenisPembayaran, paramGetOrderResto, pembayaranOrder, updateStatusOrder } from './order_resto.dto';
 import { generateNumber } from 'src/utility/nomor_counter.helper';
 import { fn } from 'sequelize';
 import { MidtransService } from 'src/utility/midtrans.dynamic.helper';
@@ -65,17 +65,21 @@ export class OrderRestoService {
         ];
     }
     
-    findAll(param:paramGetOrderResto,req:any): Promise<any> {
+    async findAll(param:paramGetOrderResto,req:any): Promise<any> {
         try {
             let filters =` order_date between '${param.start_date}' AND '${param.end_date}' AND "orderRestoEntity".id_hotel=${req.user.id_hotel}`;
-            return this._orderRestoEntity.findAll({
+            let orders= await this._orderRestoEntity.findAll({
                 attributes:this.attr,
                 include:this.incl,
                 where:this.sequelize.literal(filters),
                 order:[
                     ['id_order_resto','desc']
                 ]
-            });            
+            });    
+            return orders.map(order => ({
+                ...order.get(),
+                status_order_name: order.status_order_name,
+            }));       
         } catch (error) {
             throw error;
         }
@@ -273,24 +277,24 @@ export class OrderRestoService {
             const { order_id, transaction_status } = callbackData;
             let getData =await this._orderRestoEntity.findOne({where:{order_number:order_id}});
             if(getData==null){
-                await this._MidtransService.logFailedCallback(callbackData,'Data tidak ditemukan');
+                await this._MidtransService.logCallback(callbackData,'Data tidak ditemukan',order_id);
                 // return res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Invalid signature' });
                 throw('Data tidak ditemukan');
             }
 
             let getHotel =await this._iptv_feature.findOne({where:{id:getData.id_hotel}});
             if(getHotel==null){
-                await this._MidtransService.logFailedCallback(callbackData,'Hotel tidak ditemukan');
+                await this._MidtransService.logCallback(callbackData,'Hotel tidak ditemukan',order_id);
                 throw('Hotel tidak ditemukan');
             }
             if(getHotel.midtrans_server_key==null){
-                await this._MidtransService.logFailedCallback(callbackData,'Serverkey tidak ditemukan');
+                await this._MidtransService.logCallback(callbackData,'Serverkey tidak ditemukan',order_id);
                 throw('Serverkey tidak ditemukan');
             }
 
             let isValid =await this._MidtransService.verifySignature(callbackData,getHotel.midtrans_server_key);
             if (!isValid) {
-                await this._MidtransService.logFailedCallback(callbackData,'Signature tidak valid');
+                await this._MidtransService.logCallback(callbackData,'Signature tidak valid',order_id);
                 throw('Signature tidak valid');
             }
 
@@ -314,9 +318,12 @@ export class OrderRestoService {
                 }
             );
             if(!updateStatus){
-                await this._MidtransService.logFailedCallback(callbackData,'Update status bayar gagal');
+                await this._MidtransService.logCallback(callbackData,'Update status bayar gagal',order_id);
                 throw('Update status bayar gagal');
             }
+
+            await this._MidtransService.logCallback(callbackData,'Success',order_id);
+
             return 'Callback received';
         } catch (error) {
             throw error;
@@ -327,10 +334,25 @@ export class OrderRestoService {
     async batal(param:canceledOrder,req:any): Promise<void> {
         await this._orderRestoEntity.update(
             {
-                status_order:5,
+                status_order:4,
                 reason_canceled:param.reason_canceled,
                 canceled_at:fn('NOW'),
                 canceled_by:req.user.username
+            }, 
+            {
+                where: {
+                    id_order_resto:param.id_order_resto,
+                },
+            }
+        );
+    }
+
+
+    async updateStatusOrder(param:updateStatusOrder,req:any): Promise<void> {
+        await this._orderRestoEntity.update(
+            {
+                status_order:param.status_order,
+                updated_by:req.user.username
             }, 
             {
                 where: {

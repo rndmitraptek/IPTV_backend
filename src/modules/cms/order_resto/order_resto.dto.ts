@@ -1,3 +1,4 @@
+import { ApiPropertyOptional } from "@nestjs/swagger";
 import { IsEnum, IsNotEmpty } from "class-validator";
 
 export class insertOrderResto{
@@ -50,3 +51,27 @@ export class canceledOrder{
     @IsNotEmpty()
     reason_canceled:string;
 }
+
+
+export enum statusOrder {
+    DIPROSES = 1,
+    DIANTAR = 2,
+    DITERIMA = 3
+}
+
+export class updateStatusOrder{
+    @IsNotEmpty()
+    id_order_resto:number;
+    @IsNotEmpty()
+    @IsEnum(statusOrder)
+    status_order:number;
+}
+
+
+export const masterStatusOrder = [
+    { status_code: 0, status_name: 'ORDER' },
+    { status_code: 1, status_name: 'DIPROSES' },
+    { status_code: 2, status_name: 'DIANTAR' },
+    { status_code: 3, status_name: 'DITERIMA' },
+    { status_code: 4, status_name: 'DIBATAL' },
+];

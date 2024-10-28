@@ -1,8 +1,8 @@
 import { ApiHideProperty } from '@nestjs/swagger';
 import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from 'sequelize-typescript';
 
-@Table({ tableName: 'log_failed_callback', timestamps:true,updatedAt:false,createdAt:'created_at' })
-export class logFailedCallbackEntity extends Model<logFailedCallbackEntity> { 
+@Table({ tableName: 'log_callback', timestamps:true,updatedAt:false,createdAt:'created_at' })
+export class logCallbackEntity extends Model<logCallbackEntity> { 
     
     @ApiHideProperty()
     @Column({
@@ -18,6 +18,12 @@ export class logFailedCallbackEntity extends Model<logFailedCallbackEntity> {
     })
     callback_data:string;
 
+    @Column({
+        type: DataType.STRING,
+        allowNull: true,
+    })
+    order_id:string;
+    
     @Column({
         type: DataType.STRING,
         allowNull: true,

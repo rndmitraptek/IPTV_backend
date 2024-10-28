@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagg
 import { JwtAuthGuard } from 'src/modules/authentication/users/jwt-auth.gruard';
 import { Request } from 'express';
 import { OrderRestoService } from './order_resto.service';
-import { canceledOrder, insertOrderResto, paramGetOrderResto, pembayaranOrder } from './order_resto.dto';
+import { canceledOrder, insertOrderResto, paramGetOrderResto, pembayaranOrder, updateStatusOrder } from './order_resto.dto';
 
 @Controller('order-resto')
 @ApiTags('cms-order-resto')
@@ -75,6 +75,17 @@ export class OrderRestoController {
     @ApiResponse({ status: 200})
     batal(@Body() body: canceledOrder,@Req() req:Request) {
         return this._OrderRestoService.batal(body,req);
+    }
+
+
+
+    @Put('updateStatusOrder')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'update Status Order (1:Diproses, 2:Diantar, 3:Diterima' })
+    @ApiResponse({ status: 201})  
+    updateStatusOrder(@Body() body: updateStatusOrder, @Req() req:Request): Promise<any> {
+        return this._OrderRestoService.updateStatusOrder(body, req);
     }
 
 }

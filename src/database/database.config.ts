@@ -26,7 +26,7 @@ import { announcementEntity } from "./iptv/announcement.entity";
 import { orderRestoEntity } from "./iptv/order_resto.entity";
 import { orderRestoDetailEntity } from "./iptv/order_resto_detail.entity";
 import { nomor_counter } from "./iptv/nomor_counter.entity";
-import { logFailedCallbackEntity } from "./iptv/log_failed_callback.entity";
+import { logCallbackEntity } from "./iptv/log_failed_callback.entity";
 dotenv.config();
 
 @Injectable({ scope: Scope.REQUEST })
@@ -63,7 +63,7 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
         orderRestoEntity,
         orderRestoDetailEntity,
         nomor_counter,
-        logFailedCallbackEntity
+        logCallbackEntity
       ];
     }else{
       models = [];

@@ -66,7 +66,7 @@ import { OrderRestoService } from './order_resto/order_resto.service';
 import { generateNumber } from 'src/utility/nomor_counter.helper';
 import { nomor_counter } from 'src/database/iptv/nomor_counter.entity';
 import { MidtransService } from 'src/utility/midtrans.dynamic.helper';
-import { logFailedCallbackEntity } from 'src/database/iptv/log_failed_callback.entity';
+import { logCallbackEntity } from 'src/database/iptv/log_failed_callback.entity';
 
 @Module({
   imports: [
@@ -94,7 +94,7 @@ import { logFailedCallbackEntity } from 'src/database/iptv/log_failed_callback.e
       orderRestoEntity,
       orderRestoDetailEntity,
       nomor_counter,
-      logFailedCallbackEntity
+      logCallbackEntity
     ]),
   ],
   controllers: [
