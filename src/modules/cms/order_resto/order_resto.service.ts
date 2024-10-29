@@ -209,6 +209,7 @@ export class OrderRestoService {
                 }
             }
 
+            param['room_id']=req.user.room_id;
             const payload={
                 id_hotel:req.user.id_hotel,
                 message:param
