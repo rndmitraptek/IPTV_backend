@@ -5,6 +5,7 @@ import {
     WebSocketServer,
     OnGatewayConnection,
     OnGatewayDisconnect,
+    MessageBody,
   } from '@nestjs/websockets';
   import { Server, Socket } from 'socket.io';
   
@@ -31,10 +32,11 @@ import {
     // }
   
     @SubscribeMessage('message')
-    handleMessage(payload: { id_hotel: string, message: any }): void {
-      this.logger.log('testing websocket');
+    handleMessage(@MessageBody() body:any): void {
+      this.logger.log('send message websocket');
+      this.logger.log(body);
       // Kirim pesan ke semua klien di room id_hotel
-      this.server.emit('message', payload);
+      this.server.emit('message', body);
     }
   
     // sendToSpecificClient(clientId: string, message: string) {
