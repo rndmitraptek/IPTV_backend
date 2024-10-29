@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import {
     SubscribeMessage,
     WebSocketGateway,
@@ -9,12 +10,13 @@ import {
   
   @WebSocketGateway({
     cors: {
-      origin: 'https://union-iptv-cms.vercel.app',
+      origin: '*',
     },
   })
   export class AppGateway {
     @WebSocketServer()
     server: Server;
+    logger:Logger=new Logger('AppGateway');
   
     // handleConnection(client: Socket) {
     //     console.log('handle connection WS');
@@ -30,6 +32,7 @@ import {
   
     @SubscribeMessage('message')
     handleMessage(payload: { id_hotel: string, message: any }): void {
+      this.logger.log('testing websocket');
       // Kirim pesan ke semua klien di room id_hotel
       this.server.emit('message', payload);
     }
