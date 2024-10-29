@@ -20,6 +20,16 @@ export class OrderRestoController {
         return this._OrderRestoService.findAll(query,req);
     }
 
+
+    @Get('getByRoom')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth('access-token')
+    @ApiOperation({ summary: 'Menampilkan Semua Data by periode AND ROOM with token' })
+    @ApiResponse({ status: 200})
+    getByRoom(@Query() query:paramGetOrderResto,@Req() req:Request): Promise<any> {
+        return this._OrderRestoService.getByRoom(query,req);
+    }
+
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'Menampilkan OrderRestoEntity by id ' })

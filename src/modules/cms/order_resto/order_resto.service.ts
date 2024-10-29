@@ -88,6 +88,28 @@ export class OrderRestoService {
         }
     }
 
+
+    async getByRoom(param:paramGetOrderResto,req:any): Promise<any> {
+        try {
+            let filters =` order_date between '${param.start_date}' AND '${param.end_date}' AND "orderRestoEntity".id_user_device=${req.user.id_user}`;
+            let orders= await this._orderRestoEntity.findAll({
+                attributes:this.attr,
+                include:this.incl,
+                where:this.sequelize.literal(filters),
+                order:[
+                    ['id_order_resto','desc']
+                ]
+            });    
+            return orders.map(order => ({
+                ...order.get(),
+                status_order_name: order.status_order_name,
+                status_bayar_name: order.status_bayar_name,
+            }));       
+        } catch (error) {
+            throw error;
+        }
+    }
+
     
     findOne(id: number): Promise<any> {
         return this._orderRestoEntity.findOne({
