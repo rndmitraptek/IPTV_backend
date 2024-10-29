@@ -225,6 +225,14 @@ export class OrderRestoService {
     }
 
     async tesWS(param:insertOrderResto,req:any):Promise<any>{
+        if(req.user.id_hotel ==undefined){
+            throw ('Akun anda tidak memiliki hotel');
+        }
+        if(req.user.room_id ==undefined){
+            throw ('Akun anda tidak memiliki room id');
+        }
+        
+        param['room_id']=req.user.room_id;
         const payload={
             id_hotel:req.user.id_hotel,
             message:param
