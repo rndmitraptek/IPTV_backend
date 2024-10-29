@@ -209,6 +209,12 @@ export class OrderRestoService {
                 }
             }
 
+            const payload={
+                id_hotel:req.user.id_hotel,
+                message:param
+            }
+            let send =await this._AppGateway.handleMessage(payload);
+
             await transaction.commit();
             return 'success';
         } catch (error) {
