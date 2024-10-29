@@ -4,7 +4,7 @@ import { ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger
 import { apk_version } from 'src/database/iptv/apk_version.entity';
 import { BufferedFile } from 'src/utility/minio-client.model';
 import { MinioClientService } from 'src/utility/minio-client.utils';
-import { apk_versionDtoInsert } from './apk_version.dto';
+import { apk_versionDtoInsert, secretKeyVersion } from './apk_version.dto';
 import { ApkVersionService } from './apk_version.service';
 
 @Controller('apk/apk_version')
@@ -17,16 +17,22 @@ export class ApkVersionController {
 
     @ApiOperation({ summary: 'Menampilkan apk_version by id apk_version' })
     @ApiResponse({ status: 200, description: 'Return a single apk_version.', type: apk_version })
-    @Get()
-    findOne(): Promise<apk_version[]> {
+    @Get(':secretkey')
+    findAll(@Param('secretkey') secretkey:string): Promise<apk_version[]> {
+        if(secretkey!=secretKeyVersion){
+            throw ('secretkey not valid!');
+        }
         return this.apk_versionService.findAll();
     }
 
     @ApiOperation({ summary: 'Menampilkan apk_version by id apk_version' })
     @ApiResponse({ status: 200, description: 'Return a single apk_version.', type: apk_version })
-    @Get('last')
-    last(): Promise<apk_version> {
-        return this.apk_versionService.getLastVersion();
+    @Get('last/:type/:secretkey')
+    last(@Param('type') type:string,@Param('secretkey') secretkey:string): Promise<apk_version> {
+        if(secretkey!=secretKeyVersion){
+            throw ('secretkey not valid!');
+        }
+        return this.apk_versionService.getLastVersion(type);
     }
 
     @Post()
@@ -42,8 +48,14 @@ export class ApkVersionController {
             file: BufferedFile[]
         }
     ): Promise<apk_version> {
+        if(apk_version.secretkey!=secretKeyVersion){
+            throw ('secretkey not valid!');
+        }
         return this.apk_versionService.create(apk_version,file);
     }
+
+
+
 
     @ApiOperation({ summary: 'Menampilkan apk_version by id apk_version' })
     @ApiResponse({ status: 200, description: 'Return a single apk_version.', type: apk_version })

@@ -32,12 +32,14 @@ export class ApkVersionService {
         if (minio_image.url){
             _apk_version.file = minio_image.fileName;
         }
+        delete _apk_version.secretkey;
         _apk_version.is_active = true;
         return this.apk_versionModel.create(_apk_version);
     }
 
-    async getLastVersion():Promise<apk_version>{
+    async getLastVersion(type:string):Promise<apk_version>{
         let data = await this.apk_versionModel.findOne({
+            where:{type:type,is_active:true},
             order:[
                 ['id_apk_version','DESC']
             ]

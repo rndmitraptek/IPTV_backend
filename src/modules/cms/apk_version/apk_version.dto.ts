@@ -17,5 +17,10 @@ export class apk_versionDtoInsert{
     file : string
 
     is_active : boolean;
-
+    @IsNotEmpty()
+    type:string;
+    @IsNotEmpty()
+    secretkey:string;
 }
+
+export const secretKeyVersion='f79bec62-3846-4616-b91f-6983f42ca912';

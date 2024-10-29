@@ -36,4 +36,9 @@ export class apk_version extends Model<apk_version> {
     })
     is_active : boolean;
 
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+    })
+    type : string;
 }
