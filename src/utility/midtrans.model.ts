@@ -11,11 +11,13 @@ export interface response_midtrans{
     item_details?: ItemDetail[]
     customer_details?: CustomerDetails
     enabled_payments?: string[]
+    payment_type?:string
     credit_card?: CreditCard
     bca_va?: BcaVa
     bni_va?: BniVa
     bri_va?: BriVa
     cimb_va?: CimbVa
+    qris?:qris
     permata_va?: PermataVa
     shopeepay?: Shopeepay
     gopay?: Gopay
@@ -42,6 +44,10 @@ export interface response_midtrans{
     url: string
   }
   
+  export interface qris{
+    acquirer:string;
+  }
+
   export interface CustomerDetails {
     first_name: string
     last_name: string

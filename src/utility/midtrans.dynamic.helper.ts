@@ -26,7 +26,7 @@ export class MidtransService {
 
         const midtransClient = require('midtrans-client');
 
-        console.log(midtransClient);
+        // console.log(midtransClient);
         // Inisialisasi midtransClient dengan detail hotel tersebut
         const snap = new midtransClient.Midtrans.Snap({
             isProduction: hotelData.is_midtrans_production,

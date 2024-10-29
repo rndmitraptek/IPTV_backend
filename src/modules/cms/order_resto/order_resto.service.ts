@@ -231,7 +231,7 @@ export class OrderRestoService {
         if(req.user.room_id ==undefined){
             throw ('Akun anda tidak memiliki room id');
         }
-        
+
         param['room_id']=req.user.room_id;
         const payload={
             id_hotel:req.user.id_hotel,
@@ -301,9 +301,11 @@ export class OrderRestoService {
                         order_id:getData.order_number,
                         gross_amount:getData.grand_total
                     },
-                    // enabled_payments :['qris']
+                    enabled_payments :['gopay'],
+                    // payment_type:'qris',
+                    // qris:{acquirer:'gopay'}
                 };
-                console.log(paramMidtrans);
+                // console.log(paramMidtrans);
 
                 let createTrxMid =await this._MidtransService.createTransactionMidtrans(paramMidtrans);
 
