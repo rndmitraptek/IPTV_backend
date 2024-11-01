@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-rm -rf node_modules
+RUN rm -rf node_modules
 
 RUN npm ci
 
@@ -23,7 +23,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-rm -rf node_modules
+RUN rm -rf node_modules
 
 RUN npm install --only=production
 
