@@ -4,7 +4,9 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install glob rimraf
+rm -rf node_modules
+
+RUN npm ci
 
 RUN npm install --only=development
 
@@ -20,6 +22,8 @@ ENV NODE_ENV=${NODE_ENV}
 WORKDIR /usr/src/app
 
 COPY package*.json ./
+
+rm -rf node_modules
 
 RUN npm install --only=production
 
