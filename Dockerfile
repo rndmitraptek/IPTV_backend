@@ -1,12 +1,12 @@
 FROM node:20.3.0 AS development
 
+RUN npm install -g npm@latest
+
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN rm -rf node_modules
-
-RUN npm ci
+RUN npm install glob rimraf
 
 RUN npm install --only=development
 
@@ -16,14 +16,14 @@ RUN npm run build
 
 FROM node:20.3.0 as production
 
+RUN npm install -g npm@latest
+
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-
-RUN rm -rf node_modules
 
 RUN npm install --only=production
 
