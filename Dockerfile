@@ -6,6 +6,8 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
+RUN npm install midtrans-client@1.3.1
+
 RUN npm install glob rimraf
 
 RUN npm install --only=development
@@ -24,6 +26,8 @@ ENV NODE_ENV=${NODE_ENV}
 WORKDIR /usr/src/app
 
 COPY package*.json ./
+
+RUN npm install midtrans-client@1.3.1
 
 RUN npm install --only=production
 
