@@ -1,6 +1,6 @@
 FROM node:20.3.0 AS development
 
-RUN npm install -g npm@latest
+RUN npm install -g npm@9.8.1
 
 WORKDIR /usr/src/app
 
@@ -16,7 +16,7 @@ RUN npm run build
 
 FROM node:20.3.0 as production
 
-RUN npm install -g npm@latest
+RUN npm install -g npm@9.8.1
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
