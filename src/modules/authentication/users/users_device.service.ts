@@ -204,6 +204,13 @@ export class UserDeviceService {
     }
 
 
+    cekToken(req:any){
+        if(req.user.id_hotel==undefined){
+            throw('Access token not valid!');
+        }
+        return 'success';
+    }
+
 
     async getUserRoom(req:any):Promise<any>{
         try {

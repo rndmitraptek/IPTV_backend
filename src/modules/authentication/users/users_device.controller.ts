@@ -28,7 +28,7 @@ export class UserDeviceController {
     @ApiResponse({ status: 201, description: 'success'})  
     tokenCheck(@Req() req:Request) {
         // console.log(req);
-        return 'success';
+        return this.usersService.cekToken(req);
     }
 
 
