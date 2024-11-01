@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
 import { request_midtrans, response_midtrans } from './midtrans.model';
 import { logCallbackEntity } from 'src/database/iptv/log_failed_callback.entity';
+import * as midtransClient from 'midtrans-client';
 
 @Injectable()
 export class MidtransService {
@@ -24,7 +25,7 @@ export class MidtransService {
             throw('Hotel tidak terintegrasi midtrans!');
         }
 
-        const midtransClient = require('midtrans-client');
+        // const midtransClient = require('midtrans-client');
 
         // console.log(midtransClient);
         // Inisialisasi midtransClient dengan detail hotel tersebut
