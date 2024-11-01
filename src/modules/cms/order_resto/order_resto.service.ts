@@ -42,6 +42,7 @@ export class OrderRestoService {
             'ppn_persen',
             'ppn_nominal',
             'grand_total',
+            'jenis_pembayaran',
             'created_at',
             'updated_at',
             'created_by',
