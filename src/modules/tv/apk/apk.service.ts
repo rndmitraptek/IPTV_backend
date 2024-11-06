@@ -95,43 +95,43 @@ export class ApkService {
 
         let getHotel =await this.iptv_featureModel.findOne({where:{id:req.user.id_hotel}});
         if(getHotel!=null){
-            if(getHotel.api_guest!=null){
-                const url=getHotel.api_method.toUpperCase()!='GET'?getHotel.api_guest:getHotel.api_guest+`/:${req.user.room_id}`;
-                const data=getHotel.api_method.toUpperCase()!='GET'?{}:{room_id:req.user.room_id};
+            // if(getHotel.api_guest!=null){
+            //     const url=getHotel.api_method.toUpperCase()!='GET'?getHotel.api_guest:getHotel.api_guest+`/:${req.user.room_id}`;
+            //     const data=getHotel.api_method.toUpperCase()!='GET'?{}:{room_id:req.user.room_id};
 
-                const method: Method = getHotel.api_method==null?'GET' as Method:getHotel.api_method.toUpperCase() as Method;
-                const config: AxiosRequestConfig = {
-                    method, // Metode yang diambil dari database
-                    url,
-                    headers: {
-                        'Authorization': getHotel.api_secret, // Tambahkan token ke Authorization header
-                    },
-                    data  // Body data untuk POST/PUT
-                  };
-                // console.log(config);
-                await axios(config)
-                    .then(response => {
-                        // Logic tambahan jika request berhasil
-                        console.log('Request Berhasil:', response.data);
-                        nama =response.data;
-                    })
-                    .catch(error => {
-                        // Logic tambahan jika request gagal
-                        console.error('Request Gagal:', error.message);
+            //     const method: Method = getHotel.api_method==null?'GET' as Method:getHotel.api_method.toUpperCase() as Method;
+            //     const config: AxiosRequestConfig = {
+            //         method, // Metode yang diambil dari database
+            //         url,
+            //         headers: {
+            //             'Authorization': getHotel.api_secret, // Tambahkan token ke Authorization header
+            //         },
+            //         data  // Body data untuk POST/PUT
+            //       };
+            //     // console.log(config);
+            //     await axios(config)
+            //         .then(response => {
+            //             // Logic tambahan jika request berhasil
+            //             console.log('Request Berhasil:', response.data);
+            //             nama =response.data;
+            //         })
+            //         .catch(error => {
+            //             // Logic tambahan jika request gagal
+            //             console.error('Request Gagal:', error.message);
                 
-                        // Menangani error lebih detail, misalnya berdasarkan status code
-                        if (error.response && error.response.status === 401) {
-                            throw new HttpException('Unauthorized request', HttpStatus.UNAUTHORIZED);
-                        } else if (error.response && error.response.status === 404) {
-                            throw new HttpException('Resource not found', HttpStatus.NOT_FOUND);
-                        } else {
-                            throw new HttpException(
-                                `HTTP Request failed: ${error.message}`,
-                                HttpStatus.INTERNAL_SERVER_ERROR,
-                            );
-                        }
-                    });
-            }
+            //             // Menangani error lebih detail, misalnya berdasarkan status code
+            //             if (error.response && error.response.status === 401) {
+            //                 throw new HttpException('Unauthorized request', HttpStatus.UNAUTHORIZED);
+            //             } else if (error.response && error.response.status === 404) {
+            //                 throw new HttpException('Resource not found', HttpStatus.NOT_FOUND);
+            //             } else {
+            //                 throw new HttpException(
+            //                     `HTTP Request failed: ${error.message}`,
+            //                     HttpStatus.INTERNAL_SERVER_ERROR,
+            //                 );
+            //             }
+            //         });
+            // }
         }
 
         const background =await this._backgroundUserEntity.findOne({
