@@ -37,11 +37,18 @@ export class IptvFeatureService {
         _iptv_feature['is_active']=true;
         _iptv_feature['created_by']=req.user.username;
         _iptv_feature['updated_by']=req.user.username;
+        _iptv_feature['version_data']=0;
 
         return this.iptv_featureModel.create(_iptv_feature);
     }
     
     async update(id: number, _iptv_feature: iptv_featureDtoInsert,req:any): Promise<void> {
+        const cek = await this.iptv_featureModel.findOne({where:{id:id}});
+        if(cek==null){
+            throw('Data tidak ditemukan');
+        }
+
+        _iptv_feature['version_data']=typeof cek.version_data=='string'?parseInt(cek.version_data) + 1 : cek.version_data + 1;
         _iptv_feature['updated_by']=req.user.username;
         if(_iptv_feature.pin !=undefined){
             if(_iptv_feature.pin!=null){
