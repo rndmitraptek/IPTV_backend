@@ -208,7 +208,8 @@ export class UserDeviceService {
         if(req.user.id_hotel==undefined){
             throw('Access token not valid!');
         }
-        return 'success';
+        
+        return this._hotelEntity.findOne({where:{id:req.user.id_hotel, is_active:true}});
     }
 
 

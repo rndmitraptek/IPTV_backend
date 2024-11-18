@@ -161,4 +161,9 @@ export class iptv_feature extends Model<iptv_feature> {
         allowNull: false,
     })
     pin:string;
+    @Column({
+        type: DataType.INTEGER,
+        allowNull: true,
+    })
+    version_data:number;
 }
