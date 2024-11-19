@@ -4,7 +4,7 @@ import { apk_version } from 'src/database/iptv/apk_version.entity';
 import { BuckectName } from 'src/utility/constant';
 import { BufferedFile } from 'src/utility/minio-client.model';
 import { MinioClientService } from 'src/utility/minio-client.utils';
-import { apk_versionDtoInsert } from './apk_version.dto';
+import { apk_versionDtoInsert, apk_versionDtoInsertWithoutFile } from './apk_version.dto';
 
 @Injectable({ scope: Scope.REQUEST })
 export class ApkVersionService {
@@ -32,6 +32,13 @@ export class ApkVersionService {
         if (minio_image.url){
             _apk_version.file = minio_image.fileName;
         }
+        delete _apk_version.secretkey;
+        _apk_version.is_active = true;
+        return this.apk_versionModel.create(_apk_version);
+    }
+
+
+    async createWithoutFile(_apk_version: apk_versionDtoInsertWithoutFile): Promise<apk_version> {
         delete _apk_version.secretkey;
         _apk_version.is_active = true;
         return this.apk_versionModel.create(_apk_version);

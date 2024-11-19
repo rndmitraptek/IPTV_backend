@@ -4,7 +4,7 @@ import { ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger
 import { apk_version } from 'src/database/iptv/apk_version.entity';
 import { BufferedFile } from 'src/utility/minio-client.model';
 import { MinioClientService } from 'src/utility/minio-client.utils';
-import { apk_versionDtoInsert, secretKeyVersion } from './apk_version.dto';
+import { apk_versionDtoInsert, apk_versionDtoInsertWithoutFile, secretKeyVersion } from './apk_version.dto';
 import { ApkVersionService } from './apk_version.service';
 
 @Controller('apk/apk_version')
@@ -52,6 +52,19 @@ export class ApkVersionController {
             throw ('secretkey not valid!');
         }
         return this.apk_versionService.create(apk_version,file);
+    }
+
+
+    @Post('createWithoutFile')
+    @ApiOperation({ summary: 'tambah data apk_version tanpa file (file hanya nama hasil generate lewat presignedurl)' })
+    @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: apk_version })  
+    createWithoutFile(
+        @Body() apk_version: apk_versionDtoInsertWithoutFile
+    ): Promise<apk_version> {
+        if(apk_version.secretkey!=secretKeyVersion){
+            throw ('secretkey not valid!');
+        }
+        return this.apk_versionService.createWithoutFile(apk_version);
     }
 
 

@@ -23,4 +23,26 @@ export class apk_versionDtoInsert{
     secretkey:string;
 }
 
+export class apk_versionDtoInsertWithoutFile{
+
+    @IsNotEmpty({
+        message:'version tidak boleh kosong'
+    })
+    version : string
+
+    @IsNotEmpty({
+        message:'description tidak boleh kosong'
+    })
+    description : string
+    
+    @IsNotEmpty()
+    file : string
+
+    is_active : boolean;
+    @IsNotEmpty()
+    type:string;
+    @IsNotEmpty()
+    secretkey:string;
+}
+
 export const secretKeyVersion='f79bec62-3846-4616-b91f-6983f42ca912';
