@@ -27,8 +27,9 @@ export class tv_channelRepository {
         try {
             let query = `select tv.*,tg."group"
                         from tv_channel tv
-                        inner join tv_group tg on tv.id_group=tg.id_group order by tv.urut
-                        WHERE is_active=true AND is_assign=true;`
+                        inner join tv_group tg on tv.id_group=tg.id_group 
+                        WHERE is_active=true AND is_assign=true
+                        order by tv.urut;`
             return await this.sequelize.query(query, {
                 type: QueryTypes.SELECT
             });
