@@ -51,7 +51,7 @@ export class ApkVersionService {
                 ['id_apk_version','DESC']
             ]
         });
-        data.file = await this.minioClientService.getLinkFoto(BuckectName.APK, data.file);
+        // data.file = await this.minioClientService.getLinkFoto(BuckectName.APK, data.file);
         return data;
     }
     

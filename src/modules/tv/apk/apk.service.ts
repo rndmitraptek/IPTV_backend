@@ -231,7 +231,7 @@ export class ApkService {
                 room : await this.info_roomModel.findAll({where:{id_hotel:req.user.id_hotel}}),
                 fasilities : await this.info_fasilitiesModel.findAll({where:{id_hotel:req.user.id_hotel}})
             },
-            channel : await this.tv_channelRepo.GetAll()
+            channel : await this.tv_channelRepo.GetChannelActive()
         };
         return data;
     }
@@ -256,6 +256,38 @@ export class ApkService {
                 throw ('pin salah');
             }
             return 'success';
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
+
+    async palindromeService(input:string):Promise<number>{
+        try {
+            input = input.replace(/[^a-z]/g,'');
+            const n =input.length;
+            if(n==0) return 0;
+
+            let maxLength =1;
+            const table = Array.from({length:n}, ()=>Array(n).fill(false));
+
+            for(let i=0; i<n; i++){
+                table[i][i] =true;
+            }
+
+            for(let length=2; length<=n; length++){
+                for(let i=0; i<n-length+1; i++){
+                    const j= i+length -1;
+                    if(input[i] ==input[j]){
+                        if(length ==2 || table[i+1][j-1]){
+                            table[i][j] =true;
+                            maxLength =Math.max(maxLength, length);
+                        }
+                    }
+                }
+            }
+            return maxLength;
         } catch (error) {
             throw error;
         }

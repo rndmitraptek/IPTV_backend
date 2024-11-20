@@ -22,6 +22,21 @@ export class tv_channelRepository {
         }
     }
 
+
+    async GetChannelActive(): Promise<any>{
+        try {
+            let query = `select tv.*,tg."group"
+                        from tv_channel tv
+                        inner join tv_group tg on tv.id_group=tg.id_group order by tv.urut
+                        WHERE is_active=true AND is_assign=true;`
+            return await this.sequelize.query(query, {
+                type: QueryTypes.SELECT
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async GetByIdGroup(id_group:number): Promise<any>{
         try {
             let query = `select tv.*,tg."group"

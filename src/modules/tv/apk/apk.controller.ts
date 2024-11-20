@@ -40,4 +40,13 @@ export class ApkController {
     cekPin(@Param('pin') pin:string,@Req() req:Request) {
         return this.apkService.cekPin(pin,req);
     }
+
+
+
+    // @Get('palindroma/:input')
+    // @ApiOperation({ summary: 'cek Pin' })
+    // @ApiResponse({ status: 200 })
+    // palindrome(@Param('input') input:string){
+    //     return this.apkService.palindromeService(input);
+    // }
 }
