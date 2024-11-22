@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
 import { iptv_featureDtoInsert } from './iptv_feature.dto';
 import * as bcrypt from 'bcrypt';
+import { Transaction } from 'sequelize';
 
 @Injectable({ scope: Scope.REQUEST })
 export class IptvFeatureService {
@@ -66,6 +67,29 @@ export class IptvFeatureService {
     async remove(id: number): Promise<void> {
         const iptv_feature = await this.findOne(id);
         await iptv_feature.destroy();
+    }
+
+
+    async updateVersionDataAllHotel(transaction:Transaction):Promise<any>{
+        try {
+            let getAll =await this.iptv_featureModel.findAll();
+
+            for(let i=0; i<getAll.length; i++){
+                let versionData =getAll[i].version_data + 1;
+
+                let update =await this.iptv_featureModel.update(
+                    {
+                        version_data:versionData
+                    },
+                    {
+                        where:{id:getAll[i].id},
+                        transaction:transaction
+                    }
+                );
+            }
+        } catch (error) {
+            throw error;
+        }
     }
 }
             
