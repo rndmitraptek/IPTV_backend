@@ -47,9 +47,9 @@ export class iptv_featureDtoInsert{
     })
     video_channel_0_url : string
 
-    @IsNotEmpty({
-        message:'default_home tidak boleh kosong'
-    })
+    // @IsNotEmpty({
+    //     message:'default_home tidak boleh kosong'
+    // })
     default_home : string
 
     // @IsNotEmpty({
