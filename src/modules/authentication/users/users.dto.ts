@@ -42,9 +42,9 @@ export class usersDtoUpdate{
 
     password:string;
 
-    @IsNotEmpty({
-        message:"Status Active tidak boleh kosong"
-    })
+    // @IsNotEmpty({
+    //     message:"Status Active tidak boleh kosong"
+    // })
     is_active:boolean;
 
 }
