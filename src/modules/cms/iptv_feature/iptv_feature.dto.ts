@@ -7,9 +7,9 @@ export class iptv_featureDtoInsert{
     })
     video_splash_name : string
 
-    @IsNotEmpty({
-        message:'video_splash_url tidak boleh kosong'
-    })
+    // @IsNotEmpty({
+    //     message:'video_splash_url tidak boleh kosong'
+    // })
     video_splash_url : string
 
     @IsNotEmpty({
