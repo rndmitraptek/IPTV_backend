@@ -135,6 +135,8 @@ export class UsersService {
     async update(uuid: number, user: usersDtoUpdate): Promise<void> {
         if(user.password !=''){
             user.password = await bcrypt.hash(user.password, 10);
+        } else {
+            delete user.password;
         }
         await this.userModel.update(user, {
             where: {
