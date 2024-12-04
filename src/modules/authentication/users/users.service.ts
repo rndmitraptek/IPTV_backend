@@ -28,9 +28,9 @@ export class UsersService {
         private sequelize:Sequelize
     ) {}
     
-    findAll(req:any): Promise<users[]> {
+    async findAll(req:any): Promise<users[]> {
         try {
-            return this.userModel.findAll({
+            let data= await this.userModel.findAll({
                 attributes:[
                     'id_user',
                     'nama',
@@ -56,7 +56,12 @@ export class UsersService {
                     }
                 ],
                 where:{id_hotel:req.user.id_hotel}
-            });            
+            });     
+            
+            for(let i=0; i<data.length; i++){
+                data[i].password ='';
+            }
+            return data;
         } catch (error) {
             throw error;
         }
