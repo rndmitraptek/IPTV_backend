@@ -35,8 +35,8 @@ export class InfoHotelController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'tambah data info_hotel' })
     @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: info_hotel })  
-    create(@Body() info_hotel: info_hotelDtoInsert): Promise<info_hotel> {
-        return this.info_hotelService.create(info_hotel);
+    create(@Body() info_hotel: info_hotelDtoInsert,@Req() req:Request): Promise<info_hotel> {
+        return this.info_hotelService.create(info_hotel,req);
     }
 
     @Put(':id')

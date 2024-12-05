@@ -14,7 +14,6 @@ export class InfoHotelService {
         try {
             return this.info_hotelModel.findOne({
                 where:{
-                    id:1,
                     id_hotel:req.user.id_hotel
                 }
             });            
@@ -31,7 +30,8 @@ export class InfoHotelService {
         });
     }
     
-    async create(_info_hotel: info_hotelDtoInsert): Promise<info_hotel> {
+    async create(_info_hotel: info_hotelDtoInsert, req:any): Promise<info_hotel> {
+        _info_hotel['id_hotel']=req.user.id_hotel;
         return this.info_hotelModel.create(_info_hotel);
     }
     
