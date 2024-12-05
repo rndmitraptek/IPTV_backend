@@ -27,6 +27,7 @@ export class NearbyAttractionService {
     }
     
     async create(_nearby_attraction: nearby_attractionDtoInsert,req:any): Promise<nearby_attraction> {
+        delete _nearby_attraction['id_nearby_attraction'];
         _nearby_attraction['id_hotel']= req.user.id_hotel
         return this.nearby_attractionModel.create(_nearby_attraction);
     }
