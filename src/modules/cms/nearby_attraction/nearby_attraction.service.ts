@@ -26,7 +26,8 @@ export class NearbyAttractionService {
         });
     }
     
-    async create(_nearby_attraction: nearby_attractionDtoInsert): Promise<nearby_attraction> {
+    async create(_nearby_attraction: nearby_attractionDtoInsert,req:any): Promise<nearby_attraction> {
+        _nearby_attraction['id_hotel']= req.user.id_hotel
         return this.nearby_attractionModel.create(_nearby_attraction);
     }
     

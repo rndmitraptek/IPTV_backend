@@ -35,8 +35,8 @@ export class NearbyAttractionController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'tambah data nearby_attraction' })
     @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: nearby_attraction })  
-    create(@Body() nearby_attraction: nearby_attractionDtoInsert): Promise<nearby_attraction> {
-        return this.nearby_attractionService.create(nearby_attraction);
+    create(@Body() nearby_attraction: nearby_attractionDtoInsert,@Req() req:Request): Promise<nearby_attraction> {
+        return this.nearby_attractionService.create(nearby_attraction,req);
     }
 
     @Put(':id_nearby_attraction')
