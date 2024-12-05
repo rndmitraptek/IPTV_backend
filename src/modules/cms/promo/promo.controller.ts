@@ -35,8 +35,8 @@ export class PromoController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'tambah data promo' })
     @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: promo })  
-    create(@Body() promo: promoDtoInsert): Promise<promo> {
-        return this.promoService.create(promo);
+    create(@Body() promo: promoDtoInsert, @Req() req:Request): Promise<promo> {
+        return this.promoService.create(promo,req);
     }
 
     @Put(':id_promo')

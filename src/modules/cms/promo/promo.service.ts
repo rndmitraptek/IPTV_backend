@@ -42,7 +42,7 @@ export class PromoService {
         });
     }
     
-    async create(_promo: promoDtoInsert): Promise<promo> {
+    async create(_promo: promoDtoInsert,req:any): Promise<promo> {
         let urut = 1;
         let last_urut = await this.promoModel.findOne({
             order:[
@@ -53,6 +53,7 @@ export class PromoService {
             urut = last_urut.urut+1;
         }
         _promo.urut = urut;
+        _promo['id_hotel'] =req.user.id_hotel;
         return this.promoModel.create(_promo);
     }
     
