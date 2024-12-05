@@ -26,7 +26,8 @@ export class InfoRoomService {
         });
     }
     
-    async create(_info_room: info_roomDtoInsert): Promise<info_room> {
+    async create(_info_room: info_roomDtoInsert,req:any): Promise<info_room> {
+        _info_room['id_hotel']= req.user.id_hotel;
         return this.info_roomModel.create(_info_room);
     }
     

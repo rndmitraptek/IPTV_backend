@@ -26,7 +26,8 @@ export class InfoFasilitiesService {
         });
     }
     
-    async create(_info_fasilities: info_fasilitiesDtoInsert): Promise<info_fasilities> {
+    async create(_info_fasilities: info_fasilitiesDtoInsert,req:any): Promise<info_fasilities> {
+        _info_fasilities['id_hotel']=req.user.id_hotel
         return this.info_fasilitiesModel.create(_info_fasilities);
     }
     

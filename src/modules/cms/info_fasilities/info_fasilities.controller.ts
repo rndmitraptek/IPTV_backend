@@ -35,8 +35,8 @@ export class InfoFasilitiesController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'tambah data info_fasilities' })
     @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: info_fasilities })  
-    create(@Body() info_fasilities: info_fasilitiesDtoInsert): Promise<info_fasilities> {
-        return this.info_fasilitiesService.create(info_fasilities);
+    create(@Body() info_fasilities: info_fasilitiesDtoInsert,@Req() req:Request): Promise<info_fasilities> {
+        return this.info_fasilitiesService.create(info_fasilities,req);
     }
 
     @Put(':id_info_fasilites')

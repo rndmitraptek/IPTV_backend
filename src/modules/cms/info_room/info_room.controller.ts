@@ -35,8 +35,8 @@ export class InfoRoomController {
     @ApiBearerAuth('access-token')
     @ApiOperation({ summary: 'tambah data info_room' })
     @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: info_room })  
-    create(@Body() info_room: info_roomDtoInsert): Promise<info_room> {
-        return this.info_roomService.create(info_room);
+    create(@Body() info_room: info_roomDtoInsert,@Req() req:Request): Promise<info_room> {
+        return this.info_roomService.create(info_room,req);
     }
 
     @Put(':id_info_room')
