@@ -35,7 +35,7 @@ export class RestoGroupService {
                         as:'hotel'
                     }
                 ],
-                where:{id_hotel:req.user.id_hotel}
+                where:{id_hotel:req.user.id_hotel, is_active:true}
             });            
         } catch (error) {
             throw error;

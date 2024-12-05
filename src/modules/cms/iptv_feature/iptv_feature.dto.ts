@@ -2,9 +2,9 @@ import { IsNotEmpty } from 'class-validator';
 
 export class iptv_featureDtoInsert{
 
-    @IsNotEmpty({
-        message:'video_splash_name tidak boleh kosong'
-    })
+    // @IsNotEmpty({
+    //     message:'video_splash_name tidak boleh kosong'
+    // })
     video_splash_name : string
 
     // @IsNotEmpty({
