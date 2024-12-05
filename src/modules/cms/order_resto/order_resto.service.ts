@@ -314,7 +314,7 @@ export class OrderRestoService {
                 return createTrxMid;
             } else {
                 await transaction.commit();
-                return 'success';
+                return null;
             }
 
         } catch (error) {
