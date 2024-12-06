@@ -114,7 +114,7 @@ export class UserDeviceService {
                         id_hotel :user.id_hotel
                     },
                     {
-                        expiresIn:'1m'
+                        expiresIn:'5m'
                     }
                 ),
                 refreshtoken:this.jwtService.sign(
@@ -194,7 +194,7 @@ export class UserDeviceService {
                         id_hotel :user.id_hotel
                     },
                     {
-                        expiresIn:'1m'
+                        expiresIn:'5m'
                     }
                 )
             };
