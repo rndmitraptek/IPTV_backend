@@ -12,20 +12,24 @@ export class IptvFeatureService {
         private iptv_featureModel: typeof iptv_feature,
     ) {}
     
-    findAll(req:any): Promise<iptv_feature> {
+    async findAll(req:any): Promise<iptv_feature> {
         try {
-            return this.iptv_featureModel.findOne({where:{id:req.user.id_hotel}});            
+            let data= await this.iptv_featureModel.findOne({where:{id:req.user.id_hotel}});   
+            data.pin ='';
+            return data;         
         } catch (error) {
             throw error;
         }
     }
     
-    findOne(id: number): Promise<iptv_feature> {
-        return this.iptv_featureModel.findOne({
+    async findOne(id: number): Promise<iptv_feature> {
+        let data= await this.iptv_featureModel.findOne({
             where: {
                 id:id,
             },
         });
+        data.pin ='';
+        return data;   
     }
     
     async create(_iptv_feature: iptv_featureDtoInsert, req:any): Promise<iptv_feature> {
@@ -52,8 +56,10 @@ export class IptvFeatureService {
         _iptv_feature['version_data']=typeof cek.version_data=='string'?parseInt(cek.version_data) + 1 : cek.version_data + 1;
         _iptv_feature['updated_by']=req.user.username;
         if(_iptv_feature.pin !=undefined){
-            if(_iptv_feature.pin!=null){
+            if(_iptv_feature.pin!=null || _iptv_feature.pin!=''){
                 _iptv_feature.pin = await bcrypt.hash(_iptv_feature.pin, 10);
+            } else {
+                delete _iptv_feature.pin;
             }
         }
         
