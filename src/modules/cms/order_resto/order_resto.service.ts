@@ -156,7 +156,7 @@ export class OrderRestoService {
         throw 'Akun anda tidak memiliki room id';
       }
       let _orderRestoEntity = {};
-      _orderRestoEntity['order_date'] = param.order_date;
+      _orderRestoEntity['order_date'] = fn('NOW');
       _orderRestoEntity['guest_name'] = param.guest_name;
       _orderRestoEntity['grand_total'] = param.grand_total;
       _orderRestoEntity['created_by'] = req.user.username;
