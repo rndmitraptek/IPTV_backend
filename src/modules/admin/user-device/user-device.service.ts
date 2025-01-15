@@ -37,20 +37,20 @@ export class UserDeviceService {
           'created_by',
         ],
         include: [
-          {
-            attributes: ['nama_tamu', 'start_date', 'end_date', 'is_active'],
-            model: users_guestEntity,
-            as: 'guest',
-            where: {
-              is_active: true,
-              start_date: {
-                [Op.lte]: fn('NOW'), // start_date >= NOW()
-              },
-              end_date: {
-                [Op.gte]: fn('NOW'), // end_date <= NOW()
-              },
-            },
-          },
+          //   {
+          //     attributes: ['nama_tamu', 'start_date', 'end_date', 'is_active'],
+          //     model: users_guestEntity,
+          //     as: 'guest',
+          //     where: {
+          //       is_active: true,
+          //       start_date: {
+          //         [Op.lte]: fn('NOW'), // start_date >= NOW()
+          //       },
+          //       end_date: {
+          //         [Op.gte]: fn('NOW'), // end_date <= NOW()
+          //       },
+          //     },
+          //   },
           {
             attributes: [],
             model: iptv_feature,
@@ -82,20 +82,20 @@ export class UserDeviceService {
           'created_by',
         ],
         include: [
-          {
-            attributes: ['nama_tamu', 'start_date', 'end_date', 'is_active'],
-            model: users_guestEntity,
-            as: 'guest',
-            where: {
-              is_active: true,
-              start_date: {
-                [Op.lte]: fn('NOW'), // start_date >= NOW()
-              },
-              end_date: {
-                [Op.gte]: fn('NOW'), // end_date <= NOW()
-              },
-            },
-          },
+          //   {
+          //     attributes: ['nama_tamu', 'start_date', 'end_date', 'is_active'],
+          //     model: users_guestEntity,
+          //     as: 'guest',
+          //     where: {
+          //       is_active: true,
+          //       start_date: {
+          //         [Op.lte]: fn('NOW'), // start_date >= NOW()
+          //       },
+          //       end_date: {
+          //         [Op.gte]: fn('NOW'), // end_date <= NOW()
+          //       },
+          //     },
+          //   },
           {
             attributes: [],
             model: iptv_feature,
