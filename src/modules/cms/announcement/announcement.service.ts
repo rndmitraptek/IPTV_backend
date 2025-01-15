@@ -170,7 +170,7 @@ export class AnnouncementService {
       await transaction.commit();
 
       if (req.user.id_hotel != undefined) {
-        let sendWS = this._ApkService.sendWebsocketData(
+        let sendWS = await this._ApkService.sendWebsocketData(
           req,
           'announcement',
           'create',
@@ -222,7 +222,7 @@ export class AnnouncementService {
       await transaction.commit();
 
       if (req.user.id_hotel != undefined) {
-        let sendWS = this._ApkService.sendWebsocketData(
+        let sendWS = await this._ApkService.sendWebsocketData(
           req,
           'announcement',
           'update',
@@ -251,7 +251,7 @@ export class AnnouncementService {
       });
 
       if (req.user.id_hotel != undefined) {
-        let sendWS = this._ApkService.sendWebsocketData(
+        let sendWS = await this._ApkService.sendWebsocketData(
           req,
           'announcement',
           'update',

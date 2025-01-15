@@ -23,6 +23,7 @@ import { announcementUserEntity } from 'src/database/iptv/announcement_user.enti
 import { backgroundUserEntity } from 'src/database/iptv/background_user.entity';
 import { greeting_cardUserEntity } from 'src/database/iptv/greeting_card_user.entity';
 import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
+import { AppGateway } from 'src/utility/websocket.helper';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
     ]),
   ],
   controllers: [ApkController],
-  providers: [ApkService, tv_channelRepository],
+  providers: [ApkService, tv_channelRepository, AppGateway],
+  exports: [ApkService],
 })
 export class TvModule {}

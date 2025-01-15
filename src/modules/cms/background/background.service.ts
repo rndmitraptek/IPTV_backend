@@ -175,7 +175,7 @@ export class BackgroundService {
       await transaction.commit();
 
       if (req.user.id_hotel != undefined) {
-        let sendWS = this._ApkService.sendWebsocketData(
+        let sendWS = await this._ApkService.sendWebsocketData(
           req,
           'background',
           'create',
@@ -223,7 +223,7 @@ export class BackgroundService {
       await transaction.commit();
 
       if (req.user.id_hotel != undefined) {
-        let sendWS = this._ApkService.sendWebsocketData(
+        let sendWS = await this._ApkService.sendWebsocketData(
           req,
           'background',
           'update',
@@ -252,7 +252,7 @@ export class BackgroundService {
       });
 
       if (req.user.id_hotel != undefined) {
-        let sendWS = this._ApkService.sendWebsocketData(
+        let sendWS = await this._ApkService.sendWebsocketData(
           req,
           'background',
           'update',

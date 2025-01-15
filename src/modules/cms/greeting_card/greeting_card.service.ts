@@ -6,6 +6,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
 import { users_deviceEntity } from 'src/database/iptv/users_device.entity';
 import { greeting_cardUserEntity } from 'src/database/iptv/greeting_card_user.entity';
+import { ApkService } from 'src/modules/tv/apk/apk.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export class GreetingCardService {
@@ -15,9 +16,13 @@ export class GreetingCardService {
     private greeting_cardModel: typeof greeting_card,
     @InjectModel(greeting_cardUserEntity)
     private _greeting_cardUserEntity: typeof greeting_cardUserEntity,
+    private _ApkService: ApkService,
   ) {}
 
-  async updateStatusActive(id_greeting_card: number): Promise<greeting_card> {
+  async updateStatusActive(
+    id_greeting_card: number,
+    req: any,
+  ): Promise<greeting_card> {
     try {
       let data = await this.greeting_cardModel.findOne({
         where: {
@@ -27,6 +32,15 @@ export class GreetingCardService {
       data.update({
         is_active: !data.is_active,
       });
+
+      if (req.user.id_hotel != undefined) {
+        let sendWS = await this._ApkService.sendWebsocketData(
+          req,
+          'greeting_card',
+          'update',
+        );
+      }
+
       return data;
     } catch (error) {
       throw error;
@@ -169,6 +183,15 @@ export class GreetingCardService {
       }
 
       await transaction.commit();
+
+      if (req.user.id_hotel != undefined) {
+        let sendWS = await this._ApkService.sendWebsocketData(
+          req,
+          'greeting_card',
+          'create',
+        );
+      }
+
       return 'success';
     } catch (error) {
       await transaction.rollback();
@@ -179,6 +202,7 @@ export class GreetingCardService {
   async update(
     id_greeting_card: number,
     _param: greeting_cardDtoInsert,
+    req: any,
   ): Promise<any> {
     let transaction = await this.sequelize.transaction();
     try {
@@ -210,6 +234,15 @@ export class GreetingCardService {
         }
       }
       await transaction.commit();
+
+      if (req.user.id_hotel != undefined) {
+        let sendWS = await this._ApkService.sendWebsocketData(
+          req,
+          'greeting_card',
+          'update',
+        );
+      }
+
       return 'success';
     } catch (error) {
       await transaction.rollback();
@@ -217,7 +250,7 @@ export class GreetingCardService {
     }
   }
 
-  async remove(id_greeting_card: number): Promise<void> {
+  async remove(id_greeting_card: number, req: any): Promise<void> {
     // const greeting_card = await this.findOne(id_greeting_card);
     // await greeting_card.destroy();
     const greetUser = await this._greeting_cardUserEntity.destroy({
@@ -226,5 +259,13 @@ export class GreetingCardService {
     const greet = await this.greeting_cardModel.destroy({
       where: { id_greeting_card: id_greeting_card },
     });
+
+    if (req.user.id_hotel != undefined) {
+      let sendWS = await this._ApkService.sendWebsocketData(
+        req,
+        'greeting_card',
+        'delete',
+      );
+    }
   }
 }

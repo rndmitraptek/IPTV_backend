@@ -74,6 +74,7 @@ import { AppGateway } from 'src/utility/websocket.helper';
 import { userGuestController } from './userGuest/userGuest.controller';
 import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
 import { userGuestService } from './userGuest/userGuest.service';
+import { ApkService } from '../tv/apk/apk.service';
 
 @Module({
   imports: [
@@ -131,6 +132,7 @@ import { userGuestService } from './userGuest/userGuest.service';
     userGuestController,
   ],
   providers: [
+    ApkService,
     ApkVersionService,
     MinioClientService,
     generateNumber,

@@ -12,7 +12,7 @@ import { resto } from 'src/database/iptv/resto.entity';
 import { tv_channelRepository } from './api.repository';
 import { Sequelize } from 'sequelize-typescript';
 import { restoGroupEntity } from 'src/database/iptv/resto_group.entity';
-import { fn, Op } from 'sequelize';
+import { fn, Op, QueryTypes } from 'sequelize';
 import { backgroundEntity } from 'src/database/iptv/background.entity';
 import { announcementEntity } from 'src/database/iptv/announcement.entity';
 import axios, { AxiosRequestConfig, Method } from 'axios';
@@ -57,7 +57,6 @@ export class ApkService {
     private entertainmentModel: typeof entertainment,
     @InjectModel(users_guestEntity)
     private _users_guestEntity: typeof users_guestEntity,
-    private tv_channelRepo: tv_channelRepository,
     private _AppGateway: AppGateway,
   ) {}
 
@@ -202,6 +201,15 @@ export class ApkService {
       order: [['id_greeting_card_user', 'desc']],
     });
 
+    let selectChannel = `select tv.*,tg."group"
+                from tv_channel tv
+                inner join tv_group tg on tv.id_group=tg.id_group 
+                WHERE is_active=true AND is_assign=true
+                order by tv.urut;`;
+    const channelData = await this.sequelize.query(selectChannel, {
+      type: QueryTypes.SELECT,
+    });
+
     let data = {
       nama: nama,
       iptv: getHotel,
@@ -259,7 +267,8 @@ export class ApkService {
           where: { id_hotel: req.user.id_hotel },
         }),
       },
-      channel: await this.tv_channelRepo.GetChannelActive(),
+      // channel: await this.tv_channelRepo.GetChannelActive(),
+      channel: channelData,
     };
     return data;
   }
@@ -295,7 +304,7 @@ export class ApkService {
       action: action,
       data: data,
     };
-    let send = await this._AppGateway.handleMessageUpdateData(payloadData);
+    let send = this._AppGateway.handleMessageUpdateData(payloadData);
   }
 
   async palindromeService(input: string): Promise<number> {

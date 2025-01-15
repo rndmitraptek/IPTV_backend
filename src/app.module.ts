@@ -17,20 +17,20 @@ import { AppGateway } from './utility/websocket.helper';
       useClass: SequelizeConfigService,
     }),
     JwtModule.register({
-        secret: process.env.JWT_SECRET,
-        signOptions: {},
+      secret: process.env.JWT_SECRET,
+      signOptions: {},
     }),
-    CmsModule, 
-    MakeModule, 
-    AuthenticationModule, 
+    CmsModule,
+    MakeModule,
+    AuthenticationModule,
     TvModule,
-    AdminModule
+    AdminModule,
   ],
   controllers: [AppController],
-  providers: [AppService,SequelizeConfigService,AppGateway],
+  providers: [AppService, SequelizeConfigService, AppGateway],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-      consumer.apply(LoggingMiddleware).forRoutes('*');
+    consumer.apply(LoggingMiddleware).forRoutes('*');
   }
 }
