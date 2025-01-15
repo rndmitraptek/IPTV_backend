@@ -55,12 +55,17 @@ export class backgroundEntity extends Model<backgroundEntity> {
   })
   end_date: Date;
 
-
   @Column({
     type: DataType.BOOLEAN,
     allowNull: false,
   })
   is_active: boolean;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: true,
+  })
+  is_video: boolean;
 
   @Column({
     type: DataType.BIGINT,
@@ -108,10 +113,9 @@ export class backgroundEntity extends Model<backgroundEntity> {
   })
   updated_by: string;
 
-
   toJSON() {
     // Override untuk menambahkan `status_order_name` dalam output JSON
     const attributes = super.toJSON() as this;
-    return { ...attributes};
+    return { ...attributes };
   }
 }
