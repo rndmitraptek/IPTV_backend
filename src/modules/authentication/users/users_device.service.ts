@@ -239,6 +239,7 @@ export class UserDeviceService {
           'is_active',
           'id_hotel',
           [this.sequelize.col('hotel.title_hotel'), 'nama_hotel'],
+          [this.sequelize.col('guest.nama_tamu'), 'nama_tamu'],
           'created_at',
           'created_by',
         ],
@@ -247,6 +248,7 @@ export class UserDeviceService {
             attributes: ['nama_tamu', 'start_date', 'end_date', 'is_active'],
             model: users_guestEntity,
             as: 'guest',
+            required: false,
             where: {
               is_active: true,
               start_date: {
@@ -267,6 +269,7 @@ export class UserDeviceService {
           id_hotel: req.user.id_hotel,
           is_active: true,
         },
+        order: [['id_user_device', 'desc']],
       });
       return data;
     } catch (error) {
@@ -288,6 +291,7 @@ export class UserDeviceService {
           'is_active',
           'id_hotel',
           [this.sequelize.col('hotel.title_hotel'), 'nama_hotel'],
+          [this.sequelize.col('guest.nama_tamu'), 'nama_tamu'],
           'created_at',
           'created_by',
         ],
@@ -296,6 +300,7 @@ export class UserDeviceService {
             attributes: ['nama_tamu', 'start_date', 'end_date', 'is_active'],
             model: users_guestEntity,
             as: 'guest',
+            required: false,
             where: {
               is_active: true,
               start_date: {
