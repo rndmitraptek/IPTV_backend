@@ -4,62 +4,56 @@ import {
   Column,
   DataType,
   ForeignKey,
-  HasOne,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { iptv_feature } from './iptv_feature.entity';
-import { users_guestEntity } from './users_guest.entity';
+import { users_deviceEntity } from './users_device.entity';
 
 @Table({
-  tableName: 'users_device',
+  tableName: 'users_guest',
   timestamps: true,
   updatedAt: 'updated_at',
   createdAt: 'created_at',
 })
-export class users_deviceEntity extends Model<users_deviceEntity> {
+export class users_guestEntity extends Model<users_guestEntity> {
   @ApiHideProperty()
   @Column({
     type: DataType.BIGINT,
     autoIncrement: true,
     primaryKey: true,
   })
-  id_user_device: number;
-  @HasOne(() => users_guestEntity, {
-    foreignKey: 'id_user_device',
-    as: 'guest',
-  })
-  guest: users_guestEntity;
+  id_user_guest: number;
 
   @Column({
     type: DataType.BIGINT,
     allowNull: false,
   })
-  @ForeignKey(() => iptv_feature)
-  id_hotel: number;
-  @BelongsTo(() => iptv_feature, {
-    foreignKey: 'id_hotel',
-    as: 'hotel',
+  @ForeignKey(() => users_deviceEntity)
+  id_user_device: number;
+  @BelongsTo(() => users_deviceEntity, {
+    foreignKey: 'id_user_device',
+    as: 'user_device',
   })
-  hotel: iptv_feature;
+  user_device: users_deviceEntity;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  username: string;
+  nama_tamu: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.DATE,
     allowNull: false,
   })
-  password: string;
+  start_date: Date;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.DATE,
     allowNull: false,
   })
-  room_id: string;
+  end_date: Date;
 
   @Column({
     type: DataType.BOOLEAN,
@@ -90,10 +84,4 @@ export class users_deviceEntity extends Model<users_deviceEntity> {
     allowNull: false,
   })
   updated_by: string;
-
-  @Column({
-    type: DataType.JSON,
-    allowNull: false,
-  })
-  device_info: string;
 }

@@ -71,6 +71,9 @@ import { announcementUserEntity } from 'src/database/iptv/announcement_user.enti
 import { backgroundUserEntity } from 'src/database/iptv/background_user.entity';
 import { greeting_cardUserEntity } from 'src/database/iptv/greeting_card_user.entity';
 import { AppGateway } from 'src/utility/websocket.helper';
+import { userGuestController } from './userGuest/userGuest.controller';
+import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
+import { userGuestService } from './userGuest/userGuest.service';
 
 @Module({
   imports: [
@@ -101,7 +104,8 @@ import { AppGateway } from 'src/utility/websocket.helper';
       orderRestoEntity,
       orderRestoDetailEntity,
       nomor_counter,
-      logCallbackEntity
+      logCallbackEntity,
+      users_guestEntity,
     ]),
   ],
   controllers: [
@@ -123,7 +127,8 @@ import { AppGateway } from 'src/utility/websocket.helper';
     MenuController,
     BackgroundController,
     AnnouncementController,
-    OrderRestoController
+    OrderRestoController,
+    userGuestController,
   ],
   providers: [
     ApkVersionService,
@@ -150,7 +155,8 @@ import { AppGateway } from 'src/utility/websocket.helper';
     MenuService,
     BackgroundService,
     AnnouncementService,
-    OrderRestoService
+    OrderRestoService,
+    userGuestService,
   ],
 })
 export class CmsModule {}
