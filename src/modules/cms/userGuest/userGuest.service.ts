@@ -11,6 +11,17 @@ export class userGuestService {
   ) {}
 
   async create(_param: userGuestInsert, req: any): Promise<users_guestEntity> {
+    const updateNonActive = await this._users_guestEntity.update(
+      {
+        is_active: false,
+      },
+      {
+        where: {
+          id_user_device: _param.id_user_device,
+        },
+      },
+    );
+
     _param.start_date = new Date(
       new Date(_param.start_date).getTime() - 7 * 60 * 60 * 1000,
     );
