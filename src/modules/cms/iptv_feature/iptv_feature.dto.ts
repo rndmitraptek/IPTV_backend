@@ -36,6 +36,8 @@ export class iptv_featureDtoInsert {
     message: 'background_image_url tidak boleh kosong',
   })
   background_image_url: string;
+  background_video_name: string;
+  background_video_url: string;
 
   @IsNotEmpty({
     message: 'video_channel_0_name tidak boleh kosong',

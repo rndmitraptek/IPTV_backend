@@ -6,6 +6,8 @@ export class insertBackground {
   background_name: string;
   @IsNotEmpty()
   background_url: string;
+  background_video_name: string;
+  background_video_url: string;
   is_video: boolean;
   @IsNotEmpty()
   start_date: Date;

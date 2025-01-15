@@ -63,6 +63,16 @@ export class iptv_feature extends Model<iptv_feature> {
     allowNull: true,
   })
   background_image_url: string;
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  background_video_name: string;
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  background_video_url: string;
 
   @Column({
     type: DataType.STRING,

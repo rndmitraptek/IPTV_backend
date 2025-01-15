@@ -44,6 +44,17 @@ export class backgroundEntity extends Model<backgroundEntity> {
   background_url: string;
 
   @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  background_video_name: string;
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  background_video_url: string;
+
+  @Column({
     type: DataType.DATE,
     allowNull: false,
   })
