@@ -47,6 +47,14 @@ export class AppGateway {
     this.server.emit('status_order', body);
   }
 
+  @SubscribeMessage('update_data')
+  handleMessageUpdateData(@MessageBody() body: any): void {
+    this.logger.log('send message websocket update data');
+    this.logger.log(body);
+    // Kirim pesan ke semua klien di room id_hotel
+    this.server.emit('update_data', body);
+  }
+
   // sendToSpecificClient(clientId: string, message: string) {
   //   this.server.to(clientId).emit('message', message); // Kirim pesan ke klien tertentu
   // }

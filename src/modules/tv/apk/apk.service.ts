@@ -21,6 +21,7 @@ import { announcementUserEntity } from 'src/database/iptv/announcement_user.enti
 import { backgroundUserEntity } from 'src/database/iptv/background_user.entity';
 import { greeting_cardUserEntity } from 'src/database/iptv/greeting_card_user.entity';
 import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
+import { AppGateway } from 'src/utility/websocket.helper';
 
 @Injectable()
 export class ApkService {
@@ -57,6 +58,7 @@ export class ApkService {
     @InjectModel(users_guestEntity)
     private _users_guestEntity: typeof users_guestEntity,
     private tv_channelRepo: tv_channelRepository,
+    private _AppGateway: AppGateway,
   ) {}
 
   async getData(req: any): Promise<any> {
@@ -283,6 +285,12 @@ export class ApkService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async sendWebsocketData(req: any, module: string, action: string) {
+    const data = await this.getData(req);
+
+    let send = await this._AppGateway.handleMessageUpdateData(data);
   }
 
   async palindromeService(input: string): Promise<number> {

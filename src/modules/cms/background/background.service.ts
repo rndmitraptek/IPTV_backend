@@ -9,6 +9,7 @@ import { MinioClientService } from 'src/utility/minio-client.utils';
 import { insertBackground } from './background.dto';
 import { BufferedFile } from 'src/utility/minio-client.model';
 import { backgroundUserEntity } from 'src/database/iptv/background_user.entity';
+import { ApkService } from 'src/modules/tv/apk/apk.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export class BackgroundService {
@@ -19,6 +20,7 @@ export class BackgroundService {
     @InjectModel(backgroundUserEntity)
     private _backgroundUserEntity: typeof backgroundUserEntity,
     private MinioClientService: MinioClientService,
+    private _ApkService: ApkService,
   ) {}
 
   async findAll(req: any): Promise<any> {
@@ -171,6 +173,15 @@ export class BackgroundService {
       }
 
       await transaction.commit();
+
+      if (req.user.id_hotel != undefined) {
+        let sendWS = this._ApkService.sendWebsocketData(
+          req,
+          'background',
+          'create',
+        );
+      }
+
       return 'success';
     } catch (error) {
       await transaction.rollback();
@@ -210,6 +221,15 @@ export class BackgroundService {
         }
       }
       await transaction.commit();
+
+      if (req.user.id_hotel != undefined) {
+        let sendWS = this._ApkService.sendWebsocketData(
+          req,
+          'background',
+          'update',
+        );
+      }
+
       return 'success';
     } catch (error) {
       await transaction.rollback();
@@ -217,7 +237,10 @@ export class BackgroundService {
     }
   }
 
-  async updateStatusActive(id_background: number): Promise<backgroundEntity> {
+  async updateStatusActive(
+    id_background: number,
+    req: any,
+  ): Promise<backgroundEntity> {
     try {
       let data = await this._backgroundEntity.findOne({
         where: {
@@ -227,6 +250,15 @@ export class BackgroundService {
       data.update({
         is_active: !data.is_active,
       });
+
+      if (req.user.id_hotel != undefined) {
+        let sendWS = this._ApkService.sendWebsocketData(
+          req,
+          'background',
+          'update',
+        );
+      }
+
       return data;
     } catch (error) {
       throw error;
