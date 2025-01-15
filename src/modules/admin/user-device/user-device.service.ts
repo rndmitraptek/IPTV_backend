@@ -7,7 +7,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { users_deviceEntity } from 'src/database/iptv/users_device.entity';
 import { sessionDeviceEntity } from 'src/database/iptv/session_device.entity';
 import { v4 as uuidv4 } from 'uuid';
-import { Op } from 'sequelize';
+import { fn, Op } from 'sequelize';
 import { createUserDeviceRoom, updateUserDeviceRoom } from './user-device.dto';
 import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
 
@@ -41,6 +41,15 @@ export class UserDeviceService {
             attributes: ['nama_tamu', 'start_date', 'end_date', 'is_active'],
             model: users_guestEntity,
             as: 'guest',
+            where: {
+              is_active: true,
+              start_date: {
+                [Op.lte]: fn('NOW'), // start_date >= NOW()
+              },
+              end_date: {
+                [Op.gte]: fn('NOW'), // end_date <= NOW()
+              },
+            },
           },
           {
             attributes: [],
@@ -77,6 +86,15 @@ export class UserDeviceService {
             attributes: ['nama_tamu', 'start_date', 'end_date', 'is_active'],
             model: users_guestEntity,
             as: 'guest',
+            where: {
+              is_active: true,
+              start_date: {
+                [Op.lte]: fn('NOW'), // start_date >= NOW()
+              },
+              end_date: {
+                [Op.gte]: fn('NOW'), // end_date <= NOW()
+              },
+            },
           },
           {
             attributes: [],
