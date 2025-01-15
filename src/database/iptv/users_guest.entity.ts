@@ -81,7 +81,7 @@ export class users_guestEntity extends Model<users_guestEntity> {
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
   })
   updated_by: string;
 }
