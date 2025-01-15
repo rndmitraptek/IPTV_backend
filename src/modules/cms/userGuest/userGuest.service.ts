@@ -11,7 +11,7 @@ export class userGuestService {
   ) {}
 
   async create(_param: userGuestInsert, req: any): Promise<users_guestEntity> {
-    _param['id_hotel'] = req.user.id_hotel;
+    _param['created_by'] = req.user.username;
     _param['is_active'] = true;
     return this._users_guestEntity.create(_param);
   }
