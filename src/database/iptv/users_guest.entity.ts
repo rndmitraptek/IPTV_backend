@@ -38,6 +38,18 @@ export class users_guestEntity extends Model<users_guestEntity> {
   user_device: users_deviceEntity;
 
   @Column({
+    type: DataType.BIGINT,
+    allowNull: false,
+  })
+  @ForeignKey(() => iptv_feature)
+  id_hotel: number;
+  @BelongsTo(() => iptv_feature, {
+    foreignKey: 'id_hotel',
+    as: 'hotel',
+  })
+  hotel: iptv_feature;
+
+  @Column({
     type: DataType.STRING,
     allowNull: false,
   })

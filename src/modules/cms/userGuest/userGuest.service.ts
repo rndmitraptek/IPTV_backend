@@ -18,6 +18,7 @@ export class userGuestService {
       new Date(_param.end_date).getTime() - 7 * 60 * 60 * 1000,
     );
     _param['created_by'] = req.user.username;
+    _param['id_hotel'] = req.user.id_hotel;
     _param['is_active'] = true;
     return this._users_guestEntity.create(_param);
   }

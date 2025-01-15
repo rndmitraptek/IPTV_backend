@@ -22,9 +22,10 @@ import { announcementEntity } from 'src/database/iptv/announcement.entity';
 import { announcementUserEntity } from 'src/database/iptv/announcement_user.entity';
 import { backgroundUserEntity } from 'src/database/iptv/background_user.entity';
 import { greeting_cardUserEntity } from 'src/database/iptv/greeting_card_user.entity';
+import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
 
 @Module({
-  imports:[
+  imports: [
     SequelizeModule.forFeature([
       apk_version,
       role,
@@ -44,10 +45,11 @@ import { greeting_cardUserEntity } from 'src/database/iptv/greeting_card_user.en
       backgroundEntity,
       backgroundUserEntity,
       announcementEntity,
-      announcementUserEntity
-    ])
+      announcementUserEntity,
+      users_guestEntity,
+    ]),
   ],
-  controllers: [ ApkController],
-  providers: [ ApkService,tv_channelRepository]
+  controllers: [ApkController],
+  providers: [ApkService, tv_channelRepository],
 })
 export class TvModule {}
