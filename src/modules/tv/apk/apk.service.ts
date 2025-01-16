@@ -297,12 +297,12 @@ export class ApkService {
   }
 
   async sendWebsocketData(req: any, module: string, action: string) {
-    const data = await this.getData(req);
+    // const data = await this.getData(req);
     const payloadData = {
       id_hotel: req.user.id_hotel,
       module: module,
       action: action,
-      data: data,
+      // data: data,
     };
     let send = this._AppGateway.handleMessageUpdateData(payloadData);
   }
