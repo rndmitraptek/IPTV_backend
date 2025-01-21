@@ -314,7 +314,11 @@ export class OrderRestoService {
             order_id: getData.order_number,
             gross_amount: getData.grand_total,
           },
-          enabled_payments: ['gopay'],
+          customer_details:{
+            first_name:getData.guest_name
+          },
+          // enabled_payments: ['gopay'],
+          // payment_type: "gopay",
           // payment_type:'qris',
           // qris:{acquirer:'gopay'}
         };
@@ -322,6 +326,9 @@ export class OrderRestoService {
 
         let createTrxMid =
           await this._MidtransService.createTransactionMidtrans(paramMidtrans);
+        if(createTrxMid.status_code !=400){
+          createTrxMid.redirect_url =`${createTrxMid.redirect_url}#/other-qris`;
+        }
 
         await transaction.commit();
         return createTrxMid;

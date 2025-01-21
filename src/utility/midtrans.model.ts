@@ -50,11 +50,11 @@ export interface response_midtrans{
 
   export interface CustomerDetails {
     first_name: string
-    last_name: string
-    email: string
-    phone: string
-    billing_address: BillingAddress
-    shipping_address: ShippingAddress
+    last_name?: string
+    email?: string
+    phone?: string
+    billing_address?: BillingAddress
+    shipping_address?: ShippingAddress
   }
   
   export interface BillingAddress {
