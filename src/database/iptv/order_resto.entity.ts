@@ -111,6 +111,12 @@ export class orderRestoEntity extends Model<orderRestoEntity> {
     })
     status_order:number;
 
+    @Column({
+        type: DataType.JSON,
+        allowNull: true,
+    })
+    response_midtrans:any;
+
 
     @Column({
         type: DataType.DATE,

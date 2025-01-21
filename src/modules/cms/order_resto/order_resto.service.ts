@@ -56,6 +56,7 @@ export class OrderRestoService {
       'updated_by',
       'status_bayar',
       'status_order',
+      'response_midtrans',
       'canceled_at',
       'canceled_by',
       'reason_canceled',
@@ -291,22 +292,6 @@ export class OrderRestoService {
         throw 'Data tidak ditemukan';
       }
 
-      let updatePembayaran = await this._orderRestoEntity.update(
-        {
-          jenis_pembayaran: param.jenis_pembayaran,
-          updated_by: req.user.username,
-        },
-        {
-          where: {
-            id_order_resto: param.id_order_resto,
-          },
-          transaction: transaction,
-        },
-      );
-      if (!updatePembayaran) {
-        throw 'Pembayaran gagal';
-      }
-
       if (param.jenis_pembayaran == jenisPembayaran.ONLINE) {
         let paramMidtrans: request_midtrans = {
           hotelId: getData.id_hotel,
@@ -330,9 +315,43 @@ export class OrderRestoService {
           createTrxMid.redirect_url =`${createTrxMid.redirect_url}#/other-qris`;
         }
 
+        let updatePembayaran = await this._orderRestoEntity.update(
+          {
+            jenis_pembayaran: param.jenis_pembayaran,
+            updated_by: req.user.username,
+            response_midtrans:createTrxMid
+          },
+          {
+            where: {
+              id_order_resto: param.id_order_resto,
+            },
+            transaction: transaction,
+          },
+        );
+        if (!updatePembayaran) {
+          throw 'Pembayaran gagal';
+        }
+
         await transaction.commit();
         return createTrxMid;
       } else {
+
+        let updatePembayaran = await this._orderRestoEntity.update(
+          {
+            jenis_pembayaran: param.jenis_pembayaran,
+            updated_by: req.user.username,
+          },
+          {
+            where: {
+              id_order_resto: param.id_order_resto,
+            },
+            transaction: transaction,
+          },
+        );
+        if (!updatePembayaran) {
+          throw 'Pembayaran gagal';
+        }
+
         await transaction.commit();
         return {};
       }
