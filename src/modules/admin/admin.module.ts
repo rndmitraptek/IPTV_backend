@@ -31,6 +31,8 @@ import { TvChannelAdminController } from './tv_channel_admin/tv_channel_admin.co
 import { TvChannelAdminService } from './tv_channel_admin/tv_channel_admin.service';
 import { tv_channelAdminRepository } from './tv_channel_admin/tv_channel_admin.repo';
 import { AppGateway } from 'src/utility/websocket.helper';
+import { TvGroupAdminController } from './tv_group_admin/tv_group_admin.controller';
+import { TvGroupAdminService } from './tv_group_admin/tv_group_admin.service';
 
 @Module({
   imports: [
@@ -60,6 +62,7 @@ import { AppGateway } from 'src/utility/websocket.helper';
     HotelController,
     UserCmsController,
     UserDeviceController,
+    TvGroupAdminController,
     TvChannelAdminController,
   ],
   providers: [
@@ -69,6 +72,7 @@ import { AppGateway } from 'src/utility/websocket.helper';
     UserCmsService,
     UserDeviceService,
     AppGateway,
+    TvGroupAdminService,
     tv_channelAdminRepository,
     TvChannelAdminService,
   ],

@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class tv_groupDtoInsert {
+export class tv_groupAdminDtoInsert {
   @IsNotEmpty({
     message: 'group tidak boleh kosong',
   })
@@ -11,7 +11,7 @@ export class tv_groupDtoInsert {
   id_hotel: number;
 }
 
-export class tv_groupDtoUpdate {
+export class tv_groupAdminDtoUpdate {
   @IsNotEmpty({
     message: 'group tidak boleh kosong',
   })
