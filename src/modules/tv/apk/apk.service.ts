@@ -204,7 +204,7 @@ export class ApkService {
     let selectChannel = `select tv.*,tg."group"
                 from tv_channel tv
                 inner join tv_group tg on tv.id_group=tg.id_group 
-                WHERE is_active=true AND is_assign=true
+                WHERE is_active=true AND is_assign=true AND tv.id_hotel=${req.user.id_hotel}
                 order by tv.urut;`;
     const channelData = await this.sequelize.query(selectChannel, {
       type: QueryTypes.SELECT,

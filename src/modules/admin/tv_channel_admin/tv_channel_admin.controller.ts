@@ -17,20 +17,22 @@ import {
 } from '@nestjs/swagger';
 import { tv_channel } from 'src/database/iptv/tv_channel.entity';
 import { JwtAuthGuard } from 'src/modules/authentication/users/jwt-auth.gruard';
-import {
-  tv_channelDtoInsert,
-  tv_channelDtoUpdateUrut,
-  tv_channelDtoUpdateUrutRequest,
-} from './tv_channel.dto';
-import { TvChannelService } from './tv_channel.service';
 import { Request } from 'express';
+import { TvChannelAdminService } from './tv_channel_admin.service';
+import {
+  tv_channelAdminDtoInsert,
+  tv_channelAdminDtoUpdateUrut,
+  tv_channelAdminDtoUpdateUrutRequest,
+} from './tv_channel_admin.dto';
 
-@Controller('cms/tvChannel')
-@ApiTags('cms-tvChannel')
-export class TvChannelController {
-  constructor(private readonly tv_channelService: TvChannelService) {}
+@Controller('admin/tvChannelAdmin')
+@ApiTags('admin-tvChannel')
+export class TvChannelAdminController {
+  constructor(
+    private readonly _tv_channelAdminService: TvChannelAdminService,
+  ) {}
 
-  @Get()
+  @Get(':id_hotel')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Menampilkan Semua Data' })
@@ -39,8 +41,8 @@ export class TvChannelController {
     description: 'Return all tv_channel.',
     type: [tv_channel],
   })
-  findAll(@Req() req: Request): Promise<tv_channel[]> {
-    return this.tv_channelService.findAll(req);
+  findAll(@Param('id_hotel') id_hotel: number): Promise<tv_channel[]> {
+    return this._tv_channelAdminService.findAll(id_hotel);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -51,29 +53,30 @@ export class TvChannelController {
     description: 'Return a single tv_channel.',
     type: tv_channel,
   })
-  @Get('byIdGroup/:id_group')
+  @Get('byIdGroup/:id_group/:id_hotel')
   findOne(
     @Param('id_group') id_group: number,
+    @Param('id_hotel') id_hotel: number,
     @Req() req: Request,
   ): Promise<tv_channel> {
-    return this.tv_channelService.findOne(id_group, req);
+    return this._tv_channelAdminService.findOne(id_group, id_hotel);
   }
 
-  //   @Post()
-  //   @UseGuards(JwtAuthGuard)
-  //   @ApiBearerAuth('access-token')
-  //   @ApiOperation({ summary: 'tambah data tv_channel' })
-  //   @ApiResponse({
-  //     status: 201,
-  //     description: 'The user has been successfully created.',
-  //     type: tv_channel,
-  //   })
-  //   create(
-  //     @Body() tv_channel: tv_channelDtoInsert,
-  //     @Req() req: Request,
-  //   ): Promise<tv_channel> {
-  //     return this.tv_channelService.create(tv_channel);
-  //   }
+  @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'tambah data tv_channel' })
+  @ApiResponse({
+    status: 201,
+    description: 'The user has been successfully created.',
+    type: tv_channel,
+  })
+  create(
+    @Body() tv_channel: tv_channelAdminDtoInsert,
+    @Req() req: Request,
+  ): Promise<tv_channel> {
+    return this._tv_channelAdminService.create(tv_channel);
+  }
 
   @Put(':id_channel')
   @UseGuards(JwtAuthGuard)
@@ -86,9 +89,9 @@ export class TvChannelController {
   })
   update(
     @Param('id_channel') id_channel: string,
-    @Body() tv_channel: tv_channelDtoInsert,
+    @Body() tv_channel: tv_channelAdminDtoInsert,
   ) {
-    return this.tv_channelService.update(id_channel, tv_channel);
+    return this._tv_channelAdminService.update(id_channel, tv_channel);
   }
 
   @ApiOperation({ summary: 'Delete data DtoInsert' })
@@ -98,7 +101,7 @@ export class TvChannelController {
   })
   @Delete(':id_channel')
   remove(@Param('id_channel') id: number) {
-    return this.tv_channelService.remove(id);
+    return this._tv_channelAdminService.remove(id);
   }
 
   @Put('updateStatusActive/:id_channel')
@@ -111,7 +114,7 @@ export class TvChannelController {
     type: tv_channel,
   })
   updateStatusActive(@Param('id_channel') id_channel: number) {
-    return this.tv_channelService.updateStatusActive(id_channel);
+    return this._tv_channelAdminService.updateStatusActive(id_channel);
   }
 
   @Put('updateStatusAssign/:id_channel')
@@ -124,7 +127,7 @@ export class TvChannelController {
     type: tv_channel,
   })
   updateStatusAssign(@Param('id_channel') id_channel: number) {
-    return this.tv_channelService.updateStatusAssign(id_channel);
+    return this._tv_channelAdminService.updateStatusAssign(id_channel);
   }
 
   @Post('updateUrut')
@@ -134,11 +137,11 @@ export class TvChannelController {
   @ApiResponse({
     status: 201,
     description: 'The user has been successfully created.',
-    type: tv_channelDtoUpdateUrut,
+    type: tv_channelAdminDtoUpdateUrut,
   })
   updateUrut(
-    @Body() tv_channel: tv_channelDtoUpdateUrutRequest,
-  ): Promise<tv_channelDtoUpdateUrut[]> {
-    return this.tv_channelService.updateUrutan(tv_channel.data);
+    @Body() tv_channel: tv_channelAdminDtoUpdateUrutRequest,
+  ): Promise<tv_channelAdminDtoUpdateUrut[]> {
+    return this._tv_channelAdminService.updateUrutan(tv_channel.data);
   }
 }

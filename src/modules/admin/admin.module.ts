@@ -27,9 +27,13 @@ import { UserCmsService } from './user-cms/user-cms.service';
 import { users } from 'src/database/iptv/users.entity';
 import { UserDeviceController } from './user-device/user-device.controller';
 import { UserDeviceService } from './user-device/user-device.service';
+import { TvChannelAdminController } from './tv_channel_admin/tv_channel_admin.controller';
+import { TvChannelAdminService } from './tv_channel_admin/tv_channel_admin.service';
+import { tv_channelAdminRepository } from './tv_channel_admin/tv_channel_admin.repo';
+import { AppGateway } from 'src/utility/websocket.helper';
 
 @Module({
-  imports:[
+  imports: [
     SequelizeModule.forFeature([
       apk_version,
       role,
@@ -48,21 +52,25 @@ import { UserDeviceService } from './user-device/user-device.service';
       entertainment,
       menu,
       users_deviceEntity,
-      sessionDeviceEntity
-    ])
+      sessionDeviceEntity,
+    ]),
   ],
   controllers: [
     BatasAdminController,
     HotelController,
     UserCmsController,
-    UserDeviceController
+    UserDeviceController,
+    TvChannelAdminController,
   ],
   providers: [
     ApkVersionService,
-    MinioClientService, 
+    MinioClientService,
     HotelService,
     UserCmsService,
-    UserDeviceService
-  ]
+    UserDeviceService,
+    AppGateway,
+    tv_channelAdminRepository,
+    TvChannelAdminService,
+  ],
 })
 export class AdminModule {}

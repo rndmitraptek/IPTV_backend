@@ -3,7 +3,7 @@ import { QueryTypes } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 
 @Injectable({ scope: Scope.REQUEST })
-export class tv_channelRepository {
+export class tv_channelAdminRepository {
   constructor(private sequelize: Sequelize) {}
 
   async GetAll(id_hotel: number): Promise<any> {

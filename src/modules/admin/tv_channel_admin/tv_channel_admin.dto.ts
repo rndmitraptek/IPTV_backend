@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class tv_channelDtoInsert {
+export class tv_channelAdminDtoInsert {
   @IsNotEmpty({
     message: 'id_group tidak boleh kosong',
   })
@@ -44,7 +44,7 @@ export class tv_channelDtoInsert {
   // is_assign : boolean
 }
 
-export class tv_channelDtoUpdateUrut {
+export class tv_channelAdminDtoUpdateUrut {
   @IsNotEmpty({
     message: 'id_channel tidak boleh kosong',
   })
@@ -56,9 +56,9 @@ export class tv_channelDtoUpdateUrut {
   urut: number;
 }
 
-export class tv_channelDtoUpdateUrutRequest {
+export class tv_channelAdminDtoUpdateUrutRequest {
   @IsNotEmpty({
     message: 'data tidak boleh kosong',
   })
-  data: tv_channelDtoUpdateUrut[];
+  data: tv_channelAdminDtoUpdateUrut[];
 }
