@@ -62,6 +62,37 @@ jobs:
           name: Deploy app to server
           command: |
             ssh -o StrictHostKeyChecking=no iptv-admin@206.189.38.25 "cd aplikasiIPTV/deployer/ && ./deploy_harris_dev.sh"
+    
+    build-harris-live:
+    machine:
+      image: ubuntu-2004:current
+    resource_class: medium
+    steps:
+      - checkout
+      - run:
+          name: Login to dockerhub
+          command: |
+            echo "$DOCKER_PASS" | docker login --username $DOCKER_USER --password-stdin
+      - run:
+          name: Build dockerfile
+          command: |
+            docker build --no-cache -t mitraptek/iptv_backend:$CIRCLE_SHA1 .
+      - run:
+          name: Push Docker Image
+          command: |
+            docker push mitraptek/iptv_backend:$CIRCLE_SHA1
+            docker tag mitraptek/iptv_backend:$CIRCLE_SHA1 mitraptek/iptv_backend:harris-live-latest
+            docker push mitraptek/iptv_backend:harris-live-latest
+      - add_ssh_keys:
+          fingerprints:
+            - 'SHA256:td/Cp4SKs8tykhLUqYiPqs8zSkExFcV1LtUHCtS9ci0'
+      - run:
+          name: Prune unused Docker images
+          command: docker image prune -f
+      - run:
+          name: Deploy app to server
+          command: |
+            ssh -o StrictHostKeyChecking=no iptv-admin@206.189.38.25 "cd aplikasiIPTV/deployer/ && ./deploy_harris_live.sh"
 workflows:
   basic-workflow:
     jobs:
@@ -75,3 +106,8 @@ workflows:
             branches:
               only:
                 - harris-development
+      - build-harris-live:
+          filters:
+            branches:
+              only:
+                - harris-live
