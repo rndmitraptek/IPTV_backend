@@ -62,8 +62,8 @@ jobs:
           name: Deploy app to server
           command: |
             ssh -o StrictHostKeyChecking=no iptv-admin@206.189.38.25 "cd aplikasiIPTV/deployer/ && ./deploy_harris_dev.sh"
-    
-    build-harris-live:
+
+  build-harris-live:
     machine:
       image: ubuntu-2004:current
     resource_class: medium
