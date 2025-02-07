@@ -55,28 +55,42 @@ export class TvGroupController {
     return this.tv_groupService.findOne(id_group, req);
   }
 
-  // @Post()
-  // @UseGuards(JwtAuthGuard)
-  // @ApiBearerAuth('access-token')
-  // @ApiOperation({ summary: 'tambah data tv_group' })
-  // @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: tv_group })
-  // create(@Body() tv_group: tv_groupDtoInsert): Promise<tv_group> {
-  //     return this.tv_groupService.create(tv_group);
-  // }
+  @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'tambah data tv_group' })
+  @ApiResponse({
+    status: 201,
+    description: 'The user has been successfully created.',
+    type: tv_group,
+  })
+  create(@Body() tv_group: tv_groupDtoInsert): Promise<tv_group> {
+    return this.tv_groupService.create(tv_group);
+  }
 
-  // @Put(':id_group')
-  // @UseGuards(JwtAuthGuard)
-  // @ApiBearerAuth('access-token')
-  // @ApiOperation({ summary: 'Update data tv_group' })
-  // @ApiResponse({ status: 200, description: 'The tv_group has been successfully updated.', type: tv_group })
-  // update(@Param('id_group') id_group: number, @Body() tv_group: tv_groupDtoUpdate) {
-  //     return this.tv_groupService.update(id_group, tv_group);
-  // }
+  @Put(':id_group')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Update data tv_group' })
+  @ApiResponse({
+    status: 200,
+    description: 'The tv_group has been successfully updated.',
+    type: tv_group,
+  })
+  update(
+    @Param('id_group') id_group: number,
+    @Body() tv_group: tv_groupDtoUpdate,
+  ) {
+    return this.tv_groupService.update(id_group, tv_group);
+  }
 
-  // @ApiOperation({ summary: 'Delete data DtoInsert' })
-  // @ApiResponse({ status: 200, description: 'The DtoInsert has been successfully deleted.' })
-  // @Delete(':id_group')
-  // remove(@Param('id_group') id_group: number) {
-  //     return this.tv_groupService.remove(id_group);
-  // }
+  @ApiOperation({ summary: 'Delete data DtoInsert' })
+  @ApiResponse({
+    status: 200,
+    description: 'The DtoInsert has been successfully deleted.',
+  })
+  @Delete(':id_group')
+  remove(@Param('id_group') id_group: number) {
+    return this.tv_groupService.remove(id_group);
+  }
 }
