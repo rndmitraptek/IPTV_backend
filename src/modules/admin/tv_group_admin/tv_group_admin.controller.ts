@@ -50,7 +50,7 @@ export class TvGroupAdminController {
     description: 'Return a single tv_group.',
     type: tv_group,
   })
-  @Get(':id_group')
+  @Get(':id_group/:id_hotel')
   findOne(
     @Param('id_group') id_group: number,
     @Param('id_hotel') id_hotel: number,
