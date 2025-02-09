@@ -10,3 +10,8 @@ export class userGuestInsert {
   @IsNotEmpty()
   end_date: Date;
 }
+
+export class userGuestMulti {
+  @IsNotEmpty()
+  detail: userGuestInsert[];
+}

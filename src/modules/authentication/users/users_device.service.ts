@@ -8,6 +8,7 @@ import {
   loginDeviceDto,
   loginDto,
   updateUserRoom,
+  updateUserRoomWifi,
   usersDtoInsert,
   usersDtoUpdate,
 } from './users.dto';
@@ -433,6 +434,23 @@ export class UserDeviceService {
         }
       }
 
+      return 'success';
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateUserRoomWifi(param: updateUserRoomWifi, req: any): Promise<any> {
+    try {
+      let update = await this._users_deviceEntity.update(
+        {
+          wifi: param.wifi,
+          updated_by: req.user.username,
+        },
+        {
+          where: { id_user_device: param.id_user_device },
+        },
+      );
       return 'success';
     } catch (error) {
       throw error;

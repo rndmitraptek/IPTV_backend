@@ -68,6 +68,12 @@ export class users_deviceEntity extends Model<users_deviceEntity> {
   is_active: boolean;
 
   @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  wifi: string;
+
+  @Column({
     type: DataType.DATE,
     allowNull: false,
   })
