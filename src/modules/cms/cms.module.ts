@@ -75,6 +75,7 @@ import { userGuestController } from './userGuest/userGuest.controller';
 import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
 import { userGuestService } from './userGuest/userGuest.service';
 import { ApkService } from '../tv/apk/apk.service';
+import { hotelChannel_0Entity } from 'src/database/iptv/hotel_channel_0.entity';
 
 @Module({
   imports: [
@@ -107,6 +108,7 @@ import { ApkService } from '../tv/apk/apk.service';
       nomor_counter,
       logCallbackEntity,
       users_guestEntity,
+      hotelChannel_0Entity,
     ]),
   ],
   controllers: [

@@ -1,5 +1,6 @@
 import { ApiHideProperty } from '@nestjs/swagger';
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import { hotelChannel_0Entity } from './hotel_channel_0.entity';
 
 @Table({
   tableName: 'hotel',
@@ -15,6 +16,11 @@ export class iptv_feature extends Model<iptv_feature> {
     primaryKey: true,
   })
   id: number;
+  @HasMany(() => hotelChannel_0Entity, {
+    foreignKey: 'id_hotel',
+    as: 'detail_channel_0',
+  })
+  detail_channel_0: hotelChannel_0Entity;
 
   @Column({
     type: DataType.STRING,

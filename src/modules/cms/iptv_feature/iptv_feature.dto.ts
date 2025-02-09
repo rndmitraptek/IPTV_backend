@@ -1,5 +1,22 @@
 import { IsNotEmpty } from 'class-validator';
 
+export class detail_channel_0 {
+  @IsNotEmpty({
+    message: 'video_channel_0_name tidak boleh kosong',
+  })
+  video_channel_0_name: string;
+
+  @IsNotEmpty({
+    message: 'video_channel_0_url tidak boleh kosong',
+  })
+  video_channel_0_url: string;
+
+  @IsNotEmpty({
+    message: 'urutan tidak boleh kosong',
+  })
+  urutan: number;
+}
+
 export class iptv_featureDtoInsert {
   // @IsNotEmpty({
   //     message:'video_splash_name tidak boleh kosong'
@@ -39,15 +56,15 @@ export class iptv_featureDtoInsert {
   background_video_name: string;
   background_video_url: string;
 
-  @IsNotEmpty({
-    message: 'video_channel_0_name tidak boleh kosong',
-  })
-  video_channel_0_name: string;
+  // @IsNotEmpty({
+  //   message: 'video_channel_0_name tidak boleh kosong',
+  // })
+  // video_channel_0_name: string;
 
-  @IsNotEmpty({
-    message: 'video_channel_0_url tidak boleh kosong',
-  })
-  video_channel_0_url: string;
+  // @IsNotEmpty({
+  //   message: 'video_channel_0_url tidak boleh kosong',
+  // })
+  // video_channel_0_url: string;
 
   // @IsNotEmpty({
   //     message:'default_home tidak boleh kosong'
@@ -73,4 +90,6 @@ export class iptv_featureDtoInsert {
   api_guest: string;
   api_secret: string;
   pin: string;
+  @IsNotEmpty()
+  detail_channel_0: detail_channel_0[];
 }
