@@ -76,6 +76,8 @@ import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
 import { userGuestService } from './userGuest/userGuest.service';
 import { ApkService } from '../tv/apk/apk.service';
 import { hotelChannel_0Entity } from 'src/database/iptv/hotel_channel_0.entity';
+import { logRefreshTokenEntity } from 'src/database/iptv/log_refresh_token.entity';
+import { logLogoutEntity } from 'src/database/iptv/log_logout.entity';
 
 @Module({
   imports: [
@@ -109,6 +111,8 @@ import { hotelChannel_0Entity } from 'src/database/iptv/hotel_channel_0.entity';
       logCallbackEntity,
       users_guestEntity,
       hotelChannel_0Entity,
+      logLogoutEntity,
+      logRefreshTokenEntity,
     ]),
   ],
   controllers: [

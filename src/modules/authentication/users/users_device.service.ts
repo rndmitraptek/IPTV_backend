@@ -7,6 +7,7 @@ import {
   createUserRoom,
   loginDeviceDto,
   loginDto,
+  refreshTokenModel,
   updateUserRoom,
   updateUserRoomWifi,
   usersDtoInsert,
@@ -19,6 +20,8 @@ import { sessionDeviceEntity } from 'src/database/iptv/session_device.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { fn, Op } from 'sequelize';
 import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
+import { logLogoutEntity } from 'src/database/iptv/log_logout.entity';
+import { logRefreshTokenEntity } from 'src/database/iptv/log_refresh_token.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UserDeviceService {
@@ -28,6 +31,10 @@ export class UserDeviceService {
     private _users_deviceEntity: typeof users_deviceEntity,
     @InjectModel(sessionDeviceEntity)
     private _sessionDeviceEntity: typeof sessionDeviceEntity,
+    @InjectModel(logLogoutEntity)
+    private _logLogoutEntity: typeof logLogoutEntity,
+    @InjectModel(logRefreshTokenEntity)
+    private _logRefreshTokenEntity: typeof logRefreshTokenEntity,
     @InjectModel(iptv_feature)
     private _hotelEntity: typeof iptv_feature,
     private sequelize: Sequelize,
@@ -126,7 +133,7 @@ export class UserDeviceService {
             id_hotel: user.id_hotel,
           },
           {
-            expiresIn: '1h',
+            expiresIn: '20s',
           },
         ),
         refreshtoken: this.jwtService.sign({
@@ -139,10 +146,23 @@ export class UserDeviceService {
     }
   }
 
-  async refresh(req: any): Promise<any> {
+  async refresh(_param: refreshTokenModel, req: any): Promise<any> {
+    //save log refresh
+    const paramLog = {
+      id_user_device: _param.id_user_device,
+      request: _param,
+    };
+    const saveLog = await this._logRefreshTokenEntity.create(paramLog);
     try {
+      //cek token
+      const payload = this.jwtService.verify(_param.refreshtoken, {
+        secret: process.env.JWT_SECRET,
+      });
+      // console.log('payload token :', payload);
+
+      //check session
       let sess_check = await this._sessionDeviceEntity.findOne({
-        where: { id_session_device: req.user.id_session_device },
+        where: { id_session_device: payload.id_session_device },
       });
       if (sess_check == null) {
         throw 'refresh token invalid';
@@ -169,7 +189,7 @@ export class UserDeviceService {
           'device_info',
         ],
         where: {
-          id_user_device: req.user.id_user,
+          id_user_device: payload.id_user,
           is_active: true,
         },
       });
@@ -198,7 +218,7 @@ export class UserDeviceService {
         throw 'refresh token invalid';
       }
 
-      return {
+      const result = {
         ...user.dataValues,
         accesstoken: this.jwtService.sign(
           {
@@ -208,10 +228,34 @@ export class UserDeviceService {
             id_hotel: user.id_hotel,
           },
           {
-            expiresIn: '1h',
+            expiresIn: '20s',
           },
         ),
       };
+
+      //update response log refresh
+      const updateLog = await this._logRefreshTokenEntity.update(
+        { response: result },
+        { where: { id_log_refresh: saveLog.id_log_refresh } },
+      );
+
+      return result;
+    } catch (error) {
+      const updateLog = await this._logRefreshTokenEntity.update(
+        { response: { resp_error: error } },
+        { where: { id_log_refresh: saveLog.id_log_refresh } },
+      );
+      throw error;
+    }
+  }
+
+  async logLogout(message: string): Promise<logLogoutEntity> {
+    try {
+      const paramLog = {
+        message: message,
+      };
+      const insertLog = await this._logLogoutEntity.create(paramLog);
+      return insertLog;
     } catch (error) {
       throw error;
     }
