@@ -122,3 +122,14 @@ export class updateUserRoomWifi {
   })
   wifi: string;
 }
+
+export class refreshTokenModel {
+  @IsNotEmpty()
+  id_user_device: number;
+  @IsNotEmpty()
+  refreshtoken: string;
+}
+export class logLogoutModel {
+  @IsNotEmpty()
+  message: string;
+}

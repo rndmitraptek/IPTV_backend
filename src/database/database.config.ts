@@ -34,6 +34,8 @@ import { announcementUserEntity } from './iptv/announcement_user.entity';
 import { backgroundUserEntity } from './iptv/background_user.entity';
 import { greeting_cardUserEntity } from './iptv/greeting_card_user.entity';
 import { users_guestEntity } from './iptv/users_guest.entity';
+import { logLogoutEntity } from './iptv/log_logout.entity';
+import { logRefreshTokenEntity } from './iptv/log_refresh_token.entity';
 dotenv.config();
 
 @Injectable({ scope: Scope.REQUEST })
@@ -78,6 +80,8 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
         nomor_counter,
         logCallbackEntity,
         users_guestEntity,
+        logLogoutEntity,
+        logRefreshTokenEntity,
       ];
     } else {
       models = [];

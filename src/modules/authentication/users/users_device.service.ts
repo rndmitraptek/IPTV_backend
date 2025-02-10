@@ -7,6 +7,7 @@ import {
   createUserRoom,
   loginDeviceDto,
   loginDto,
+  refreshTokenModel,
   updateUserRoom,
   updateUserRoomWifi,
   usersDtoInsert,
@@ -19,6 +20,8 @@ import { sessionDeviceEntity } from 'src/database/iptv/session_device.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { fn, Op } from 'sequelize';
 import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
+import { logLogoutEntity } from 'src/database/iptv/log_logout.entity';
+import { logRefreshTokenEntity } from 'src/database/iptv/log_refresh_token.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UserDeviceService {
@@ -28,6 +31,10 @@ export class UserDeviceService {
     private _users_deviceEntity: typeof users_deviceEntity,
     @InjectModel(sessionDeviceEntity)
     private _sessionDeviceEntity: typeof sessionDeviceEntity,
+    @InjectModel(logLogoutEntity)
+    private _logLogoutEntity: typeof logLogoutEntity,
+    @InjectModel(logRefreshTokenEntity)
+    private _logRefreshTokenEntity: typeof logRefreshTokenEntity,
     @InjectModel(iptv_feature)
     private _hotelEntity: typeof iptv_feature,
     private sequelize: Sequelize,
@@ -213,6 +220,109 @@ export class UserDeviceService {
         ),
       };
     } catch (error) {
+      throw error;
+    }
+  }
+
+  async refreshNew(_param: refreshTokenModel, req: any): Promise<any> {
+    //save log refresh
+    const paramLog = {
+      id_user_device: _param.id_user_device,
+      request: _param,
+    };
+    const saveLog = await this._logRefreshTokenEntity.create(paramLog);
+    try {
+      //cek token
+      const payload = this.jwtService.verify(_param.refreshtoken, {
+        secret: process.env.JWT_SECRET,
+      });
+      // console.log('payload token :', payload);
+
+      //check session
+      let sess_check = await this._sessionDeviceEntity.findOne({
+        where: { id_session_device: payload.id_session_device },
+      });
+      if (sess_check == null) {
+        throw 'refresh token invalid';
+      }
+
+      const ip =
+        req.headers['cs-connection-ip'] ||
+        req.headers['x-real-ip'] ||
+        req.headers['x-forwarded-for'] ||
+        req.socket.remoteAddress ||
+        '';
+
+      let user = await this._users_deviceEntity.findOne({
+        attributes: [
+          'id_user_device',
+          'id_hotel',
+          'username',
+          'room_id',
+          'is_active',
+          'created_at',
+          'updated_at',
+          'created_by',
+          'updated_by',
+          'device_info',
+        ],
+        where: {
+          id_user_device: payload.id_user,
+          is_active: true,
+        },
+      });
+      if (!user) {
+        throw 'refresh token invalid';
+      }
+
+      let countRefresh =
+        sess_check.refresh_count == null
+          ? 1
+          : typeof sess_check.refresh_count == 'string'
+            ? parseInt(sess_check.refresh_count) + 1
+            : sess_check.refresh_count + 1;
+      let update_sess = await this._sessionDeviceEntity.update(
+        {
+          last_refresh_at: new Date(),
+          refresh_count: countRefresh,
+        },
+        {
+          where: {
+            id_session_device: sess_check.id_session_device,
+          },
+        },
+      );
+      if (!update_sess) {
+        throw 'refresh token invalid';
+      }
+
+      const result = {
+        ...user.dataValues,
+        accesstoken: this.jwtService.sign(
+          {
+            id_user: user.id_user_device,
+            room_id: user.room_id,
+            username: user.username,
+            id_hotel: user.id_hotel,
+          },
+          {
+            expiresIn: '20s',
+          },
+        ),
+      };
+
+      //update response log refresh
+      const updateLog = await this._logRefreshTokenEntity.update(
+        { response: result },
+        { where: { id_log_refresh: saveLog.id_log_refresh } },
+      );
+
+      return result;
+    } catch (error) {
+      const updateLog = await this._logRefreshTokenEntity.update(
+        { response: { resp_error: error } },
+        { where: { id_log_refresh: saveLog.id_log_refresh } },
+      );
       throw error;
     }
   }
