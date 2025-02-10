@@ -21,6 +21,7 @@ import {
   createUserRoom,
   loginDeviceDto,
   loginDto,
+  logLogoutModel,
   refreshTokenModel,
   updateUserRoom,
   updateUserRoomWifi,
@@ -71,6 +72,15 @@ export class UserDeviceController {
   @ApiResponse({ status: 201, description: 'success' })
   refreshNew(@Body() body: refreshTokenModel, @Req() req: Request) {
     return this.usersService.refreshNew(body, req);
+  }
+
+  @Post('insertLogLogout')
+  // @UseGuards(JwtRefreshAuthGuard)
+  // @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'log logout' })
+  @ApiResponse({ status: 201, description: 'success' })
+  insertLogLogout(@Body() body: logLogoutModel, @Req() req: Request) {
+    return this.usersService.logLogout(body.message);
   }
 
   @Get('getUserRoom')

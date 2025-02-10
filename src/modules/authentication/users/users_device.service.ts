@@ -133,7 +133,7 @@ export class UserDeviceService {
             id_hotel: user.id_hotel,
           },
           {
-            expiresIn: '1h',
+            expiresIn: '20s',
           },
         ),
         refreshtoken: this.jwtService.sign({
@@ -215,7 +215,7 @@ export class UserDeviceService {
             id_hotel: user.id_hotel,
           },
           {
-            expiresIn: '1h',
+            expiresIn: '20s',
           },
         ),
       };
@@ -323,6 +323,18 @@ export class UserDeviceService {
         { response: { resp_error: error } },
         { where: { id_log_refresh: saveLog.id_log_refresh } },
       );
+      throw error;
+    }
+  }
+
+  async logLogout(message: string): Promise<logLogoutEntity> {
+    try {
+      const paramLog = {
+        message: message,
+      };
+      const insertLog = await this._logLogoutEntity.create(paramLog);
+      return insertLog;
+    } catch (error) {
       throw error;
     }
   }
