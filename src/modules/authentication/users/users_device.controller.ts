@@ -57,12 +57,21 @@ export class UserDeviceController {
   }
 
   @Post('refresh')
-  // @UseGuards(JwtRefreshAuthGuard)
-  // @ApiBearerAuth('access-token')
+  @UseGuards(JwtRefreshAuthGuard)
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'refresh token' })
   @ApiResponse({ status: 201, description: 'success' })
-  refresh(@Body() body: refreshTokenModel, @Req() req: Request) {
-    return this.usersService.refresh(body, req);
+  refresh(@Req() req: Request) {
+    return this.usersService.refresh(req);
+  }
+
+  @Post('refreshNew')
+  // @UseGuards(JwtRefreshAuthGuard)
+  // @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'refresh token new with logging' })
+  @ApiResponse({ status: 201, description: 'success' })
+  refreshNew(@Body() body: refreshTokenModel, @Req() req: Request) {
+    return this.usersService.refreshNew(body, req);
   }
 
   @Post('insertLogLogout')

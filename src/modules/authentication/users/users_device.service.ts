@@ -146,7 +146,85 @@ export class UserDeviceService {
     }
   }
 
-  async refresh(_param: refreshTokenModel, req: any): Promise<any> {
+  async refresh(req: any): Promise<any> {
+    try {
+      let sess_check = await this._sessionDeviceEntity.findOne({
+        where: { id_session_device: req.user.id_session_device },
+      });
+      if (sess_check == null) {
+        throw 'refresh token invalid';
+      }
+
+      const ip =
+        req.headers['cs-connection-ip'] ||
+        req.headers['x-real-ip'] ||
+        req.headers['x-forwarded-for'] ||
+        req.socket.remoteAddress ||
+        '';
+
+      let user = await this._users_deviceEntity.findOne({
+        attributes: [
+          'id_user_device',
+          'id_hotel',
+          'username',
+          'room_id',
+          'is_active',
+          'created_at',
+          'updated_at',
+          'created_by',
+          'updated_by',
+          'device_info',
+        ],
+        where: {
+          id_user_device: req.user.id_user,
+          is_active: true,
+        },
+      });
+      if (!user) {
+        throw 'refresh token invalid';
+      }
+
+      let countRefresh =
+        sess_check.refresh_count == null
+          ? 1
+          : typeof sess_check.refresh_count == 'string'
+            ? parseInt(sess_check.refresh_count) + 1
+            : sess_check.refresh_count + 1;
+      let update_sess = await this._sessionDeviceEntity.update(
+        {
+          last_refresh_at: new Date(),
+          refresh_count: countRefresh,
+        },
+        {
+          where: {
+            id_session_device: sess_check.id_session_device,
+          },
+        },
+      );
+      if (!update_sess) {
+        throw 'refresh token invalid';
+      }
+
+      return {
+        ...user.dataValues,
+        accesstoken: this.jwtService.sign(
+          {
+            id_user: user.id_user_device,
+            room_id: user.room_id,
+            username: user.username,
+            id_hotel: user.id_hotel,
+          },
+          {
+            expiresIn: '1h',
+          },
+        ),
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async refreshNew(_param: refreshTokenModel, req: any): Promise<any> {
     //save log refresh
     const paramLog = {
       id_user_device: _param.id_user_device,
