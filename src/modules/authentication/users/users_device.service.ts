@@ -431,7 +431,18 @@ export class UserDeviceService {
         ],
         include: [
           {
-            attributes: ['nama_tamu', 'start_date', 'end_date', 'is_active'],
+            attributes: [
+              'nama_tamu',
+              [
+                this.sequelize.literal("start_date + INTERVAL '7 HOURS'"),
+                'start_date',
+              ],
+              [
+                this.sequelize.literal("end_date + INTERVAL '7 HOURS'"),
+                'end_date',
+              ],
+              'is_active',
+            ],
             model: users_guestEntity,
             as: 'guest',
             required: false,

@@ -51,6 +51,12 @@ export class resto extends Model<resto> {
   harga: number;
 
   @Column({
+    type: DataType.BOOLEAN,
+    allowNull: true,
+  })
+  is_sold_out: boolean;
+
+  @Column({
     type: DataType.BIGINT,
     allowNull: false,
   })

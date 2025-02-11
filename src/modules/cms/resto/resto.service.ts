@@ -44,6 +44,19 @@ export class RestoService {
           },
         ],
         where: { id_hotel: req.user.id_hotel },
+        group: [
+          'id_resto',
+          'image_name',
+          'image_url',
+          'title',
+          'description',
+          'harga',
+          this.sequelize.col('resto.id_hotel'),
+          this.sequelize.col('hotel.title_hotel'),
+          this.sequelize.col('resto.id_group'),
+          this.sequelize.col('group.nama_group'),
+        ],
+        order: [['id_resto', 'desc']],
       });
     } catch (error) {
       throw error;
@@ -81,6 +94,19 @@ export class RestoService {
           id_group: id_group,
           id_hotel: req.user.id_hotel,
         },
+        group: [
+          'id_resto',
+          'image_name',
+          'image_url',
+          'title',
+          'description',
+          'harga',
+          this.sequelize.col('resto.id_hotel'),
+          this.sequelize.col('hotel.title_hotel'),
+          this.sequelize.col('resto.id_group'),
+          this.sequelize.col('group.nama_group'),
+        ],
+        order: [['id_resto', 'desc']],
       });
     } catch (error) {
       throw error;

@@ -25,8 +25,11 @@ export class AnnouncementService {
         attributes: [
           'id_announcement',
           'description',
-          'start_date',
-          'end_date',
+          [
+            this.sequelize.literal("start_date + INTERVAL '7 HOURS'"),
+            'start_date',
+          ],
+          [this.sequelize.literal("end_date + INTERVAL '7 HOURS'"), 'end_date'],
           'is_active',
           'id_hotel',
           [this.sequelize.col('hotel.title_hotel'), 'nama_hotel'],
@@ -79,8 +82,11 @@ export class AnnouncementService {
       attributes: [
         'id_announcement',
         'description',
-        'start_date',
-        'end_date',
+        [
+          this.sequelize.literal("start_date + INTERVAL '7 HOURS'"),
+          'start_date',
+        ],
+        [this.sequelize.literal("end_date + INTERVAL '7 HOURS'"), 'end_date'],
         'is_active',
         'id_hotel',
         [this.sequelize.col('hotel.title_hotel'), 'nama_hotel'],

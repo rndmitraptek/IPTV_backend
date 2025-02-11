@@ -78,6 +78,9 @@ import { ApkService } from '../tv/apk/apk.service';
 import { hotelChannel_0Entity } from 'src/database/iptv/hotel_channel_0.entity';
 import { logRefreshTokenEntity } from 'src/database/iptv/log_refresh_token.entity';
 import { logLogoutEntity } from 'src/database/iptv/log_logout.entity';
+import { warningEntity } from 'src/database/iptv/warning.entity';
+import { warningController } from './warning/warning.controller';
+import { warningService } from './warning/warning.service';
 
 @Module({
   imports: [
@@ -113,6 +116,7 @@ import { logLogoutEntity } from 'src/database/iptv/log_logout.entity';
       hotelChannel_0Entity,
       logLogoutEntity,
       logRefreshTokenEntity,
+      warningEntity,
     ]),
   ],
   controllers: [
@@ -136,6 +140,7 @@ import { logLogoutEntity } from 'src/database/iptv/log_logout.entity';
     AnnouncementController,
     OrderRestoController,
     userGuestController,
+    warningController,
   ],
   providers: [
     ApkService,
@@ -165,6 +170,7 @@ import { logLogoutEntity } from 'src/database/iptv/log_logout.entity';
     AnnouncementService,
     OrderRestoService,
     userGuestService,
+    warningService,
   ],
 })
 export class CmsModule {}

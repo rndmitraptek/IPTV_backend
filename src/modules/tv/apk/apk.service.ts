@@ -22,6 +22,8 @@ import { backgroundUserEntity } from 'src/database/iptv/background_user.entity';
 import { greeting_cardUserEntity } from 'src/database/iptv/greeting_card_user.entity';
 import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
 import { AppGateway } from 'src/utility/websocket.helper';
+import { warningEntity } from 'src/database/iptv/warning.entity';
+import { hotelChannel_0Entity } from 'src/database/iptv/hotel_channel_0.entity';
 
 @Injectable()
 export class ApkService {
@@ -57,6 +59,8 @@ export class ApkService {
     private entertainmentModel: typeof entertainment,
     @InjectModel(users_guestEntity)
     private _users_guestEntity: typeof users_guestEntity,
+    @InjectModel(warningEntity)
+    private _warningEntity: typeof warningEntity,
     private _AppGateway: AppGateway,
   ) {}
 
@@ -98,7 +102,47 @@ export class ApkService {
     let nama = 'Guest';
 
     let getHotel = await this.iptv_featureModel.findOne({
+      attributes: [
+        'id',
+        'video_splash_name',
+        'video_splash_url',
+        'title_hotel',
+        'logo_hotel_name',
+        'logo_hotel_url',
+        'background_image_name',
+        'background_image_url',
+        'default_home',
+        'address',
+        'expired_date',
+        'actived_at',
+        'created_at',
+        'updated_at',
+        'created_by',
+        'updated_by',
+        'is_active',
+        'api_guest',
+        'api_method',
+        'api_secret',
+        'is_midtrans',
+        'midtrans_server_key',
+        'midtrans_client_key',
+        'is_midtrans_production',
+        'pin',
+        'version_data',
+        'is_background_video',
+        'background_video_name',
+        'background_video_url',
+      ],
+      include: [
+        {
+          model: hotelChannel_0Entity,
+          as: 'detail_channel_0',
+          required: false,
+          where: { is_active: true },
+        },
+      ],
       where: { id: req.user.id_hotel },
+      order: [this.sequelize.col('detail_channel_0.urutan')],
     });
     if (getHotel != null) {
       if (getHotel.api_guest != null) {
@@ -210,6 +254,19 @@ export class ApkService {
       type: QueryTypes.SELECT,
     });
 
+    const getWarning = await this._warningEntity.findAll({
+      attributes: [
+        'id_hotel',
+        [
+          Sequelize.fn('STRING_AGG', Sequelize.col('warning_text'), ', '),
+          'warning_text',
+        ],
+      ],
+      raw: true,
+      where: { id_hotel: req.user.id_hotel, is_active: true },
+      group: ['id_hotel'],
+    });
+
     let data = {
       nama: nama,
       iptv: getHotel,
@@ -245,7 +302,19 @@ export class ApkService {
             as: 'group',
           },
         ],
-        where: { id_hotel: req.user.id_hotel },
+        where: { id_hotel: req.user.id_hotel, is_sold_out: false },
+        group: [
+          'id_resto',
+          'image_name',
+          'image_url',
+          'title',
+          'description',
+          'harga',
+          this.sequelize.col('resto.id_hotel'),
+          this.sequelize.col('hotel.title_hotel'),
+          this.sequelize.col('resto.id_group'),
+          this.sequelize.col('group.nama_group'),
+        ],
       }),
       entertainmentModel: await this.entertainmentModel.findAll({
         where: { is_active: true },
@@ -269,6 +338,7 @@ export class ApkService {
       },
       // channel: await this.tv_channelRepo.GetChannelActive(),
       channel: channelData,
+      warning: getWarning.length == 0 ? null : getWarning[0].warning_text,
     };
     return data;
   }
