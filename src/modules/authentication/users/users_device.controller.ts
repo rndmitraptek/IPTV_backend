@@ -54,10 +54,10 @@ export class UserDeviceController {
   @ApiResponse({ status: 201, description: 'success' })
   tokenCheck(
     @Req() req: Request,
-    @Headers('authorization') authHeader: string,
+    // @Headers('authorization') authHeader: string,
   ) {
-    // console.log(authHeader?.split(' ')[1]);
-    const token = authHeader?.split(' ')[1];
+    const token = req.headers.authorization.replace('Bearer ', '');
+    console.log(token);
     return this.usersService.cekToken(req, token);
   }
 
