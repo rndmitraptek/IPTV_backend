@@ -133,7 +133,7 @@ export class UserDeviceService {
             id_hotel: user.id_hotel,
           },
           {
-            expiresIn: '20s',
+            expiresIn: '1d',
           },
         ),
         refreshtoken: this.jwtService.sign({
@@ -215,7 +215,7 @@ export class UserDeviceService {
             id_hotel: user.id_hotel,
           },
           {
-            expiresIn: '20s',
+            expiresIn: '1d',
           },
         ),
       };
@@ -306,7 +306,7 @@ export class UserDeviceService {
             id_hotel: user.id_hotel,
           },
           {
-            expiresIn: '20s',
+            expiresIn: '1d',
           },
         ),
       };
