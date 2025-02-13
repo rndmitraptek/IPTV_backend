@@ -8,6 +8,7 @@ import {
   Put,
   Req,
   UseGuards,
+  Headers,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -51,9 +52,13 @@ export class UserDeviceController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'cek token' })
   @ApiResponse({ status: 201, description: 'success' })
-  tokenCheck(@Req() req: Request) {
-    // console.log(req);
-    return this.usersService.cekToken(req);
+  tokenCheck(
+    @Req() req: Request,
+    @Headers('authorization') authHeader: string,
+  ) {
+    // console.log(authHeader?.split(' ')[1]);
+    const token = authHeader?.split(' ')[1];
+    return this.usersService.cekToken(req, token);
   }
 
   @Post('refresh')

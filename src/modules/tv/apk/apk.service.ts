@@ -24,6 +24,7 @@ import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
 import { AppGateway } from 'src/utility/websocket.helper';
 import { warningEntity } from 'src/database/iptv/warning.entity';
 import { hotelChannel_0Entity } from 'src/database/iptv/hotel_channel_0.entity';
+import { users_deviceEntity } from 'src/database/iptv/users_device.entity';
 
 @Injectable()
 export class ApkService {
@@ -59,6 +60,8 @@ export class ApkService {
     private entertainmentModel: typeof entertainment,
     @InjectModel(users_guestEntity)
     private _users_guestEntity: typeof users_guestEntity,
+    @InjectModel(users_deviceEntity)
+    private _users_deviceEntity: typeof users_deviceEntity,
     @InjectModel(warningEntity)
     private _warningEntity: typeof warningEntity,
     private _AppGateway: AppGateway,
@@ -199,6 +202,10 @@ export class ApkService {
       }
     }
 
+    const getWifi = await this._users_deviceEntity.findOne({
+      where: { id_user_device: req.user.id_user },
+    });
+
     const background = await this._backgroundUserEntity.findOne({
       include: [
         {
@@ -269,6 +276,7 @@ export class ApkService {
 
     let data = {
       nama: nama,
+      wifi: getWifi.wifi,
       iptv: getHotel,
       nearbyattraction: await this.nearby_attractionModel.findAll({
         where: { id_hotel: req.user.id_hotel },
@@ -285,6 +293,7 @@ export class ApkService {
           'title',
           'description',
           'harga',
+          'is_sold_out',
           'id_hotel',
           [this.sequelize.col('hotel.title_hotel'), 'nama_hotel'],
           'id_group',
@@ -310,6 +319,7 @@ export class ApkService {
           'title',
           'description',
           'harga',
+          'is_sold_out',
           this.sequelize.col('resto.id_hotel'),
           this.sequelize.col('hotel.title_hotel'),
           this.sequelize.col('resto.id_group'),

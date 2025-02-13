@@ -102,4 +102,10 @@ export class users_deviceEntity extends Model<users_deviceEntity> {
     allowNull: false,
   })
   device_info: string;
+
+  @Column({
+    type: DataType.TEXT,
+    allowNull: true,
+  })
+  token_access: string;
 }

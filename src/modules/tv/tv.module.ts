@@ -25,6 +25,7 @@ import { greeting_cardUserEntity } from 'src/database/iptv/greeting_card_user.en
 import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
 import { AppGateway } from 'src/utility/websocket.helper';
 import { warningEntity } from 'src/database/iptv/warning.entity';
+import { users_deviceEntity } from 'src/database/iptv/users_device.entity';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { warningEntity } from 'src/database/iptv/warning.entity';
       announcementUserEntity,
       users_guestEntity,
       warningEntity,
+      users_deviceEntity,
     ]),
   ],
   controllers: [ApkController],

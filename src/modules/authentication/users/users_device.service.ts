@@ -22,6 +22,7 @@ import { fn, Op } from 'sequelize';
 import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
 import { logLogoutEntity } from 'src/database/iptv/log_logout.entity';
 import { logRefreshTokenEntity } from 'src/database/iptv/log_refresh_token.entity';
+import { ApkService } from 'src/modules/tv/apk/apk.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UserDeviceService {
@@ -37,6 +38,7 @@ export class UserDeviceService {
     private _logRefreshTokenEntity: typeof logRefreshTokenEntity,
     @InjectModel(iptv_feature)
     private _hotelEntity: typeof iptv_feature,
+    private _ApkService: ApkService,
     private sequelize: Sequelize,
   ) {}
 
@@ -109,9 +111,22 @@ export class UserDeviceService {
         throw 'Login gagal';
       }
 
+      const tokenAccess = await this.jwtService.sign(
+        {
+          id_user: user.id_user_device,
+          room_id: user.room_id,
+          username: user.username,
+          id_hotel: user.id_hotel,
+        },
+        // {
+        //   expiresIn: '1d',
+        // },
+      );
+
       let update_device = await this._users_deviceEntity.update(
         {
           device_info: param.device_info,
+          token_access: tokenAccess,
         },
         {
           where: {
@@ -125,17 +140,7 @@ export class UserDeviceService {
 
       return {
         ...user.dataValues,
-        accesstoken: this.jwtService.sign(
-          {
-            id_user: user.id_user_device,
-            room_id: user.room_id,
-            username: user.username,
-            id_hotel: user.id_hotel,
-          },
-          {
-            expiresIn: '1d',
-          },
-        ),
+        accesstoken: tokenAccess,
         refreshtoken: this.jwtService.sign({
           id_user: user.id_user_device,
           id_session_device: create_sess.id_session_device,
@@ -214,9 +219,9 @@ export class UserDeviceService {
             username: user.username,
             id_hotel: user.id_hotel,
           },
-          {
-            expiresIn: '1d',
-          },
+          // {
+          //   expiresIn: '1d',
+          // },
         ),
       };
     } catch (error) {
@@ -305,9 +310,9 @@ export class UserDeviceService {
             username: user.username,
             id_hotel: user.id_hotel,
           },
-          {
-            expiresIn: '1d',
-          },
+          // {
+          //   expiresIn: '1d',
+          // },
         ),
       };
 
@@ -339,14 +344,18 @@ export class UserDeviceService {
     }
   }
 
-  cekToken(req: any) {
-    if (req.user.id_hotel == undefined) {
-      throw 'Access token not valid!';
-    }
-
-    return this._hotelEntity.findOne({
-      where: { id: req.user.id_hotel, is_active: true },
+  async cekToken(req: any, token: string) {
+    // console.log(req);
+    // if (req.user.id_hotel == undefined) {
+    //   throw 'Access token not valid!';
+    // }
+    const cekToken = await this._users_deviceEntity.findOne({
+      where: { id_user_device: req.user.id_user, token_access: token },
     });
+    if (cekToken == null) {
+      throw 'Invalid';
+    }
+    return 'success';
   }
 
   async getUserRoom(req: any): Promise<any> {
@@ -595,6 +604,15 @@ export class UserDeviceService {
           where: { id_user_device: param.id_user_device },
         },
       );
+
+      //socket module wifi
+      if (req.user.id_hotel != undefined) {
+        let sendWS = await this._ApkService.sendWebsocketData(
+          req,
+          'wifi',
+          'update',
+        );
+      }
       return 'success';
     } catch (error) {
       throw error;
