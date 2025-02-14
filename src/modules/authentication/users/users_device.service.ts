@@ -598,6 +598,7 @@ export class UserDeviceService {
       let update = await this._users_deviceEntity.update(
         {
           wifi: param.wifi,
+          wifi_password: param.wifi_password,
           updated_by: req.user.username,
         },
         {

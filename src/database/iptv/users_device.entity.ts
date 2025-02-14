@@ -72,6 +72,11 @@ export class users_deviceEntity extends Model<users_deviceEntity> {
     allowNull: false,
   })
   wifi: string;
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  wifi_password: string;
 
   @Column({
     type: DataType.DATE,

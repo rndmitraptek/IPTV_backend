@@ -121,6 +121,10 @@ export class updateUserRoomWifi {
     message: 'wifi tidak boleh kosong',
   })
   wifi: string;
+  @IsNotEmpty({
+    message: 'wifi password tidak boleh kosong',
+  })
+  wifi_password: string;
 }
 
 export class refreshTokenModel {

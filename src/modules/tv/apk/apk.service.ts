@@ -276,7 +276,7 @@ export class ApkService {
 
     let data = {
       nama: nama,
-      wifi: getWifi.wifi,
+      wifi: { wifi: getWifi.wifi, wifi_password: getWifi.wifi_password },
       iptv: getHotel,
       nearbyattraction: await this.nearby_attractionModel.findAll({
         where: { id_hotel: req.user.id_hotel },
