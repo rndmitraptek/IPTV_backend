@@ -50,8 +50,10 @@ export class OrderRestoService {
       'ppn_nominal',
       'grand_total',
       'jenis_pembayaran',
-      'created_at',
-      'updated_at',
+      // 'created_at',
+      // 'updated_at',
+      [this.sequelize.literal("created_at + INTERVAL '7 HOURS'"), 'created_at'],
+      [this.sequelize.literal("updated_at + INTERVAL '7 HOURS'"), 'updated_at'],
       'created_by',
       'updated_by',
       'status_bayar',
@@ -299,8 +301,8 @@ export class OrderRestoService {
             order_id: getData.order_number,
             gross_amount: getData.grand_total,
           },
-          customer_details:{
-            first_name:getData.guest_name
+          customer_details: {
+            first_name: getData.guest_name,
           },
           // enabled_payments: ['gopay'],
           // payment_type: "gopay",
@@ -311,15 +313,15 @@ export class OrderRestoService {
 
         let createTrxMid =
           await this._MidtransService.createTransactionMidtrans(paramMidtrans);
-        if(createTrxMid.status_code !=400){
-          createTrxMid.redirect_url =`${createTrxMid.redirect_url}#/other-qris`;
+        if (createTrxMid.status_code != 400) {
+          createTrxMid.redirect_url = `${createTrxMid.redirect_url}#/other-qris`;
         }
 
         let updatePembayaran = await this._orderRestoEntity.update(
           {
             jenis_pembayaran: param.jenis_pembayaran,
             updated_by: req.user.username,
-            response_midtrans:createTrxMid
+            response_midtrans: createTrxMid,
           },
           {
             where: {
@@ -335,7 +337,6 @@ export class OrderRestoService {
         await transaction.commit();
         return createTrxMid;
       } else {
-
         let updatePembayaran = await this._orderRestoEntity.update(
           {
             jenis_pembayaran: param.jenis_pembayaran,
