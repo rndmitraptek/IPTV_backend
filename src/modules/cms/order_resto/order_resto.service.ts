@@ -147,6 +147,11 @@ export class OrderRestoService {
       include: [
         {
           attributes: [],
+          model: paymentMethodEntity,
+          as: 'payment_method',
+        },
+        {
+          attributes: [],
           model: iptv_feature,
           as: 'hotel',
         },
