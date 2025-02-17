@@ -11,6 +11,7 @@ import {
   jenisPembayaran,
   paramGetOrderResto,
   pembayaranOrder,
+  updateStatusBayar,
   updateStatusOrder,
 } from './order_resto.dto';
 import { generateNumber } from 'src/utility/nomor_counter.helper';
@@ -18,6 +19,7 @@ import { fn } from 'sequelize';
 import { MidtransService } from 'src/utility/midtrans.dynamic.helper';
 import { request_midtrans } from 'src/utility/midtrans.model';
 import { AppGateway } from 'src/utility/websocket.helper';
+import { paymentMethodEntity } from 'src/database/iptv/payment_method.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class OrderRestoService {
@@ -49,6 +51,14 @@ export class OrderRestoService {
       'ppn_persen',
       'ppn_nominal',
       'grand_total',
+      'nominal_bayar',
+      'id_payment_method',
+      [
+        this.sequelize.col('payment_method.payment_method_name'),
+        'payment_method_name',
+      ],
+      'file_bukti_bayar_nama',
+      'file_bukti_bayar_url',
       'jenis_pembayaran',
       // 'created_at',
       // 'updated_at',
@@ -75,6 +85,11 @@ export class OrderRestoService {
     ];
 
     this.incl = [
+      {
+        attributes: [],
+        model: paymentMethodEntity,
+        as: 'payment_method',
+      },
       {
         attributes: [],
         model: iptv_feature,
@@ -470,6 +485,30 @@ export class OrderRestoService {
         reason_canceled: param.reason_canceled,
         canceled_at: fn('NOW'),
         canceled_by: req.user.username,
+      },
+      {
+        where: {
+          id_order_resto: param.id_order_resto,
+        },
+      },
+    );
+  }
+
+  async updateStatusBayar(param: updateStatusBayar, req: any): Promise<void> {
+    const cekData = await this._orderRestoEntity.findOne({
+      where: { id_order_resto: param.id_order_resto },
+    });
+    if (!cekData) {
+      throw 'Data not found';
+    }
+    await this._orderRestoEntity.update(
+      {
+        id_payment_method: param.id_payment_method,
+        nominal_bayar: param.nominal_bayar,
+        file_bukti_bayar_nama: param.file_bukti_bayar_nama,
+        file_bukti_bayar_url: param.file_bukti_bayar_url,
+        status_bayar: 1,
+        updated_by: req.user.username,
       },
       {
         where: {

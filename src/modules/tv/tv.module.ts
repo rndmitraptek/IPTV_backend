@@ -26,6 +26,7 @@ import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
 import { AppGateway } from 'src/utility/websocket.helper';
 import { warningEntity } from 'src/database/iptv/warning.entity';
 import { users_deviceEntity } from 'src/database/iptv/users_device.entity';
+import { paymentMethodEntity } from 'src/database/iptv/payment_method.entity';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { users_deviceEntity } from 'src/database/iptv/users_device.entity';
       users_guestEntity,
       warningEntity,
       users_deviceEntity,
+      paymentMethodEntity,
     ]),
   ],
   controllers: [ApkController],

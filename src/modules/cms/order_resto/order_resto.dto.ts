@@ -65,6 +65,17 @@ export class updateStatusOrder {
   status_order: number;
 }
 
+export class updateStatusBayar {
+  @IsNotEmpty()
+  id_order_resto: number;
+  @IsNotEmpty()
+  id_payment_method: number;
+  @IsNotEmpty()
+  nominal_bayar: number;
+  file_bukti_bayar_nama: string;
+  file_bukti_bayar_url: string;
+}
+
 export const masterStatusOrder = [
   { status_code: 0, status_name: 'ORDER' },
   { status_code: 1, status_name: 'DIPROSES' },

@@ -1,110 +1,157 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/modules/authentication/users/jwt-auth.gruard';
 import { Request } from 'express';
 import { OrderRestoService } from './order_resto.service';
-import { canceledOrder, insertOrderResto, paramGetOrderResto, pembayaranOrder, updateStatusOrder } from './order_resto.dto';
+import {
+  canceledOrder,
+  insertOrderResto,
+  paramGetOrderResto,
+  pembayaranOrder,
+  updateStatusBayar,
+  updateStatusOrder,
+} from './order_resto.dto';
 
 @Controller('order-resto')
 @ApiTags('cms-order-resto')
 export class OrderRestoController {
-    
-    constructor(private readonly _OrderRestoService:OrderRestoService){}
+  constructor(private readonly _OrderRestoService: OrderRestoService) {}
 
-    @Get('getByPeriode')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth('access-token')
-    @ApiOperation({ summary: 'Menampilkan Semua Data by periode' })
-    @ApiResponse({ status: 200})
-    findAll(@Query() query:paramGetOrderResto,@Req() req:Request): Promise<any> {
-        return this._OrderRestoService.findAll(query,req);
-    }
+  @Get('getByPeriode')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Menampilkan Semua Data by periode' })
+  @ApiResponse({ status: 200 })
+  findAll(
+    @Query() query: paramGetOrderResto,
+    @Req() req: Request,
+  ): Promise<any> {
+    return this._OrderRestoService.findAll(query, req);
+  }
 
+  @Get('getByRoom')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({
+    summary: 'Menampilkan Semua Data by periode AND ROOM with token',
+  })
+  @ApiResponse({ status: 200 })
+  getByRoom(
+    @Query() query: paramGetOrderResto,
+    @Req() req: Request,
+  ): Promise<any> {
+    return this._OrderRestoService.getByRoom(query, req);
+  }
 
-    @Get('getByRoom')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth('access-token')
-    @ApiOperation({ summary: 'Menampilkan Semua Data by periode AND ROOM with token' })
-    @ApiResponse({ status: 200})
-    getByRoom(@Query() query:paramGetOrderResto,@Req() req:Request): Promise<any> {
-        return this._OrderRestoService.getByRoom(query,req);
-    }
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Menampilkan OrderRestoEntity by id ' })
+  @ApiResponse({ status: 200 })
+  @Get('getById/:id')
+  findOne(@Param('id') id: number): Promise<any> {
+    return this._OrderRestoService.findOne(id);
+  }
 
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth('access-token')
-    @ApiOperation({ summary: 'Menampilkan OrderRestoEntity by id ' })
-    @ApiResponse({ status: 200 })
-    @Get('getById/:id')
-    findOne(@Param('id') id: number): Promise<any> {
-        return this._OrderRestoService.findOne(id);
-    }
+  @Post('create')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'tambah data order' })
+  @ApiResponse({ status: 201 })
+  create(
+    @Body() OrderRestoEntity: insertOrderResto,
+    @Req() req: Request,
+  ): Promise<any> {
+    return this._OrderRestoService.create(OrderRestoEntity, req);
+  }
 
-    @Post('create')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth('access-token')
-    @ApiOperation({ summary: 'tambah data order' })
-    @ApiResponse({ status: 201})  
-    create(@Body() OrderRestoEntity: insertOrderResto, @Req() req:Request): Promise<any> {
-        return this._OrderRestoService.create(OrderRestoEntity, req);
-    }
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({
+    summary:
+      'Menampilkan jenis pembayaran berdasarkan hotel (jika tdk integrasi midtrans hnya bayar dikamar saja)',
+  })
+  @ApiResponse({ status: 200 })
+  @Get('getJenisPembayaran')
+  getJenisPembayaran(@Req() req: Request): Promise<any> {
+    return this._OrderRestoService.jenisPembayaranByHotel(req);
+  }
 
+  @Put('pembayaran')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'pembayaran order' })
+  @ApiResponse({ status: 201 })
+  pembayaran(@Body() body: pembayaranOrder, @Req() req: Request): Promise<any> {
+    return this._OrderRestoService.pembayaran(body, req);
+  }
 
+  @Post('callback')
+  @ApiOperation({ summary: 'callback status data order  for midtrans' })
+  @ApiResponse({ status: 201 })
+  callback(@Req() req: Request): Promise<any> {
+    return this._OrderRestoService.verifyCallback(req.body);
+  }
 
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth('access-token')
-    @ApiOperation({ summary: 'Menampilkan jenis pembayaran berdasarkan hotel (jika tdk integrasi midtrans hnya bayar dikamar saja)' })
-    @ApiResponse({ status: 200 })
-    @Get('getJenisPembayaran')
-    getJenisPembayaran(@Req() req:Request): Promise<any> {
-        return this._OrderRestoService.jenisPembayaranByHotel(req);
-    }
+  @Delete('batal')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Cancel data order' })
+  @ApiResponse({ status: 200 })
+  batal(@Body() body: canceledOrder, @Req() req: Request) {
+    return this._OrderRestoService.batal(body, req);
+  }
 
-    @Put('pembayaran')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth('access-token')
-    @ApiOperation({ summary: 'pembayaran order' })
-    @ApiResponse({ status: 201})  
-    pembayaran(@Body() body: pembayaranOrder, @Req() req:Request): Promise<any> {
-        return this._OrderRestoService.pembayaran(body, req);
-    }
+  @Put('updateStatusOrder')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({
+    summary: 'update Status Order (1:Diproses, 2:Diantar, 3:Diterima',
+  })
+  @ApiResponse({ status: 201 })
+  updateStatusOrder(
+    @Body() body: updateStatusOrder,
+    @Req() req: Request,
+  ): Promise<any> {
+    return this._OrderRestoService.updateStatusOrder(body, req);
+  }
 
+  @Put('updateStatusBayar')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'update Status bayar' })
+  @ApiResponse({ status: 201 })
+  updateStatusBayar(
+    @Body() body: updateStatusBayar,
+    @Req() req: Request,
+  ): Promise<any> {
+    return this._OrderRestoService.updateStatusBayar(body, req);
+  }
 
-    @Post('callback')
-    @ApiOperation({ summary: 'callback status data order  for midtrans' })
-    @ApiResponse({ status: 201})  
-    callback(@Req() req: Request): Promise<any> {
-        return this._OrderRestoService.verifyCallback(req.body);
-    }
-
-
-
-    @Delete('batal')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth('access-token')
-    @ApiOperation({ summary: 'Cancel data order' })
-    @ApiResponse({ status: 200})
-    batal(@Body() body: canceledOrder,@Req() req:Request) {
-        return this._OrderRestoService.batal(body,req);
-    }
-
-
-
-    @Put('updateStatusOrder')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth('access-token')
-    @ApiOperation({ summary: 'update Status Order (1:Diproses, 2:Diantar, 3:Diterima' })
-    @ApiResponse({ status: 201})  
-    updateStatusOrder(@Body() body: updateStatusOrder, @Req() req:Request): Promise<any> {
-        return this._OrderRestoService.updateStatusOrder(body, req);
-    }
-
-
-    @Post('tesWS')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth('access-token')
-    @ApiOperation({ summary: 'tambah data order' })
-    @ApiResponse({ status: 201})  
-    tesWS(@Body() OrderRestoEntity: insertOrderResto, @Req() req:Request): Promise<any> {
-        return this._OrderRestoService.tesWS(OrderRestoEntity, req);
-    }
+  @Post('tesWS')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'tambah data order' })
+  @ApiResponse({ status: 201 })
+  tesWS(
+    @Body() OrderRestoEntity: insertOrderResto,
+    @Req() req: Request,
+  ): Promise<any> {
+    return this._OrderRestoService.tesWS(OrderRestoEntity, req);
+  }
 }

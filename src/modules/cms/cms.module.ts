@@ -81,6 +81,9 @@ import { logLogoutEntity } from 'src/database/iptv/log_logout.entity';
 import { warningEntity } from 'src/database/iptv/warning.entity';
 import { warningController } from './warning/warning.controller';
 import { warningService } from './warning/warning.service';
+import { paymentMethodEntity } from 'src/database/iptv/payment_method.entity';
+import { paymentMethodController } from './paymentMethod/paymentMethod.controller';
+import { paymentMethodService } from './paymentMethod/paymentMethod.service';
 
 @Module({
   imports: [
@@ -117,6 +120,7 @@ import { warningService } from './warning/warning.service';
       logLogoutEntity,
       logRefreshTokenEntity,
       warningEntity,
+      paymentMethodEntity,
     ]),
   ],
   controllers: [
@@ -141,6 +145,7 @@ import { warningService } from './warning/warning.service';
     OrderRestoController,
     userGuestController,
     warningController,
+    paymentMethodController,
   ],
   providers: [
     ApkService,
@@ -171,6 +176,7 @@ import { warningService } from './warning/warning.service';
     OrderRestoService,
     userGuestService,
     warningService,
+    paymentMethodService,
   ],
 })
 export class CmsModule {}
