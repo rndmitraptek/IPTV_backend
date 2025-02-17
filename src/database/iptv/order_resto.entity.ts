@@ -80,8 +80,8 @@ export class orderRestoEntity extends Model<orderRestoEntity> {
   user_device: users_deviceEntity;
 
   @Column({
-    type: DataType.BIGINT,
-    allowNull: false,
+    type: DataType.INTEGER,
+    allowNull: true,
   })
   @ForeignKey(() => paymentMethodEntity)
   id_payment_method: number;
