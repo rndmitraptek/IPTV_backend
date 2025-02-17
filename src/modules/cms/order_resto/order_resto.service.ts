@@ -52,8 +52,18 @@ export class OrderRestoService {
       'jenis_pembayaran',
       // 'created_at',
       // 'updated_at',
-      [this.sequelize.literal("created_at + INTERVAL '7 HOURS'"), 'created_at'],
-      [this.sequelize.literal("updated_at + INTERVAL '7 HOURS'"), 'updated_at'],
+      [
+        this.sequelize.literal(
+          `"orderRestoEntity".created_at + INTERVAL '7 HOURS'`,
+        ),
+        'created_at',
+      ],
+      [
+        this.sequelize.literal(
+          `"orderRestoEntity".updated_at + INTERVAL '7 HOURS'`,
+        ),
+        'updated_at',
+      ],
       'created_by',
       'updated_by',
       'status_bayar',
