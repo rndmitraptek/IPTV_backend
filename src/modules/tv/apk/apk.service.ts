@@ -311,7 +311,7 @@ export class ApkService {
             as: 'group',
           },
         ],
-        where: { id_hotel: req.user.id_hotel, is_sold_out: false },
+        where: { id_hotel: req.user.id_hotel },
         group: [
           'id_resto',
           'image_name',
