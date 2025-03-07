@@ -282,7 +282,16 @@ export class ApkService {
         where: { id_hotel: req.user.id_hotel },
       }),
       promo: await this.promoModel.findAll({
-        where: { id_hotel: req.user.id_hotel, is_active: true },
+        where: {
+          id_hotel: req.user.id_hotel,
+          is_active: true,
+          start_date: {
+            [Op.lte]: fn('NOW'), // start_date >= NOW()
+          },
+          end_date: {
+            [Op.gte]: fn('NOW'), // end_date <= NOW()
+          },
+        },
         order: [['urut', 'DESC']],
       }),
       resto: await this.restoModel.findAll({
