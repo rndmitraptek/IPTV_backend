@@ -161,6 +161,7 @@ export class RestoService {
   async remove(id_resto: number, req: any): Promise<void> {
     const resto = await this.findOne(id_resto);
     await resto.destroy();
+    console.log(req.user);
 
     if (req.user.id_hotel != undefined) {
       let sendWS = await this._ApkService.sendWebsocketData(
