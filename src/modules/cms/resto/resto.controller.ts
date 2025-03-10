@@ -97,6 +97,7 @@ export class RestoController {
   })
   @Delete(':id_resto')
   remove(@Param('id_resto') id: number, @Req() req: Request) {
+    console.log('req :', req);
     return this.restoService.remove(id, req);
   }
 }
