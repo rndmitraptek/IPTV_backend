@@ -274,10 +274,53 @@ export class ApkService {
       group: ['id_hotel'],
     });
 
+    const getResto = await this.restoModel.findAll({
+      attributes: [
+        'id_resto',
+        'image_name',
+        'image_url',
+        'title',
+        'description',
+        'harga',
+        'is_sold_out',
+        'id_hotel',
+        [this.sequelize.col('hotel.title_hotel'), 'nama_hotel'],
+        'id_group',
+        [this.sequelize.col('group.nama_group'), 'nama_group'],
+      ],
+      include: [
+        {
+          attributes: [],
+          model: iptv_feature,
+          as: 'hotel',
+        },
+        {
+          attributes: [],
+          model: restoGroupEntity,
+          as: 'group',
+        },
+      ],
+      where: { id_hotel: req.user.id_hotel },
+      group: [
+        'id_resto',
+        'image_name',
+        'image_url',
+        'title',
+        'description',
+        'harga',
+        'is_sold_out',
+        this.sequelize.col('resto.id_hotel'),
+        this.sequelize.col('hotel.title_hotel'),
+        this.sequelize.col('resto.id_group'),
+        this.sequelize.col('group.nama_group'),
+      ],
+    });
+
     let data = {
       nama: nama,
       wifi: { wifi: getWifi.wifi, wifi_password: getWifi.wifi_password },
       iptv: getHotel,
+      is_resto: getResto.length > 0 ? true : false,
       nearbyattraction: await this.nearby_attractionModel.findAll({
         where: { id_hotel: req.user.id_hotel },
       }),
@@ -294,47 +337,7 @@ export class ApkService {
         },
         order: [['urut', 'DESC']],
       }),
-      resto: await this.restoModel.findAll({
-        attributes: [
-          'id_resto',
-          'image_name',
-          'image_url',
-          'title',
-          'description',
-          'harga',
-          'is_sold_out',
-          'id_hotel',
-          [this.sequelize.col('hotel.title_hotel'), 'nama_hotel'],
-          'id_group',
-          [this.sequelize.col('group.nama_group'), 'nama_group'],
-        ],
-        include: [
-          {
-            attributes: [],
-            model: iptv_feature,
-            as: 'hotel',
-          },
-          {
-            attributes: [],
-            model: restoGroupEntity,
-            as: 'group',
-          },
-        ],
-        where: { id_hotel: req.user.id_hotel },
-        group: [
-          'id_resto',
-          'image_name',
-          'image_url',
-          'title',
-          'description',
-          'harga',
-          'is_sold_out',
-          this.sequelize.col('resto.id_hotel'),
-          this.sequelize.col('hotel.title_hotel'),
-          this.sequelize.col('resto.id_group'),
-          this.sequelize.col('group.nama_group'),
-        ],
-      }),
+      resto: getResto,
       entertainmentModel: await this.entertainmentModel.findAll({
         where: { is_active: true },
       }),
