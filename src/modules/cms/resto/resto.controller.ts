@@ -91,13 +91,15 @@ export class RestoController {
   }
 
   @ApiOperation({ summary: 'Delete data DtoInsert' })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   @ApiResponse({
     status: 200,
     description: 'The DtoInsert has been successfully deleted.',
   })
   @Delete(':id_resto')
   remove(@Param('id_resto') id: number, @Req() req: Request) {
-    console.log('req :', req);
+    // console.log('req :', req);
     return this.restoService.remove(id, req);
   }
 }
