@@ -135,6 +135,7 @@ export class ApkService {
         'is_background_video',
         'background_video_name',
         'background_video_url',
+        'url_hotel',
       ],
       include: [
         {

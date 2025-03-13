@@ -52,6 +52,7 @@ export class IptvFeatureService {
           'is_background_video',
           'background_video_name',
           'background_video_url',
+          'url_hotel',
         ],
         include: [
           {
@@ -103,6 +104,7 @@ export class IptvFeatureService {
         'is_background_video',
         'background_video_name',
         'background_video_url',
+        'url_hotel',
       ],
       include: [
         {

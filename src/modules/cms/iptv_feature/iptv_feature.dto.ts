@@ -27,6 +27,7 @@ export class iptv_featureDtoInsert {
   //     message:'video_splash_url tidak boleh kosong'
   // })
   video_splash_url: string;
+  url_hotel: string;
 
   @IsNotEmpty({
     message: 'title_hotel_name tidak boleh kosong',
