@@ -35,6 +35,7 @@ export class pembayaranOrder {
   @IsNotEmpty()
   @IsEnum(jenisPembayaran)
   jenis_pembayaran: string;
+  id_payment_method: number;
 }
 
 export class paramGetOrderResto {

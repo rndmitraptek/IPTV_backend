@@ -369,6 +369,7 @@ export class OrderRestoService {
       } else {
         let updatePembayaran = await this._orderRestoEntity.update(
           {
+            id_payment_method: param.id_payment_method,
             jenis_pembayaran: param.jenis_pembayaran,
             updated_by: req.user.username,
           },
