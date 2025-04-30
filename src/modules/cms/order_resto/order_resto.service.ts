@@ -486,6 +486,8 @@ export class OrderRestoService {
           await this._AppGateway.handleMessageStatusBayarCallback(
             getAfterUpdate,
           );
+        let sendMobile =
+          await this._AppGateway.handleMessageStatusOrder(getAfterUpdate);
       }
 
       return 'Callback received';
