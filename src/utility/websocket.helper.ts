@@ -47,6 +47,14 @@ export class AppGateway {
     this.server.emit('status_order', body);
   }
 
+  @SubscribeMessage('status_bayar')
+  handleMessageStatusBayarCallback(@MessageBody() body: any): void {
+    this.logger.log('send message websocket status bayar callback');
+    this.logger.log(body);
+    // Kirim pesan ke semua klien di room id_hotel
+    this.server.emit('status_bayar', body);
+  }
+
   @SubscribeMessage('update_data')
   handleMessageUpdateData(@MessageBody() body: any): void {
     this.logger.log('send message websocket update data');

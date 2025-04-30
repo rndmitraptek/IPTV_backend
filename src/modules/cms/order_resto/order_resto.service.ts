@@ -478,6 +478,16 @@ export class OrderRestoService {
         order_id,
       );
 
+      if (transaction_status == 'settlement') {
+        let getAfterUpdate = await this._orderRestoEntity.findOne({
+          where: { order_number: order_id },
+        });
+        let send =
+          await this._AppGateway.handleMessageStatusBayarCallback(
+            getAfterUpdate,
+          );
+      }
+
       return 'Callback received';
     } catch (error) {
       throw error;
