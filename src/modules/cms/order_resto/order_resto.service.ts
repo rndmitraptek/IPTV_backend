@@ -169,6 +169,7 @@ export class OrderRestoService {
             'harga',
             'qty',
             'subtotal',
+            'note',
           ],
           model: orderRestoDetailEntity,
           as: 'detail',
@@ -235,6 +236,7 @@ export class OrderRestoService {
             harga: param.detail[i].harga,
             qty: param.detail[i].qty,
             subtotal: param.detail[i].subtotal,
+            note: param.detail[i].note,
           },
           {
             fields: [
@@ -244,6 +246,7 @@ export class OrderRestoService {
               'harga',
               'qty',
               'subtotal',
+              'note',
             ],
             transaction: transaction,
           },

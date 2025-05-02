@@ -22,6 +22,7 @@ export class detailOrderResto {
   qty: number;
   @IsNotEmpty()
   subtotal: number;
+  note: string;
 }
 
 export enum jenisPembayaran {
