@@ -8,6 +8,6 @@ export class insertPaymentMethodModel {
 export class updatePaymentMethodModel {
   @IsNotEmpty()
   payment_method_name: string;
-  @IsNotEmpty()
+  // @IsNotEmpty()
   is_active: boolean;
 }
