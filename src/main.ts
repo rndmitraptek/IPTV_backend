@@ -9,25 +9,25 @@ import { CustomValidationPipe } from './config/validator';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.setGlobalPrefix('api/v1',{
-    exclude:[{path:'health',method: RequestMethod.GET}]
+  app.setGlobalPrefix('api/v1', {
+    exclude: [{ path: 'health', method: RequestMethod.GET }],
   });
   const config = new DocumentBuilder()
-    .setTitle('NestJS API')
+    .setTitle('IPTV API')
     .setDescription('The NestJS API description')
     .setVersion('1.0')
     .addTag('api')
     .addBearerAuth(
       { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
-      'access-token'
+      'access-token',
     )
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('swagger', app, document,{
-    swaggerOptions : {
+  SwaggerModule.setup('swagger', app, document, {
+    swaggerOptions: {
       persistAuthorization: true,
-      docExpansion: 'none'
-    }
+      docExpansion: 'none',
+    },
   });
   app.enableCors({
     origin: '*',
@@ -38,7 +38,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new CustomResponse());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
-  
+
   await app.listen(3000);
 }
 bootstrap();

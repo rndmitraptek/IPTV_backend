@@ -14,13 +14,13 @@ jobs:
       - run:
           name: Build dockerfile
           command: |
-            docker build --no-cache -t mitraptek/iptv_backend:$CIRCLE_SHA1 .
+            docker build --no-cache -t rndmitraptek/iptv_backend:$CIRCLE_SHA1 .
       - run:
           name: Push Docker Image
           command: |
-            docker push mitraptek/iptv_backend:$CIRCLE_SHA1
-            docker tag mitraptek/iptv_backend:$CIRCLE_SHA1 mitraptek/iptv_backend:development-latest
-            docker push mitraptek/iptv_backend:development-latest
+            docker push rndmitraptek/iptv_backend:$CIRCLE_SHA1
+            docker tag rndmitraptek/iptv_backend:$CIRCLE_SHA1 rndmitraptek/iptv_backend:development-latest
+            docker push rndmitraptek/iptv_backend:development-latest
       - add_ssh_keys:
           fingerprints:
             - 'SHA256:td/Cp4SKs8tykhLUqYiPqs8zSkExFcV1LtUHCtS9ci0'
@@ -45,13 +45,13 @@ jobs:
       - run:
           name: Build dockerfile
           command: |
-            docker build --no-cache -t mitraptek/iptv_backend:$CIRCLE_SHA1 .
+            docker build --no-cache -t rndmitraptek/iptv_backend:$CIRCLE_SHA1 .
       - run:
           name: Push Docker Image
           command: |
-            docker push mitraptek/iptv_backend:$CIRCLE_SHA1
-            docker tag mitraptek/iptv_backend:$CIRCLE_SHA1 mitraptek/iptv_backend:harris-development-latest
-            docker push mitraptek/iptv_backend:harris-development-latest
+            docker push rndmitraptek/iptv_backend:$CIRCLE_SHA1
+            docker tag rndmitraptek/iptv_backend:$CIRCLE_SHA1 rndmitraptek/iptv_backend:harris-development-latest
+            docker push rndmitraptek/iptv_backend:harris-development-latest
       - add_ssh_keys:
           fingerprints:
             - 'SHA256:td/Cp4SKs8tykhLUqYiPqs8zSkExFcV1LtUHCtS9ci0'
@@ -76,13 +76,13 @@ jobs:
       - run:
           name: Build dockerfile
           command: |
-            docker build --no-cache -t mitraptek/iptv_backend:$CIRCLE_SHA1 .
+            docker build --no-cache -t rndmitraptek/iptv_backend:$CIRCLE_SHA1 .
       - run:
           name: Push Docker Image
           command: |
-            docker push mitraptek/iptv_backend:$CIRCLE_SHA1
-            docker tag mitraptek/iptv_backend:$CIRCLE_SHA1 mitraptek/iptv_backend:harris-live-latest
-            docker push mitraptek/iptv_backend:harris-live-latest
+            docker push rndmitraptek/iptv_backend:$CIRCLE_SHA1
+            docker tag rndmitraptek/iptv_backend:$CIRCLE_SHA1 rndmitraptek/iptv_backend:harris-live-latest
+            docker push rndmitraptek/iptv_backend:harris-live-latest
       - add_ssh_keys:
           fingerprints:
             - 'SHA256:td/Cp4SKs8tykhLUqYiPqs8zSkExFcV1LtUHCtS9ci0'
