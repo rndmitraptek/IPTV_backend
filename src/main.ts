@@ -14,7 +14,7 @@ async function bootstrap() {
   });
   const config = new DocumentBuilder()
     .setTitle('IPTV API')
-    .setDescription('The NestJS API description')
+    .setDescription('IPTV api docs')
     .setVersion('1.0')
     .addTag('api')
     .addBearerAuth(
