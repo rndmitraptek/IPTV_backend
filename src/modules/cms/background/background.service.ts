@@ -208,9 +208,7 @@ export class BackgroundService {
       let deleteUser = await this._backgroundUserEntity.destroy({
         where: { id_background: id },
       });
-      if (!deleteUser) {
-        throw 'update gagal';
-      }
+
       for (let i = 0; i < _param.detail_room.length; i++) {
         let insertDetail = await this._backgroundUserEntity.create(
           {

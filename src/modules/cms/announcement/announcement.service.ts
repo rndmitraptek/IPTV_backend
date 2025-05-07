@@ -207,9 +207,7 @@ export class AnnouncementService {
       let deleteUser = await this._announcementUserEntity.destroy({
         where: { id_announcement: id },
       });
-      if (!deleteUser) {
-        throw 'update gagal';
-      }
+
       for (let i = 0; i < _announcementEntity.detail_room.length; i++) {
         let insertDetail = await this._announcementUserEntity.create(
           {

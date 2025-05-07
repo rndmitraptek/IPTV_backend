@@ -221,9 +221,7 @@ export class GreetingCardService {
       let deleteUser = await this._greeting_cardUserEntity.destroy({
         where: { id_greeting_card: id_greeting_card },
       });
-      if (!deleteUser) {
-        throw 'update gagal';
-      }
+
       for (let i = 0; i < _param.detail_room.length; i++) {
         let insertDetail = await this._greeting_cardUserEntity.create(
           {
