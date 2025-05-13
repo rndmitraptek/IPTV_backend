@@ -39,6 +39,7 @@ import { logLogoutEntity } from './iptv/log_logout.entity';
 import { logRefreshTokenEntity } from './iptv/log_refresh_token.entity';
 import { warningEntity } from './iptv/warning.entity';
 import { paymentMethodEntity } from './iptv/payment_method.entity';
+import { log_connectionEntity } from './iptv/log_connection.entity';
 dotenv.config();
 
 @Injectable({ scope: Scope.REQUEST })
@@ -88,6 +89,7 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
         logRefreshTokenEntity,
         warningEntity,
         paymentMethodEntity,
+        log_connectionEntity
       ];
     } else {
       models = [];

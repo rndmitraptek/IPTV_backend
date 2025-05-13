@@ -11,6 +11,11 @@ import { MakeModule } from './modules/make/make.module';
 import { TvModule } from './modules/tv/tv.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { AppGateway } from './utility/websocket.helper';
+import { UserDeviceMonitoringService } from './utility/userDeviceMonitoring.helper';
+import { users_deviceEntity } from './database/iptv/users_device.entity';
+import { GatewayModule } from './utility/websocket.module';
+import { UserDeviceModule } from './utility/userDeviceMonitoring.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 @Module({
   imports: [
     SequelizeModule.forRootAsync({
@@ -20,6 +25,9 @@ import { AppGateway } from './utility/websocket.helper';
       secret: process.env.JWT_SECRET,
       signOptions: {},
     }),
+    EventEmitterModule.forRoot(),
+    UserDeviceModule,
+    GatewayModule,
     CmsModule,
     MakeModule,
     AuthenticationModule,
@@ -27,7 +35,7 @@ import { AppGateway } from './utility/websocket.helper';
     AdminModule,
   ],
   controllers: [AppController],
-  providers: [AppService, SequelizeConfigService, AppGateway],
+  providers: [AppService, SequelizeConfigService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

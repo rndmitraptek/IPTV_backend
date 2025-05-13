@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { apk_version } from 'src/database/iptv/apk_version.entity';
 import { entertainment } from 'src/database/iptv/entertainment.entity';
@@ -33,29 +33,34 @@ import { tv_channelAdminRepository } from './tv_channel_admin/tv_channel_admin.r
 import { AppGateway } from 'src/utility/websocket.helper';
 import { TvGroupAdminController } from './tv_group_admin/tv_group_admin.controller';
 import { TvGroupAdminService } from './tv_group_admin/tv_group_admin.service';
+import { UserDeviceMonitoringService } from 'src/utility/userDeviceMonitoring.helper';
+import { GatewayModule } from 'src/utility/websocket.module';
+import { UserDeviceModule } from 'src/utility/userDeviceMonitoring.module';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([
-      apk_version,
-      role,
-      users,
-      role_menu,
-      tv_group,
-      tv_channel,
-      promo,
-      info_hotel,
-      info_room,
-      info_fasilities,
-      resto,
-      nearby_attraction,
-      greeting_card,
-      iptv_feature,
-      entertainment,
-      menu,
-      users_deviceEntity,
-      sessionDeviceEntity,
-    ]),
+    // SequelizeModule.forFeature([
+    //   apk_version,
+    //   role,
+    //   users,
+    //   role_menu,
+    //   tv_group,
+    //   tv_channel,
+    //   promo,
+    //   info_hotel,
+    //   info_room,
+    //   info_fasilities,
+    //   resto,
+    //   nearby_attraction,
+    //   greeting_card,
+    //   iptv_feature,
+    //   entertainment,
+    //   menu,
+    //   users_deviceEntity,
+    //   sessionDeviceEntity,
+    // ]),
+    forwardRef(() => GatewayModule),
+    forwardRef(() => UserDeviceModule),
   ],
   controllers: [
     BatasAdminController,
@@ -71,7 +76,8 @@ import { TvGroupAdminService } from './tv_group_admin/tv_group_admin.service';
     HotelService,
     UserCmsService,
     UserDeviceService,
-    AppGateway,
+    UserDeviceMonitoringService,
+    // AppGateway,
     TvGroupAdminService,
     tv_channelAdminRepository,
     TvChannelAdminService,

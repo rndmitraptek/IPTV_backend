@@ -23,6 +23,7 @@ import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
 import { logLogoutEntity } from 'src/database/iptv/log_logout.entity';
 import { logRefreshTokenEntity } from 'src/database/iptv/log_refresh_token.entity';
 import { ApkService } from 'src/modules/tv/apk/apk.service';
+import { log_connectionEntity } from 'src/database/iptv/log_connection.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UserDeviceService {
@@ -34,6 +35,8 @@ export class UserDeviceService {
     private _sessionDeviceEntity: typeof sessionDeviceEntity,
     @InjectModel(logLogoutEntity)
     private _logLogoutEntity: typeof logLogoutEntity,
+    @InjectModel(log_connectionEntity)
+    private _log_connectionEntity: typeof log_connectionEntity,
     @InjectModel(logRefreshTokenEntity)
     private _logRefreshTokenEntity: typeof logRefreshTokenEntity,
     @InjectModel(iptv_feature)
@@ -376,6 +379,9 @@ export class UserDeviceService {
           [this.sequelize.col('guest.nama_tamu'), 'nama_tamu'],
           'created_at',
           'created_by',
+          'status_connection',
+          'last_connected',
+          'last_disconnected',
         ],
         include: [
           {
@@ -441,6 +447,9 @@ export class UserDeviceService {
           [this.sequelize.col('guest.nama_tamu'), 'nama_tamu'],
           'created_at',
           'created_by',
+          'status_connection',
+          'last_connected',
+          'last_disconnected',
         ],
         include: [
           {
@@ -473,6 +482,12 @@ export class UserDeviceService {
             attributes: [],
             model: iptv_feature,
             as: 'hotel',
+          },
+          {
+            model: log_connectionEntity,
+            as: 'log_connection',
+            limit:10,
+            order:[['id_log_connection','DESC']]
           },
         ],
         where: {

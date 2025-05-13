@@ -8,6 +8,8 @@ import {
   MessageBody,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { UserDeviceMonitoringService } from './userDeviceMonitoring.helper';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @WebSocketGateway({
   cors: {
@@ -18,18 +20,20 @@ export class AppGateway {
   @WebSocketServer()
   server: Server;
   logger: Logger = new Logger('AppGateway');
+  constructor(private eventEmitter: EventEmitter2) {}
 
-  // handleConnection(client: Socket) {
-  //     console.log('handle connection WS');
-  //     console.log(client);
-  //     const id_hotel = client.handshake.query.id_hotel;
-  //     client.join(id_hotel); // Tambahkan klien ke room berdasarkan id_hotel
-  //     console.log(`Client ${client.id} connected to tenant ${id_hotel}`);
-  // }
+  handleConnection(client: Socket) {
+    const deviceId = client.handshake.query.device_id as string;
+    console.log(`Device connected: ${deviceId}`);
+    // this._UserDeviceMonitoringService.setOnline(deviceId);
+    this.eventEmitter.emit('device.connected', deviceId);
+  }
 
-  // handleDisconnect(client: Socket) {
-  //   console.log('Client disconnected:', client.id);
-  // }
+  handleDisconnect(client: Socket) {
+    const deviceId = client.handshake.query.device_id;
+    console.log(`Device disconnected: ${deviceId}`);
+    this.eventEmitter.emit('device.disconnected', deviceId);
+  }
 
   @SubscribeMessage('message')
   handleMessage(@MessageBody() body: any): void {
@@ -66,4 +70,5 @@ export class AppGateway {
   // sendToSpecificClient(clientId: string, message: string) {
   //   this.server.to(clientId).emit('message', message); // Kirim pesan ke klien tertentu
   // }
+
 }

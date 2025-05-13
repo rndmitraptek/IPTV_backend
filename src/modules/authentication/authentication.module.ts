@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
@@ -35,44 +35,49 @@ import { announcementUserEntity } from 'src/database/iptv/announcement_user.enti
 import { users_guestEntity } from 'src/database/iptv/users_guest.entity';
 import { warningEntity } from 'src/database/iptv/warning.entity';
 import { AppGateway } from 'src/utility/websocket.helper';
+import { UserDeviceMonitoringService } from 'src/utility/userDeviceMonitoring.helper';
+import { GatewayModule } from 'src/utility/websocket.module';
+import { UserDeviceModule } from 'src/utility/userDeviceMonitoring.module';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([
-      users,
-      role,
-      menu,
-      sessionDeviceEntity,
-      logLogoutEntity,
-      logRefreshTokenEntity,
-      apk_version,
-      role_menu,
-      tv_group,
-      tv_channel,
-      promo,
-      info_hotel,
-      info_room,
-      info_fasilities,
-      resto,
-      nearby_attraction,
-      greeting_card,
-      greeting_cardUserEntity,
-      iptv_feature,
-      entertainment,
-      backgroundEntity,
-      backgroundUserEntity,
-      announcementEntity,
-      announcementUserEntity,
-      users_guestEntity,
-      warningEntity,
-      users_deviceEntity,
-    ]),
+    // SequelizeModule.forFeature([
+    //   users,
+    //   role,
+    //   menu,
+    //   sessionDeviceEntity,
+    //   logLogoutEntity,
+    //   logRefreshTokenEntity,
+    //   apk_version,
+    //   role_menu,
+    //   tv_group,
+    //   tv_channel,
+    //   promo,
+    //   info_hotel,
+    //   info_room,
+    //   info_fasilities,
+    //   resto,
+    //   nearby_attraction,
+    //   greeting_card,
+    //   greeting_cardUserEntity,
+    //   iptv_feature,
+    //   entertainment,
+    //   backgroundEntity,
+    //   backgroundUserEntity,
+    //   announcementEntity,
+    //   announcementUserEntity,
+    //   users_guestEntity,
+    //   warningEntity,
+    //   users_deviceEntity,
+    // ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: {},
     }),
+    forwardRef(() => GatewayModule),
+    forwardRef(() => UserDeviceModule),
   ],
   controllers: [UsersController, UsersProfileController, UserDeviceController],
-  providers: [UsersService, UserDeviceService, ApkService, AppGateway],
+  providers: [UsersService, UserDeviceService, ApkService],
 })
 export class AuthenticationModule {}

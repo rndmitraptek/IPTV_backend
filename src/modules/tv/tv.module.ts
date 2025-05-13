@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { apk_version } from 'src/database/iptv/apk_version.entity';
 import { entertainment } from 'src/database/iptv/entertainment.entity';
@@ -27,37 +27,42 @@ import { AppGateway } from 'src/utility/websocket.helper';
 import { warningEntity } from 'src/database/iptv/warning.entity';
 import { users_deviceEntity } from 'src/database/iptv/users_device.entity';
 import { paymentMethodEntity } from 'src/database/iptv/payment_method.entity';
+import { UserDeviceMonitoringService } from 'src/utility/userDeviceMonitoring.helper';
+import { GatewayModule } from 'src/utility/websocket.module';
+import { UserDeviceModule } from 'src/utility/userDeviceMonitoring.module';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([
-      apk_version,
-      role,
-      role_menu,
-      tv_group,
-      tv_channel,
-      promo,
-      info_hotel,
-      info_room,
-      info_fasilities,
-      resto,
-      nearby_attraction,
-      greeting_card,
-      greeting_cardUserEntity,
-      iptv_feature,
-      entertainment,
-      backgroundEntity,
-      backgroundUserEntity,
-      announcementEntity,
-      announcementUserEntity,
-      users_guestEntity,
-      warningEntity,
-      users_deviceEntity,
-      paymentMethodEntity,
-    ]),
+    // SequelizeModule.forFeature([
+    //   apk_version,
+    //   role,
+    //   role_menu,
+    //   tv_group,
+    //   tv_channel,
+    //   promo,
+    //   info_hotel,
+    //   info_room,
+    //   info_fasilities,
+    //   resto,
+    //   nearby_attraction,
+    //   greeting_card,
+    //   greeting_cardUserEntity,
+    //   iptv_feature,
+    //   entertainment,
+    //   backgroundEntity,
+    //   backgroundUserEntity,
+    //   announcementEntity,
+    //   announcementUserEntity,
+    //   users_guestEntity,
+    //   warningEntity,
+    //   users_deviceEntity,
+    //   paymentMethodEntity,
+    // ]),
+    forwardRef(() => GatewayModule),
+    forwardRef(() => UserDeviceModule),
   ],
   controllers: [ApkController],
-  providers: [ApkService, tv_channelRepository, AppGateway],
+  providers: [ApkService, tv_channelRepository],
   exports: [ApkService],
 })
 export class TvModule {}

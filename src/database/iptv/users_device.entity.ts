@@ -4,12 +4,14 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   HasOne,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { iptv_feature } from './iptv_feature.entity';
 import { users_guestEntity } from './users_guest.entity';
+import { log_connectionEntity } from './log_connection.entity';
 
 @Table({
   tableName: 'users_device',
@@ -30,6 +32,11 @@ export class users_deviceEntity extends Model<users_deviceEntity> {
     as: 'guest',
   })
   guest: users_guestEntity;
+  @HasMany(() => log_connectionEntity, {
+    foreignKey: 'id_user_device',
+    as: 'log_connection',
+  })
+  log_connection: log_connectionEntity;
 
   @Column({
     type: DataType.BIGINT,
@@ -113,4 +120,22 @@ export class users_deviceEntity extends Model<users_deviceEntity> {
     allowNull: true,
   })
   token_access: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  status_connection: string;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  last_connected: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  last_disconnected: Date;
 }

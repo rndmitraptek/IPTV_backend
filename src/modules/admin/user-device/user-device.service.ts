@@ -35,6 +35,9 @@ export class UserDeviceService {
           [this.sequelize.col('hotel.title_hotel'), 'nama_hotel'],
           'created_at',
           'created_by',
+          'status_connection',
+          'last_connected',
+          'last_disconnected',
         ],
         include: [
           //   {
@@ -80,6 +83,9 @@ export class UserDeviceService {
           [this.sequelize.col('hotel.title_hotel'), 'nama_hotel'],
           'created_at',
           'created_by',
+          'status_connection',
+          'last_connected',
+          'last_disconnected',
         ],
         include: [
           //   {
