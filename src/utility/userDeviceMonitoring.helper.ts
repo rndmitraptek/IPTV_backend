@@ -18,38 +18,42 @@ export class UserDeviceMonitoringService {
   @OnEvent('device.connected')
   async handleDeviceConnected(deviceId: string) {
     console.log('➡️ Update device as online:', deviceId);
-    const [count, rows]=await this._users_deviceEntity.update(
-        {
-            status_connection:'CONNECTED',
-            last_connected:this.sequelize.literal(
-                `(select NOW()::TIMESTAMPTZ AT TIME ZONE 'Asia/Bangkok')`
-            )
-        },
-        {
-            where:{username:deviceId},
-            returning:true
-        }
-    );
-    await this.insertLog(rows[0].dataValues.id_user_device, 'CONNECTED');
+    if(deviceId !='unknown'){
+        const [count, rows]=await this._users_deviceEntity.update(
+            {
+                status_connection:'CONNECTED',
+                last_connected:this.sequelize.literal(
+                    `(select NOW()::TIMESTAMPTZ AT TIME ZONE 'Asia/Bangkok')`
+                )
+            },
+            {
+                where:{username:deviceId},
+                returning:true
+            }
+        );
+        await this.insertLog(rows[0].dataValues.id_user_device, 'CONNECTED');
+    }
   }
 
 
   @OnEvent('device.disconnected')
   async handleDeviceDisConnected(deviceId: string) {
     console.log('➡️ Update device as ofline:', deviceId);
-    const [count, rows]=await this._users_deviceEntity.update(
-        {
-            status_connection:'DISCONNECTED',
-            last_disconnected:this.sequelize.literal(
-                `(select NOW()::TIMESTAMPTZ AT TIME ZONE 'Asia/Bangkok')`
-            )
-        },
-        {
-            where:{username:deviceId},
-            returning:true
-        }
-    );
-    await this.insertLog(rows[0].dataValues.id_user_device, 'DISCONNECTED');
+    if(deviceId!='unknown'){
+        const [count, rows]=await this._users_deviceEntity.update(
+            {
+                status_connection:'DISCONNECTED',
+                last_disconnected:this.sequelize.literal(
+                    `(select NOW()::TIMESTAMPTZ AT TIME ZONE 'Asia/Bangkok')`
+                )
+            },
+            {
+                where:{username:deviceId},
+                returning:true
+            }
+        );
+        await this.insertLog(rows[0].dataValues.id_user_device, 'DISCONNECTED');
+    }
   }
 
   async insertLog(id_user_device:number,status){

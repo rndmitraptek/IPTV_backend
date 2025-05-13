@@ -23,14 +23,14 @@ export class AppGateway {
   constructor(private eventEmitter: EventEmitter2) {}
 
   handleConnection(client: Socket) {
-    const deviceId = client.handshake.query.device_id as string;
+    const deviceId = client.handshake.query.device_id as string ?? 'unknown';
     console.log(`Device connected: ${deviceId}`);
     // this._UserDeviceMonitoringService.setOnline(deviceId);
     this.eventEmitter.emit('device.connected', deviceId);
   }
 
   handleDisconnect(client: Socket) {
-    const deviceId = client.handshake.query.device_id;
+    const deviceId = client.handshake.query.device_id as string ?? 'unknown';
     console.log(`Device disconnected: ${deviceId}`);
     this.eventEmitter.emit('device.disconnected', deviceId);
   }
