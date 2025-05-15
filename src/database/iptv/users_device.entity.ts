@@ -12,6 +12,7 @@ import {
 import { iptv_feature } from './iptv_feature.entity';
 import { users_guestEntity } from './users_guest.entity';
 import { log_connectionEntity } from './log_connection.entity';
+import { log_update_contentEntity } from './log_update_content.entity';
 
 @Table({
   tableName: 'users_device',
@@ -37,6 +38,11 @@ export class users_deviceEntity extends Model<users_deviceEntity> {
     as: 'log_connection',
   })
   log_connection: log_connectionEntity;
+  @HasMany(() => log_update_contentEntity, {
+    foreignKey: 'id_user_device',
+    as: 'log_update_content',
+  })
+  log_update_content: log_update_contentEntity;
 
   @Column({
     type: DataType.BIGINT,

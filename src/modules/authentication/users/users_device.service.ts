@@ -499,6 +499,12 @@ export class UserDeviceService {
             limit: 10,
             order: [['id_log_connection', 'DESC']],
           },
+          {
+            model: log_update_contentEntity,
+            as: 'log_update_content',
+            limit: 10,
+            order: [['id', 'DESC']],
+          },
         ],
         where: {
           id_user_device: id_user_device,
