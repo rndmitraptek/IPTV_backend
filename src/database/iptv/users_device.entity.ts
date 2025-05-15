@@ -138,4 +138,21 @@ export class users_deviceEntity extends Model<users_deviceEntity> {
     allowNull: true,
   })
   last_disconnected: Date;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  update_content_module: string;
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  update_content_action: string;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  last_update_content: Date;
 }

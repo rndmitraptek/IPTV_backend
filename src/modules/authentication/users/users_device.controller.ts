@@ -19,6 +19,7 @@ import {
 import { users } from 'src/database/iptv/users.entity';
 import { JwtAuthGuard } from './jwt-auth.gruard';
 import {
+  callbackUpdateContentModel,
   createUserRoom,
   loginDeviceDto,
   loginDto,
@@ -139,6 +140,18 @@ export class UserDeviceController {
   updateUserRoomWifi(@Body() body: updateUserRoomWifi, @Req() req: Request) {
     // console.log(req);
     return this.usersService.updateUserRoomWifi(body, req);
+  }
+
+  @Put('callbackUpdateContent')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'callback update content' })
+  @ApiResponse({ status: 201, description: 'success' })
+  callbackUpdateContent(
+    @Body() body: callbackUpdateContentModel,
+    @Req() req: Request,
+  ) {
+    return this.usersService.callbackUpdateContent(body, req);
   }
 
   // @Delete('deactived/:id_user_device')

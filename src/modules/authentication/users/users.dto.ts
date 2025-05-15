@@ -137,3 +137,10 @@ export class logLogoutModel {
   @IsNotEmpty()
   message: string;
 }
+
+export class callbackUpdateContentModel {
+  @IsNotEmpty()
+  module: string;
+  @IsNotEmpty()
+  action: string;
+}

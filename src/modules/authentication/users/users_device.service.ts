@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt';
 import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
 import {
+  callbackUpdateContentModel,
   createUserRoom,
   loginDeviceDto,
   loginDto,
@@ -24,6 +25,7 @@ import { logLogoutEntity } from 'src/database/iptv/log_logout.entity';
 import { logRefreshTokenEntity } from 'src/database/iptv/log_refresh_token.entity';
 import { ApkService } from 'src/modules/tv/apk/apk.service';
 import { log_connectionEntity } from 'src/database/iptv/log_connection.entity';
+import { log_update_contentEntity } from 'src/database/iptv/log_update_content.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UserDeviceService {
@@ -37,6 +39,8 @@ export class UserDeviceService {
     private _logLogoutEntity: typeof logLogoutEntity,
     @InjectModel(log_connectionEntity)
     private _log_connectionEntity: typeof log_connectionEntity,
+    @InjectModel(log_update_contentEntity)
+    private _log_update_contentEntity: typeof log_update_contentEntity,
     @InjectModel(logRefreshTokenEntity)
     private _logRefreshTokenEntity: typeof logRefreshTokenEntity,
     @InjectModel(iptv_feature)
@@ -382,6 +386,9 @@ export class UserDeviceService {
           'status_connection',
           'last_connected',
           'last_disconnected',
+          'update_content_module',
+          'update_content_action',
+          'last_update_content',
         ],
         include: [
           {
@@ -450,6 +457,9 @@ export class UserDeviceService {
           'status_connection',
           'last_connected',
           'last_disconnected',
+          'update_content_module',
+          'update_content_action',
+          'last_update_content',
         ],
         include: [
           {
@@ -486,8 +496,8 @@ export class UserDeviceService {
           {
             model: log_connectionEntity,
             as: 'log_connection',
-            limit:10,
-            order:[['id_log_connection','DESC']]
+            limit: 10,
+            order: [['id_log_connection', 'DESC']],
           },
         ],
         where: {
@@ -676,6 +686,39 @@ export class UserDeviceService {
       }
 
       return 'success';
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async callbackUpdateContent(
+    _param: callbackUpdateContentModel,
+    req: any,
+  ): Promise<any> {
+    try {
+      const updateDevice = await this._users_deviceEntity.update(
+        {
+          update_content_module: _param.module,
+          update_content_action: _param.action,
+          last_update_content: this.sequelize.literal(
+            `(select NOW()::TIMESTAMPTZ AT TIME ZONE 'Asia/Bangkok')`,
+          ),
+        },
+        {
+          where: { id_user_device: req.user.id_user },
+        },
+      );
+      if (!updateDevice) {
+        throw 'Update last content failed';
+      }
+
+      _param['id_user_device'] = req.user.id_user;
+      const insertLog = await this._log_update_contentEntity.create(_param);
+      if (!insertLog) {
+        throw 'Update log last content failed';
+      }
+
+      return insertLog;
     } catch (error) {
       throw error;
     }
