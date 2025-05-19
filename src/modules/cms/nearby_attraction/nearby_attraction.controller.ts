@@ -95,12 +95,14 @@ export class NearbyAttractionController {
     );
   }
 
+  @Delete(':id_nearby_attraction')
   @ApiOperation({ summary: 'Delete data DtoInsert' })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   @ApiResponse({
     status: 200,
     description: 'The DtoInsert has been successfully deleted.',
   })
-  @Delete(':id_nearby_attraction')
   remove(@Param('id_nearby_attraction') id: number, @Req() req: Request) {
     return this.nearby_attractionService.remove(id, req);
   }
