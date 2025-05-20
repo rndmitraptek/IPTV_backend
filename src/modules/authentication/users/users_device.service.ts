@@ -574,17 +574,17 @@ export class UserDeviceService {
         throw 'Username sudah digunakan';
       }
 
-      let cek_sess = await this._sessionDeviceEntity.findOne({
-        where: { id_user_device: param.id_user_device },
-      });
-      if (cek_sess != null) {
-        let del_sess = await this._sessionDeviceEntity.destroy({
-          where: { id_user_device: param.id_user_device },
-        });
-        if (!del_sess) {
-          throw 'session remove failed';
-        }
-      }
+      // let cek_sess = await this._sessionDeviceEntity.findOne({
+      //   where: { id_user_device: param.id_user_device },
+      // });
+      // if (cek_sess != null) {
+      //   let del_sess = await this._sessionDeviceEntity.destroy({
+      //     where: { id_user_device: param.id_user_device },
+      //   });
+      //   if (!del_sess) {
+      //     throw 'session remove failed';
+      //   }
+      // }
 
       if (
         param.password != undefined &&
@@ -620,6 +620,14 @@ export class UserDeviceService {
         if (!update) {
           throw 'Update akun room device gagal';
         }
+      }
+
+      if (req.user.id_hotel != undefined) {
+        let sendWS = await this._ApkService.sendWebsocketData(
+          req,
+          'user_room',
+          'update',
+        );
       }
 
       return 'success';
