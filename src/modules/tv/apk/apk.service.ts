@@ -320,6 +320,7 @@ export class ApkService {
     let data = {
       nama: nama,
       wifi: { wifi: getWifi.wifi, wifi_password: getWifi.wifi_password },
+      room_id:getWifi.room_id,
       iptv: getHotel,
       is_resto: getResto.length > 0 ? true : false,
       nearbyattraction: await this.nearby_attractionModel.findAll({
