@@ -30,7 +30,7 @@ jobs:
       - run:
           name: Deploy app to server
           command: |
-            ssh -o StrictHostKeyChecking=no iptv-admin@178.128.17.86 "cd aplikasiIPTV/deployer/ && ./backend.sh"
+            ssh -o StrictHostKeyChecking=no iptv-admin@159.223.65.245 "cd aplikasiIPTV/deployer/ && ./backend.sh"
 
   build-harris-development:
     machine:
@@ -61,7 +61,7 @@ jobs:
       - run:
           name: Deploy app to server
           command: |
-            ssh -o StrictHostKeyChecking=no iptv-admin@178.128.17.86 "cd aplikasiIPTV/deployer/ && ./deploy_harris_dev.sh"
+            ssh -o StrictHostKeyChecking=no iptv-admin@159.223.65.245 "cd aplikasiIPTV/deployer/ && ./deploy_harris_dev.sh"
 
   build-harris-live:
     machine:
@@ -92,7 +92,7 @@ jobs:
       - run:
           name: Deploy app to server
           command: |
-            ssh -o StrictHostKeyChecking=no iptv-admin@178.128.17.86 "cd aplikasiIPTV/deployer/ && ./deploy_harris_live.sh"
+            ssh -o StrictHostKeyChecking=no iptv-admin@159.223.65.245 "cd aplikasiIPTV/deployer/ && ./deploy_harris_live.sh"
 workflows:
   basic-workflow:
     jobs:
