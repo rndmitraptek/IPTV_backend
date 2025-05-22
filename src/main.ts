@@ -14,7 +14,7 @@ async function bootstrap() {
   });
   const config = new DocumentBuilder()
     .setTitle('IPTV API')
-    .setDescription('IPTV api docs')
+    .setDescription('UNION IPTV api docs')
     .setVersion('1.0')
     .addTag('api')
     .addBearerAuth(

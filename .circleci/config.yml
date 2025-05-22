@@ -23,14 +23,14 @@ jobs:
             docker push rndmitraptek/iptv_backend:development-latest
       - add_ssh_keys:
           fingerprints:
-            - 'SHA256:td/Cp4SKs8tykhLUqYiPqs8zSkExFcV1LtUHCtS9ci0'
+            - 'SHA256:ZHMnziJ4o8Vj9/jdhbJMvxbSQxez2SzML5tI9AFrI5w'
       - run:
           name: Prune unused Docker images
           command: docker image prune -f
       - run:
           name: Deploy app to server
           command: |
-            ssh -o StrictHostKeyChecking=no iptv-admin@206.189.38.25 "cd aplikasiIPTV/deployer/ && ./backend.sh"
+            ssh -o StrictHostKeyChecking=no iptv-admin@178.128.17.86 "cd aplikasiIPTV/deployer/ && ./backend.sh"
 
   build-harris-development:
     machine:
@@ -54,14 +54,14 @@ jobs:
             docker push rndmitraptek/iptv_backend:harris-development-latest
       - add_ssh_keys:
           fingerprints:
-            - 'SHA256:td/Cp4SKs8tykhLUqYiPqs8zSkExFcV1LtUHCtS9ci0'
+            - 'SHA256:ZHMnziJ4o8Vj9/jdhbJMvxbSQxez2SzML5tI9AFrI5w'
       - run:
           name: Prune unused Docker images
           command: docker image prune -f
       - run:
           name: Deploy app to server
           command: |
-            ssh -o StrictHostKeyChecking=no iptv-admin@206.189.38.25 "cd aplikasiIPTV/deployer/ && ./deploy_harris_dev.sh"
+            ssh -o StrictHostKeyChecking=no iptv-admin@178.128.17.86 "cd aplikasiIPTV/deployer/ && ./deploy_harris_dev.sh"
 
   build-harris-live:
     machine:
@@ -85,14 +85,14 @@ jobs:
             docker push rndmitraptek/iptv_backend:harris-live-latest
       - add_ssh_keys:
           fingerprints:
-            - 'SHA256:td/Cp4SKs8tykhLUqYiPqs8zSkExFcV1LtUHCtS9ci0'
+            - 'SHA256:ZHMnziJ4o8Vj9/jdhbJMvxbSQxez2SzML5tI9AFrI5w'
       - run:
           name: Prune unused Docker images
           command: docker image prune -f
       - run:
           name: Deploy app to server
           command: |
-            ssh -o StrictHostKeyChecking=no iptv-admin@206.189.38.25 "cd aplikasiIPTV/deployer/ && ./deploy_harris_live.sh"
+            ssh -o StrictHostKeyChecking=no iptv-admin@178.128.17.86 "cd aplikasiIPTV/deployer/ && ./deploy_harris_live.sh"
 workflows:
   basic-workflow:
     jobs:
