@@ -23,7 +23,7 @@ jobs:
             docker push rndmitraptek/iptv_backend:development-latest
       - add_ssh_keys:
           fingerprints:
-            - 'SHA256:ZHMnziJ4o8Vj9/jdhbJMvxbSQxez2SzML5tI9AFrI5w'
+            - 'SHA256:rcHTNmYe7p+2MqlFye7jmhmN78m2wN3tylFT/rrq5rg'
       - run:
           name: Prune unused Docker images
           command: docker image prune -f
@@ -54,7 +54,7 @@ jobs:
             docker push rndmitraptek/iptv_backend:harris-development-latest
       - add_ssh_keys:
           fingerprints:
-            - 'SHA256:ZHMnziJ4o8Vj9/jdhbJMvxbSQxez2SzML5tI9AFrI5w'
+            - 'SHA256:rcHTNmYe7p+2MqlFye7jmhmN78m2wN3tylFT/rrq5rg'
       - run:
           name: Prune unused Docker images
           command: docker image prune -f
@@ -85,7 +85,7 @@ jobs:
             docker push rndmitraptek/iptv_backend:harris-live-latest
       - add_ssh_keys:
           fingerprints:
-            - 'SHA256:ZHMnziJ4o8Vj9/jdhbJMvxbSQxez2SzML5tI9AFrI5w'
+            - 'SHA256:rcHTNmYe7p+2MqlFye7jmhmN78m2wN3tylFT/rrq5rg'
       - run:
           name: Prune unused Docker images
           command: docker image prune -f
