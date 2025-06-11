@@ -123,6 +123,11 @@ export class iptv_feature extends Model<iptv_feature> {
     allowNull: false,
   })
   is_active: boolean;
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+  })
+  is_streaming: boolean;
 
   @Column({
     type: DataType.DATE,
