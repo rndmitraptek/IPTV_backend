@@ -141,8 +141,6 @@ export class ApkVersionController {
     @Body() body: uploadFile,
     @UploadedFiles() file: { file: BufferedFile[] },
   ): Promise<any> {
-    // return this.minioClientService.generatePresignedUrl('iptv-config',
-    //   'env.zip',);
     let minioUploadResult = await this.minioClientService.upload_file(
       file.file[0],
       'iptv-config',
