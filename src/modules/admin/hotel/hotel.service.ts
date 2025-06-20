@@ -41,6 +41,7 @@ export class HotelService {
       throw 'Akun anda tidak diperbolehkan menambah data ini';
     }
     _iptv_feature['is_active'] = true;
+    _iptv_feature['is_streaming'] = false;
     _iptv_feature['created_by'] = req.user.username;
     _iptv_feature['updated_by'] = req.user.username;
     if (_iptv_feature.pin != undefined) {
