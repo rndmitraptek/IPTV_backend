@@ -85,12 +85,15 @@ export class HotelController {
     return this._hotelService.update(id, iptv_feature, req);
   }
 
-  @Put('update_is_stream')
+  @Put('update_is_stream/:id_hotel')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Update is_stream data hotel' })
-  update_is_stream(@Body() body: updateIsStreamHotel, @Req() req: Request) {
-    return this._hotelService.updateIsStream(body);
+  update_is_stream(
+    @Param('id_hotel') id_hotel: string,
+    @Body() body: updateIsStreamHotel,
+  ) {
+    return this._hotelService.updateIsStream(id_hotel, body);
   }
 
   @Delete(':id')

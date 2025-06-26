@@ -92,14 +92,17 @@ export class HotelService {
     });
   }
 
-  async updateIsStream(_param: updateIsStreamHotel): Promise<void> {
+  async updateIsStream(
+    id_hotel: string,
+    _param: updateIsStreamHotel,
+  ): Promise<void> {
     await this.iptv_featureModel.update(
       {
         is_streaming: _param.is_stream,
       },
       {
         where: {
-          id: _param.id_hotel,
+          id: id_hotel,
         },
       },
     );

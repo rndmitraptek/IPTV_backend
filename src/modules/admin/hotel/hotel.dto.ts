@@ -28,8 +28,5 @@ export class hotelDtoInsert {
 export class updateIsStreamHotel {
   @ApiProperty()
   @IsNotEmpty()
-  id_hotel: string;
-  @ApiProperty()
-  @IsNotEmpty()
   is_stream: boolean;
 }
