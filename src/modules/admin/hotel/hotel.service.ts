@@ -1,7 +1,7 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { iptv_feature } from 'src/database/iptv/iptv_feature.entity';
-import { hotelDtoInsert } from './hotel.dto';
+import { hotelDtoInsert, updateIsStreamHotel } from './hotel.dto';
 import * as bcrypt from 'bcrypt';
 import { role } from 'src/database/iptv/role.entity';
 import { role_menu } from 'src/database/iptv/role_menu.entity';
@@ -90,6 +90,19 @@ export class HotelService {
         id: id,
       },
     });
+  }
+
+  async updateIsStream(_param: updateIsStreamHotel): Promise<void> {
+    await this.iptv_featureModel.update(
+      {
+        is_streaming: _param.is_stream,
+      },
+      {
+        where: {
+          id: _param.id_hotel,
+        },
+      },
+    );
   }
 
   async remove(id: number): Promise<void> {
