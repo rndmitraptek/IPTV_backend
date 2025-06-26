@@ -86,8 +86,8 @@ export class HotelController {
   }
 
   @Put('update_is_stream')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('access-token')
+  //   @UseGuards(JwtAuthGuard)
+  //   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Update is_stream data hotel' })
   update_is_stream(@Body() body: updateIsStreamHotel, @Req() req: Request) {
     return this._hotelService.updateIsStream(body);
