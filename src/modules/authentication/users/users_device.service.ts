@@ -745,7 +745,7 @@ export class UserDeviceService {
       let sendWS = await this._ApkService.sendWebsocketTurnOffRoom(
         req,
         _param.id_user_device,
-        'turn_off',
+        'shutdown',
       );
       return 'success';
     } catch (error) {
