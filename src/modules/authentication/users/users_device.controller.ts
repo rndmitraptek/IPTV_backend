@@ -25,6 +25,7 @@ import {
   loginDto,
   logLogoutModel,
   refreshTokenModel,
+  shutDownRoomDto,
   updateUserRoom,
   updateUserRoomWifi,
   usersDtoInsert,
@@ -173,4 +174,13 @@ export class UserDeviceController {
   //     // console.log(req);
   //     return this.usersService.actived(id_user_device,req);
   // }
+
+  @Post('shutDownRoom')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'shutdown rooms by id_user_device by id hotel from token' })
+  @ApiResponse({ status: 201, description: 'success' })
+  shutDownRoom(@Body() body:shutDownRoomDto,@Req() req: Request) {
+    return this.usersService.shutDownRoom(body,req);
+  }
 }

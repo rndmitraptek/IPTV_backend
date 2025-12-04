@@ -144,3 +144,8 @@ export class callbackUpdateContentModel {
   @IsNotEmpty()
   action: string;
 }
+
+export class shutDownRoomDto{
+    @IsNotEmpty()
+    id_user_device: number[];
+}

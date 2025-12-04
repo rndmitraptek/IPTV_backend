@@ -67,6 +67,14 @@ export class AppGateway {
     this.server.emit('update_data', body);
   }
 
+  @SubscribeMessage('turn_off')
+  handleMessageTurnOffRoom(@MessageBody() body: any): void {
+    this.logger.log('send message websocket turn off room');
+    // this.logger.log(body);
+    // Kirim pesan ke semua klien di room id_hotel
+    this.server.emit('turn_off', body);
+  }
+
   // sendToSpecificClient(clientId: string, message: string) {
   //   this.server.to(clientId).emit('message', message); // Kirim pesan ke klien tertentu
   // }

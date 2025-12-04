@@ -9,6 +9,7 @@ import {
   loginDeviceDto,
   loginDto,
   refreshTokenModel,
+  shutDownRoomDto,
   updateUserRoom,
   updateUserRoomWifi,
   usersDtoInsert,
@@ -733,6 +734,20 @@ export class UserDeviceService {
       }
 
       return insertLog;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async shutDownRoom(_param: shutDownRoomDto, req: any): Promise<any> {
+    try {
+      //send websocket turn off room
+      let sendWS = await this._ApkService.sendWebsocketTurnOffRoom(
+        req,
+        _param.id_user_device,
+        'turn_off',
+      );
+      return 'success';
     } catch (error) {
       throw error;
     }

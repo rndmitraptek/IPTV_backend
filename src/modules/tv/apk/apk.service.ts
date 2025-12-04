@@ -402,6 +402,15 @@ export class ApkService {
     let send = this._AppGateway.handleMessageUpdateData(payloadData);
   }
 
+  async sendWebsocketTurnOffRoom(req: any, rooms: number[], action: string) {
+    const payloadData = {
+      id_hotel: req.user.id_hotel,
+      rooms: rooms,
+      action: action,
+    };
+    let send = this._AppGateway.handleMessageTurnOffRoom(payloadData);
+  }
+
   async palindromeService(input: string): Promise<number> {
     try {
       input = input.replace(/[^a-z]/g, '');
